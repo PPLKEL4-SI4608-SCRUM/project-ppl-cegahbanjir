@@ -3,7 +3,7 @@
 @section('content')
 <div class="bg-white shadow rounded-lg p-6 mb-10">
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Tambah Parameter Peringatan Banjir</h1>
+        <h1 class="text-2xl font-semibold text-gray-800">Tambah Parameter Peringatan Banjir</h1>
         <a href="{{ route('admin.weather.parameters.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded">
             <i class="fas fa-arrow-left mr-2"></i> Kembali
         </a>
