@@ -28,7 +28,7 @@
                             <th class="px-4 py-2">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200">
+                    <tbody class="divide-y divide-gray-200 text-gray-700">
                         @foreach($predictions as $prediction)
                             <tr>
                                 <td class="px-4 py-2">{{ $prediction->weatherStation->name }}</td>

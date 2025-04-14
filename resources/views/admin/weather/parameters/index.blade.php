@@ -29,7 +29,7 @@
                             <th class="px-4 py-3">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-gray-200 text-gray-700">
                         @foreach($parameters as $parameter)
                             <tr class="border-b hover:bg-gray-50">
                                 <td class="px-4 py-2">{{ $parameter->weatherStation->name }}</td>
