@@ -3,80 +3,87 @@
 @section('title', 'Edit Data Curah Hujan')
 
 @section('content')
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Edit Data Curah Hujan</h1>
-        <a href="{{ route('admin.weather.rainfall.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Kembali
+<div class="bg-white shadow rounded-lg p-6 mb-10">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-semibold text-gray-800">Edit Data Curah Hujan</h1>
+        <a href="{{ route('admin.weather.rainfall.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded hover:bg-gray-300">
+            <i class="fas fa-arrow-left mr-2"></i> Kembali
         </a>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-            <form action="{{ route('admin.weather.rainfall.update', $rainfall) }}" method="POST">
-                @csrf
-                @method('PUT')
-                
-                <div class="mb-3">
-                    <label for="weather_station_id" class="form-label">Stasiun Cuaca <span class="text-danger">*</span></label>
-                    <select class="form-select @error('weather_station_id') is-invalid @enderror" id="weather_station_id" name="weather_station_id" required>
-                        <option value="">Pilih Stasiun Cuaca</option>
-                        @foreach($stations as $station)
-                            <option value="{{ $station->id }}" {{ old('weather_station_id', $rainfall->weather_station_id) == $station->id ? 'selected' : '' }}>
-                                {{ $station->name }} ({{ $station->location }})
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('weather_station_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="recorded_at" class="form-label">Tanggal dan Waktu <span class="text-danger">*</span></label>
-                        <input type="datetime-local" class="form-control @error('recorded_at') is-invalid @enderror" id="recorded_at" name="recorded_at" value="{{ old('recorded_at', $rainfall->recorded_at->format('Y-m-d\TH:i')) }}" required>
-                        @error('recorded_at')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <label for="data_source" class="form-label">Sumber Data <span class="text-danger">*</span></label>
-                        <select class="form-select @error('data_source') is-invalid @enderror" id="data_source" name="data_source" required>
-                            <option value="manual" {{ old('data_source', $rainfall->data_source) == 'manual' ? 'selected' : '' }}>Manual</option>
-                            <option value="api" {{ old('data_source', $rainfall->data_source) == 'api' ? 'selected' : '' }}>API</option>
-                            <option value="sensor" {{ old('data_source', $rainfall->data_source) == 'sensor' ? 'selected' : '' }}>Sensor</option>
-                        </select>
-                        @error('data_source')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="rainfall_amount" class="form-label">Curah Hujan (mm) <span class="text-danger">*</span></label>
-                        <input type="number" step="0.01" min="0" class="form-control @error('rainfall_amount') is-invalid @enderror" id="rainfall_amount" name="rainfall_amount" value="{{ old('rainfall_amount', $rainfall->rainfall_amount) }}" required>
-                        @error('rainfall_amount')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <label for="intensity" class="form-label">Intensitas (mm/jam)</label>
-                        <input type="number" step="0.01" min="0" class="form-control @error('intensity') is-invalid @enderror" id="intensity" name="intensity" value="{{ old('intensity', $rainfall->intensity) }}">
-                        @error('intensity')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <div class="form-text">Opsional. Akan dihitung otomatis jika tidak diisi.</div>
-                    </div>
-                </div>
-                
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button type="reset" class="btn btn-light me-md-2">Reset</button>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                </div>
-            </form>
+<div class="bg-white shadow rounded-lg p-6 mb-10">
+    <form action="{{ route('admin.weather.rainfall.update', $rainfall) }}" method="POST">
+        @csrf
+        @method('PUT')
+
+        <div class="mb-4">
+            <label for="weather_station_id" class="block text-sm font-medium text-gray-700">Stasiun Cuaca <span class="text-red-500">*</span></label>
+            <select id="weather_station_id" name="weather_station_id" required
+                class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('weather_station_id') border-red-500 @enderror">
+                <option value="">Pilih Stasiun Cuaca</option>
+                @foreach($stations as $station)
+                    <option value="{{ $station->id }}" {{ old('weather_station_id', $rainfall->weather_station_id) == $station->id ? 'selected' : '' }}>
+                        {{ $station->name }} ({{ $station->location }})
+                    </option>
+                @endforeach
+            </select>
+            @error('weather_station_id')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
         </div>
-    </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+                <label for="recorded_at" class="block text-sm font-medium text-gray-700">Tanggal dan Waktu <span class="text-red-500">*</span></label>
+                <input type="datetime-local" id="recorded_at" name="recorded_at" required
+                    value="{{ old('recorded_at', $rainfall->recorded_at->format('Y-m-d\TH:i')) }}"
+                    class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('recorded_at') border-red-500 @enderror">
+                @error('recorded_at')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label for="data_source" class="block text-sm font-medium text-gray-700">Sumber Data <span class="text-red-500">*</span></label>
+                <select id="data_source" name="data_source" required
+                    class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('data_source') border-red-500 @enderror">
+                    <option value="manual" {{ old('data_source', $rainfall->data_source) == 'manual' ? 'selected' : '' }}>Manual</option>
+                    <option value="api" {{ old('data_source', $rainfall->data_source) == 'api' ? 'selected' : '' }}>API</option>
+                    <option value="sensor" {{ old('data_source', $rainfall->data_source) == 'sensor' ? 'selected' : '' }}>Sensor</option>
+                </select>
+                @error('data_source')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+                <label for="rainfall_amount" class="block text-sm font-medium text-gray-700">Curah Hujan (mm) <span class="text-red-500">*</span></label>
+                <input type="number" step="0.01" min="0" id="rainfall_amount" name="rainfall_amount" required
+                    value="{{ old('rainfall_amount', $rainfall->rainfall_amount) }}"
+                    class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('rainfall_amount') border-red-500 @enderror">
+                @error('rainfall_amount')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label for="intensity" class="block text-sm font-medium text-gray-700">Intensitas (mm/jam)</label>
+                <input type="number" step="0.01" min="0" id="intensity" name="intensity"
+                    value="{{ old('intensity', $rainfall->intensity) }}"
+                    class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('intensity') border-red-500 @enderror">
+                @error('intensity')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+                <p class="mt-1 text-xs text-gray-500">Opsional. Akan dihitung otomatis jika tidak diisi.</p>
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-2">
+            <button type="reset" class="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200">Reset</button>
+            <button type="submit" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-[#f97316] rounded hover:bg-[#ea580c]">Simpan Perubahan</button>
+        </div>
+    </form>
+</div>
 @endsection

@@ -1,84 +1,82 @@
 @extends('layouts.admin')
-
 @section('title', 'Edit Stasiun Cuaca')
-
 @section('content')
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Edit Stasiun Cuaca</h1>
-        <a href="{{ route('admin.weather.stations.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Kembali
+<div class="bg-white shadow rounded-lg p-6 mb-10">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-semibold text-gray-800">Edit Stasiun Cuaca</h1>
+        <a href="{{ route('admin.weather.stations.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded hover:bg-gray-300">
+            <i class="fas fa-arrow-left mr-2"></i> Kembali
         </a>
     </div>
-
-    <div class="card">
-        <div class="card-body">
-            <form action="{{ route('admin.weather.stations.update', $station) }}" method="POST">
-                @csrf
-                @method('PUT')
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Nama Stasiun <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $station->name) }}" required>
-                            @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="location" class="form-label">Lokasi <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control @error('location') is-invalid @enderror" id="location" name="location" value="{{ old('location', $station->location) }}" required>
-                            @error('location')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="latitude" class="form-label">Latitude <span class="text-danger">*</span></label>
-                            <input type="number" step="any" class="form-control @error('latitude') is-invalid @enderror" id="latitude" name="latitude" value="{{ old('latitude', $station->latitude) }}" required>
-                            @error('latitude')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <div class="form-text">Contoh: -6.2088 (Jakarta)</div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="longitude" class="form-label">Longitude <span class="text-danger">*</span></label>
-                            <input type="number" step="any" class="form-control @error('longitude') is-invalid @enderror" id="longitude" name="longitude" value="{{ old('longitude', $station->longitude) }}" required>
-                            @error('longitude')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <div class="form-text">Contoh: 106.8456 (Jakarta)</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
-                    <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
-                        <option value="active" {{ old('status', $station->status) == 'active' ? 'selected' : '' }}>Aktif</option>
-                        <option value="maintenance" {{ old('status', $station->status) == 'maintenance' ? 'selected' : '' }}>Pemeliharaan</option>
-                        <option value="inactive" {{ old('status', $station->status) == 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
-                    </select>
-                    @error('status')
-                        <div class="invalid-feedback">{{ $message }}</div>
+<div class="bg-white rounded-lg p-6 mb-10">
+        <form action="{{ route('admin.weather.stations.update', $station) }}" method="POST">
+            @csrf
+            @method('PUT')
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nama Stasiun <span class="text-red-500">*</span></label>
+                    <input type="text" id="name" name="name" required
+                        value="{{ old('name', $station->name) }}"
+                        class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('name') border-red-500 @enderror">
+                    @error('name')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
                 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button type="reset" class="btn btn-light me-md-2">Reset</button>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                <div>
+                    <label for="location" class="block text-sm font-medium text-gray-700">Lokasi <span class="text-red-500">*</span></label>
+                    <input type="text" id="location" name="location" required
+                        value="{{ old('location', $station->location) }}"
+                        class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('location') border-red-500 @enderror">
+                    @error('location')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
-            </form>
-        </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label for="latitude" class="block text-sm font-medium text-gray-700">Latitude <span class="text-red-500">*</span></label>
+                    <input type="number" step="any" id="latitude" name="latitude" required
+                        value="{{ old('latitude', $station->latitude) }}"
+                        class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('latitude') border-red-500 @enderror">
+                    @error('latitude')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                    <p class="mt-1 text-xs text-gray-500">Contoh: -6.2088 (Jakarta)</p>
+                </div>
+                
+                <div>
+                    <label for="longitude" class="block text-sm font-medium text-gray-700">Longitude <span class="text-red-500">*</span></label>
+                    <input type="number" step="any" id="longitude" name="longitude" required
+                        value="{{ old('longitude', $station->longitude) }}"
+                        class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('longitude') border-red-500 @enderror">
+                    @error('longitude')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                    <p class="mt-1 text-xs text-gray-500">Contoh: 106.8456 (Jakarta)</p>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="status" class="block text-sm font-medium text-gray-700">Status <span class="text-red-500">*</span></label>
+                <select id="status" name="status" required
+                    class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 @error('status') border-red-500 @enderror">
+                    <option value="active" {{ old('status', $station->status) == 'active' ? 'selected' : '' }}>Aktif</option>
+                    <option value="maintenance" {{ old('status', $station->status) == 'maintenance' ? 'selected' : '' }}>Pemeliharaan</option>
+                    <option value="inactive" {{ old('status', $station->status) == 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
+                </select>
+                @error('status')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+            
+            <div class="flex justify-end gap-2">
+                <button type="reset" class="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200">Reset</button>
+                <button type="submit" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-[#f97316] rounded hover:bg-[#ea580c]">Simpan Perubahan</button>
+            </div>
+        </form>
     </div>
+</div>
 @endsection

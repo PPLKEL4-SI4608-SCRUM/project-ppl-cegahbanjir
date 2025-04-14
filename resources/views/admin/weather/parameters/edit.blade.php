@@ -1,80 +1,75 @@
 @extends('layouts.admin')
 @section('title', 'Edit Parameter Peringatan Banjir')
 @section('content')
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Edit Parameter Peringatan Banjir</h1>
-        <a href="{{ route('admin.weather.parameters.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Kembali
+<div class="bg-white shadow rounded-lg p-6 mb-10">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold">Edit Parameter Peringatan Banjir</h1>
+        <a href="{{ route('admin.weather.parameters.index') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 rounded hover:bg-gray-700">
+            <i class="fas fa-arrow-left mr-2"></i> Kembali
         </a>
     </div>
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Stasiun: {{ $station->name }} ({{ $station->location }})</h5>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('admin.weather.parameters.update', $parameter) }}" method="POST">
-                @csrf
-                @method('PUT')
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="threshold_low" class="form-label">Threshold Risiko Rendah (mm) <span class="text-danger">*</span></label>
-                        <input type="number" step="0.01" min="0" class="form-control @error('threshold_low') is-invalid @enderror" id="threshold_low" name="threshold_low" value="{{ old('threshold_low', $parameter->threshold_low) }}" required>
-                        @error('threshold_low')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <div class="form-text">Curah hujan di atas nilai ini akan dianggap berisiko rendah</div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <label for="threshold_medium" class="form-label">Threshold Risiko Sedang (mm) <span class="text-danger">*</span></label>
-                        <input type="number" step="0.01" min="0" class="form-control @error('threshold_medium') is-invalid @enderror" id="threshold_medium" name="threshold_medium" value="{{ old('threshold_medium', $parameter->threshold_medium) }}" required>
-                        @error('threshold_medium')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <div class="form-text">Curah hujan di atas nilai ini akan dianggap berisiko sedang</div>
-                    </div>
-                </div>
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="threshold_high" class="form-label">Threshold Risiko Tinggi (mm) <span class="text-danger">*</span></label>
-                        <input type="number" step="0.01" min="0" class="form-control @error('threshold_high') is-invalid @enderror" id="threshold_high" name="threshold_high" value="{{ old('threshold_high', $parameter->threshold_high) }}" required>
-                        @error('threshold_high')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <div class="form-text">Curah hujan di atas nilai ini akan dianggap berisiko tinggi</div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <label for="threshold_very_high" class="form-label">Threshold Risiko Sangat Tinggi (mm) <span class="text-danger">*</span></label>
-                        <input type="number" step="0.01" min="0" class="form-control @error('threshold_very_high') is-invalid @enderror" id="threshold_very_high" name="threshold_very_high" value="{{ old('threshold_very_high', $parameter->threshold_very_high) }}" required>
-                        @error('threshold_very_high')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                        <div class="form-text">Curah hujan di atas nilai ini akan dianggap berisiko sangat tinggi</div>
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="consecutive_days" class="form-label">Jumlah Hari Berturut-turut <span class="text-danger">*</span></label>
-                    <input type="number" min="1" class="form-control @error('consecutive_days') is-invalid @enderror" id="consecutive_days" name="consecutive_days" value="{{ old('consecutive_days', $parameter->consecutive_days) }}" required>
-                    @error('consecutive_days')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                    <div class="form-text">Jumlah hari berturut-turut curah hujan di atas threshold untuk memicu peringatan</div>
-                </div>
-                
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="is_active" name="is_active" {{ old('is_active', $parameter->is_active) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="is_active">Aktifkan Parameter</label>
-                </div>
-                
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button type="reset" class="btn btn-light me-md-2">Reset</button>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                </div>
-            </form>
-        </div>
+
+<div class="bg-white shadow rounded-lg p-6 mb-10">
+    <div class="mb-4 text-lg font-semibold text-gray-700">
+        Stasiun: {{ $station->name }} ({{ $station->location }})
     </div>
+    <form action="{{ route('admin.weather.parameters.update', $parameter) }}" method="POST" class="space-y-6">
+        @csrf
+        @method('PUT')
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="threshold_low" class="block text-sm font-medium text-gray-700">Threshold Risiko Rendah (mm) <span class="text-red-500">*</span></label>
+                <input type="number" step="0.01" min="0" id="threshold_low" name="threshold_low" value="{{ old('threshold_low', $parameter->threshold_low) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('threshold_low') border-red-500 @enderror" required>
+                @error('threshold_low')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+                <p class="text-sm text-gray-500 mt-1">Curah hujan di atas nilai ini akan dianggap berisiko rendah</p>
+            </div>
+            <div>
+                <label for="threshold_medium" class="block text-sm font-medium text-gray-700">Threshold Risiko Sedang (mm) <span class="text-red-500">*</span></label>
+                <input type="number" step="0.01" min="0" id="threshold_medium" name="threshold_medium" value="{{ old('threshold_medium', $parameter->threshold_medium) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('threshold_medium') border-red-500 @enderror" required>
+                @error('threshold_medium')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+                <p class="text-sm text-gray-500 mt-1">Curah hujan di atas nilai ini akan dianggap berisiko sedang</p>
+            </div>
+            <div>
+                <label for="threshold_high" class="block text-sm font-medium text-gray-700">Threshold Risiko Tinggi (mm) <span class="text-red-500">*</span></label>
+                <input type="number" step="0.01" min="0" id="threshold_high" name="threshold_high" value="{{ old('threshold_high', $parameter->threshold_high) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('threshold_high') border-red-500 @enderror" required>
+                @error('threshold_high')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+                <p class="text-sm text-gray-500 mt-1">Curah hujan di atas nilai ini akan dianggap berisiko tinggi</p>
+            </div>
+            <div>
+                <label for="threshold_very_high" class="block text-sm font-medium text-gray-700">Threshold Risiko Sangat Tinggi (mm) <span class="text-red-500">*</span></label>
+                <input type="number" step="0.01" min="0" id="threshold_very_high" name="threshold_very_high" value="{{ old('threshold_very_high', $parameter->threshold_very_high) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('threshold_very_high') border-red-500 @enderror" required>
+                @error('threshold_very_high')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+                <p class="text-sm text-gray-500 mt-1">Curah hujan di atas nilai ini akan dianggap berisiko sangat tinggi</p>
+            </div>
+        </div>
+
+        <div>
+            <label for="consecutive_days" class="block text-sm font-medium text-gray-700">Jumlah Hari Berturut-turut <span class="text-red-500">*</span></label>
+            <input type="number" min="1" id="consecutive_days" name="consecutive_days" value="{{ old('consecutive_days', $parameter->consecutive_days) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('consecutive_days') border-red-500 @enderror" required>
+            @error('consecutive_days')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+            <p class="text-sm text-gray-500 mt-1">Jumlah hari berturut-turut curah hujan di atas threshold untuk memicu peringatan</p>
+        </div>
+
+        <div class="flex items-center">
+            <input type="checkbox" id="is_active" name="is_active" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" {{ old('is_active', $parameter->is_active) ? 'checked' : '' }}>
+            <label for="is_active" class="ml-2 block text-sm text-gray-700">Aktifkan Parameter</label>
+        </div>
+
+        <div class="flex justify-end space-x-2">
+            <button type="reset" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Reset</button>
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Simpan Perubahan</button>
+        </div>
+    </form>
+</div>
 @endsection

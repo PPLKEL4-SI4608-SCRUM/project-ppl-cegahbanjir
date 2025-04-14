@@ -1,32 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Admin\WeatherStationController;
-use App\Http\Controllers\Admin\RainfallDataController;
-use App\Http\Controllers\Admin\FloodPredictionController;
-use App\Http\Controllers\Admin\FloodWarningParameterController;
-
-// Grup route untuk admin
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    
-    // Grup route untuk fitur weather management
-    Route::prefix('weather')->name('weather.')->group(function () {
-        
-        // Weather Stations
-        Route::resource('stations', WeatherStationController::class);
-        
-        // Rainfall Data
-        Route::resource('rainfall', RainfallDataController::class);
-        
-        // Flood Predictions
-        Route::resource('predictions', FloodPredictionController::class);
-        
-        // Flood Warning Parameters
-        Route::resource('parameters', FloodWarningParameterController::class)->except(['destroy']);
-    });
-});
-
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login'); 
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
