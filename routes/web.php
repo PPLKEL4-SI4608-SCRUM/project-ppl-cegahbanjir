@@ -2,14 +2,17 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\WeatherDashboardController;
 
 Route::get('/', function () {
-    return redirect()->route('login'); // ⬅️ Arahkan ke halaman login Breeze
+    return redirect()->route('login'); 
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/cuaca-user', [WeatherDashboardController::class, 'index'])->name('user.weather.dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

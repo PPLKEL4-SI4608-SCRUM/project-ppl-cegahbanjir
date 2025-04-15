@@ -1,6 +1,6 @@
 <section class="font-poppins">
     <!-- Header -->
-    <header class="bg-[#0F1A21]/90 text-white rounded-xl p-6 shadow-md">
+    <header class="bg-[#0F1A21]/90  text-white rounded-xl p-6 shadow-md">
         <h2 class="text-lg font-semibold">
             {{ __('Profile Information') }}
         </h2>
@@ -24,7 +24,7 @@
                 id="name" 
                 name="name" 
                 type="text" 
-                class="mt-1 block w-full bg-[#0F1A21] text-white border border-[#FFA404]/50 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                class="mt-1 block w-full bg-[#0F1A21] text-white border border-[#FFA404]/30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
                 :value="old('name', $user->name)" 
                 required autofocus 
                 autocomplete="name" 
@@ -38,7 +38,7 @@
                 id="email" 
                 name="email" 
                 type="email" 
-                class="mt-1 block w-full bg-[#0F1A21] text-white border border-[#FFA404]/50 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                class="mt-1 block w-full bg-[#0F1A21] text-white border border-[#FFA404]/30 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
                 :value="old('email', $user->email)" 
                 required 
                 autocomplete="username" 
@@ -66,7 +66,6 @@
             <button type="submit" class="bg-[#FFA404] hover:bg-[#e39603] text-black font-semibold px-5 py-2 rounded-md transition">
                 {{ __('SAVE') }}
             </button>
-
             @if (session('status') === 'profile-updated')
                 <p x-data="{ show: true }" x-show="show" x-transition
                    x-init="setTimeout(() => show = false, 2000)"

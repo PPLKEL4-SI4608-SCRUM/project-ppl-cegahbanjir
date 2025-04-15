@@ -92,7 +92,7 @@
 
     <!-- Page Content -->
     <main class="py-12 px-6">
-        {{ $slot }}
+        @yield('content')
     </main>
 
 </body>

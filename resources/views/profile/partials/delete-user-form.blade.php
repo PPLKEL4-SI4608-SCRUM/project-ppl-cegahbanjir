@@ -38,11 +38,11 @@
                     id="modal_password"
                     name="password"
                     type="password"
-                    class="block w-full bg-[#0F1A21] text-white border border-[#FFA404]/50 rounded-md px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-[#FFA404]"
+                    class="block w-full bg-[#0F1A21] text-white border border-white/20 rounded-md px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-[#FFA404]"
                     placeholder="{{ __('Password') }}"
                 />
                 <!-- Eye Icon Button (Same as update password) -->
-                <span class="absolute right-3 inset-y-0 flex items-center cursor-pointer text-[#FFA404]"
+                <span class="absolute right-3 inset-y-0 flex items-center cursor-pointer text-white hover:text-[#FFA404]"
                     onclick="togglePassword('modal_password', 'modalEyeOpen', 'modalEyeClosed')">
                     <svg id="modalEyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
@@ -67,7 +67,7 @@
                 <button
                     type="button"
                     x-on:click="$dispatch('close')"
-                    class="bg-black text-white font-medium px-4 py-2 rounded-md transition"
+                    class="bg-black text-white font-medium px-4 py-2 rounded-md transition hover:bg-red-600 hover:text-white"
                 >
                     {{ __('Cancel') }}
                 </button>

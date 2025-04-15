@@ -15,7 +15,7 @@
         @method('put')
 
         @php
-            $inputClasses = "mt-1 block w-full px-4 py-3 pr-10 rounded-lg bg-[#0F1A21] border border-[#FFA404]/50 placeholder-[#CCCCCC] text-white focus:outline-none focus:ring-2 focus:ring-[#FFA404] transition";
+            $inputClasses = "mt-1 block w-full px-4 py-3 pr-10 rounded-lg bg-[#0F1A21] border border-[#FFA404]/30 placeholder-[#CCCCCC] text-white focus:outline-none focus:ring-2 focus:ring-[#FFA404] transition";
         @endphp
 
         <!-- Current Password -->
@@ -116,9 +116,9 @@
 
         <!-- Submit -->
         <div class="flex items-center gap-4">
-            <button type="submit" class="bg-[#FFA404] hover:bg-[#e39603] text-black font-semibold px-5 py-2 rounded-md transition">
-                {{ __('SAVE') }}
-            </button>
+            <x-primary-button class="bg-[#FFA404] hover:bg-yellow-400 text-[#121B22] font-medium px-4 py-2 rounded-md transition hover:shadow-md">
+                {{ __('Save') }}
+            </x-primary-button>
 
             @if (session('status') === 'password-updated')
                 <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="text-sm text-white/90">
