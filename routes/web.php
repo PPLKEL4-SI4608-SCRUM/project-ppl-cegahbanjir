@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('login'); 
+    return redirect()->route('login'); // ⬅️ Arahkan ke halaman login Breeze
 });
 
 Route::get('/dashboard', function () {
