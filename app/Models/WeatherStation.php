@@ -32,4 +32,8 @@ class WeatherStation extends Model
     {
         return $this->hasMany(FloodWarningParameter::class);
     }
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }
