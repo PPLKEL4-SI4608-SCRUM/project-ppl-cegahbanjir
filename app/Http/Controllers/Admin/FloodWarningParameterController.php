@@ -56,7 +56,7 @@ class FloodWarningParameterController extends Controller
         ]);
 
         $validated['updated_by'] = auth()->id();
-        $validated['is_active'] = $request->has('is_active');
+        $validated['is_active'] = $request->has('is_active')? 1 : 0;
 
         FloodWarningParameter::create($validated);
 
@@ -83,7 +83,7 @@ class FloodWarningParameterController extends Controller
         ]);
 
         $validated['updated_by'] = auth()->id();
-        $validated['is_active'] = $request->has('is_active');
+        $validated['is_active'] = $request->has('is_active')? 1 : 0;
 
         $parameter->update($validated);
 

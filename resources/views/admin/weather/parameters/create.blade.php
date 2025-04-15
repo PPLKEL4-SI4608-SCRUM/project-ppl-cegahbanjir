@@ -9,7 +9,6 @@
         </a>
     </div>
 
-<div class="bg-white shadow rounded-lg p-6">
     <form action="{{ route('admin.weather.parameters.store') }}" method="POST">
         @csrf
 
@@ -76,7 +75,7 @@
         </div>
 
         <div class="mb-4 flex items-center">
-            <input type="checkbox" id="is_active" name="is_active" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" {{ old('is_active') ? 'checked' : 'checked' }}>
+            <input type="checkbox" id="is_active" name="is_active" value="1" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" {{ old('is_active', true) ? 'checked' : '' }}>
             <label for="is_active" class="ml-2 block text-sm text-gray-700">Aktifkan Parameter</label>
         </div>
 
