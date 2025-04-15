@@ -16,5 +16,12 @@ class AdminUserSeeder extends Seeder
             'password' => Hash::make('admin123'),
             'role' => 'admin',
         ]);
+        User::create([
+            'name' => 'User CeBan',
+            'email' => 'user@ceban.com',
+            'password' => Hash::make('user123'),
+            'role' => 'user',
+            'email_verified_at' => now(),
+        ]);
     }
 }
