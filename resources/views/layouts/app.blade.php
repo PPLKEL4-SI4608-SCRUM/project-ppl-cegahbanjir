@@ -20,6 +20,7 @@
             background-color: #0F1A21; /* fallback while image loads */
             transition: background 0.3s ease-in-out;
         }
+        [x-cloak] { display: none !important; }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -71,14 +72,14 @@
                         <x-slot name="content">
                             <div class="bg-[#0F1A21] rounded-md shadow-md py-2">
                                 <x-dropdown-link href="{{ route('profile.edit') }}"
-                                    class="font-poppins text-white hover:bg-[#FFA404] hover:text-white transition px-4 py-2 block">
+                                    class="font-poppins text-white hover:bg-[#FFA404]/70 hover:text-white transition px-4 py-2 block">
                                     {{ __('Edit Profile') }}
                                 </x-dropdown-link>
 
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <x-dropdown-link href="{{ route('logout') }}"
-                                        class="font-poppins text-white hover:bg-[#FFA404] hover:text-white transition px-4 py-2 block"
+                                        class="font-poppins text-white hover:bg-[#FFA404]/70 hover:text-white transition px-4 py-2 block"
                                         onclick="event.preventDefault(); this.closest('form').submit();">
                                         {{ __('Log Out') }}
                                     </x-dropdown-link>
