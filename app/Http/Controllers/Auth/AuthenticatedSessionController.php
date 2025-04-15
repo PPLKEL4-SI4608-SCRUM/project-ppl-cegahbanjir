@@ -44,6 +44,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = auth()->user();
+        
+        if ($user && $user->email_verified_at) {
+            $user->update(['last_login_at' => now()->timezone('Asia/Jakarta')]);
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
