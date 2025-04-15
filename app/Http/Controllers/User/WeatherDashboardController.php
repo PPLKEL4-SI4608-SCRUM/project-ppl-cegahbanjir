@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FloodPrediction;
 use App\Models\RainfallData;
 use App\Models\WeatherStation;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
 class WeatherDashboardController extends Controller
@@ -36,11 +37,17 @@ class WeatherDashboardController extends Controller
             ->take(5)
             ->get();
 
+        $user = auth()->user();
+
+        // Ambil notifikasi yang terkait dengan stasiun yang ditampilkan
+        $notifications = Notification::latest()->first();
+
         return view('user.weather', compact(
             'city',
             'stations',
             'rainfalls',
-            'predictions'
+            'predictions',
+            'notifications'
         ));
     }
 }
