@@ -20,7 +20,6 @@
             background-color: #0F1A21; /* fallback while image loads */
             transition: background 0.3s ease-in-out;
         }
-        [x-cloak] { display: none !important; }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
