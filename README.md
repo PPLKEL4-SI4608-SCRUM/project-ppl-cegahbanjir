@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Project Cegah Banjir
 
 <p align="center">
@@ -64,7 +65,7 @@ php artisan key:generate
 # 4. Edit konfigurasi database di file .env sesuai dengan pengaturan lokal Anda
 
 # 5. Jalankan migrasi
-php artisan migrate
+php artisan migrate --seed
 
 # 6. Install frontend dependencies dan jalankan Vite
 npm install

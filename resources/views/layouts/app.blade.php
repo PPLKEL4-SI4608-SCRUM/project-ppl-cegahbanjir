@@ -16,16 +16,20 @@
         .font-poppins {
             font-family: 'Poppins', sans-serif;
         }
+
         body {
-            background-color: #0F1A21; /* fallback while image loads */
+            background-color: #0F1A21;
+            /* fallback while image loads */
             transition: background 0.3s ease-in-out;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="bg-cover bg-center min-h-screen text-gray-900 font-poppins"
-      style="background-image: url('{{ asset('images/background-banjir2.png') }}')">
+    style="background-image: url('{{ asset('images/background-banjir2.png') }}')">
 
     <!-- Navbar -->
     <nav class="bg-[#0F1A21]/70 text-white shadow-md">
@@ -93,8 +97,9 @@
 
     <!-- Page Content -->
     <main class="py-12 px-6">
-        {{ $slot }}
+        @yield('content')
     </main>
-
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </body>
+
 </html>
