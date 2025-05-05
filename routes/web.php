@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\WeatherDashboardController;
 use App\Http\Controllers\DisasterReportController;
+use App\Http\Controllers\User\MapDashboardController;
+
 
 // ✅ Redirect ke login saat buka root
 Route::get('/', function () {
@@ -17,6 +19,8 @@ Route::get('/dashboard', function () {
 
 // ✅ Cuaca untuk user
 Route::get('/cuaca-user', [WeatherDashboardController::class, 'index'])->name('user.weather.dashboard');
+Route::get('/map', [MapDashboardController::class, 'index'])->name('user.map');
+
 
 // ✅ Group route dengan middleware auth
 Route::middleware('auth')->group(function () {

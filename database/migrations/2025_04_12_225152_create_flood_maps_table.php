@@ -6,22 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('flood_maps', function (Blueprint $table) {
             $table->id();
-            $table->string('location');
-            $table->string('map_url'); // embed url atau path
+            $table->string('wilayah');
+            $table->string('gambar')->nullable();
+            $table->decimal('latitude', 10, 7);
+            $table->decimal('longitude', 10, 7);
             $table->timestamps();
-        });        
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('flood_maps');

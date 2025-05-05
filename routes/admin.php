@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\WeatherStationController;
 use App\Http\Controllers\Admin\RainfallDataController;
 use App\Http\Controllers\Admin\FloodPredictionController;
 use App\Http\Controllers\Admin\FloodWarningParameterController;
+use App\Http\Controllers\Admin\FloodMapController;
 use App\Http\Middleware\CheckRole;
 
 // Grup route untuk admin
@@ -26,8 +27,9 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
         
         // Flood Predictions
         Route::resource('predictions', FloodPredictionController::class);
-        
+
         // Flood Warning Parameters
         Route::resource('parameters', FloodWarningParameterController::class)->except(['destroy']);
     });
+        Route::resource('flood-maps', FloodMapController::class);
 });
