@@ -65,4 +65,9 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => \App\Http\Middleware\CheckRole::class, // Tambahkan middleware role di sini
     ];
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('rainfall:fetch-api')->hourly();
+    }
+
 }

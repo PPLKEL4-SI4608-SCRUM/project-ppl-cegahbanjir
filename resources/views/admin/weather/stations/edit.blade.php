@@ -62,7 +62,7 @@
             <div class="mb-4">
                 <label for="status" class="block text-sm font-medium text-gray-700">Status <span class="text-red-500">*</span></label>
                 <select id="status" name="status" required
-                    class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 @error('status') border-red-500 @enderror">
+                    class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('status') border-red-500 @enderror">
                     <option value="active" {{ old('status', $station->status) == 'active' ? 'selected' : '' }}>Aktif</option>
                     <option value="maintenance" {{ old('status', $station->status) == 'maintenance' ? 'selected' : '' }}>Pemeliharaan</option>
                     <option value="inactive" {{ old('status', $station->status) == 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>

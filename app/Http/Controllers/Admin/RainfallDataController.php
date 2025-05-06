@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\RainfallData;
 use App\Models\WeatherStation;
 use Illuminate\Http\Request;
+use App\Services\OpenWeatherService;
 
 class RainfallDataController extends Controller
 {
@@ -24,7 +25,7 @@ class RainfallDataController extends Controller
         return view('admin.weather.rainfall.create', compact('stations'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, OpenWeatherService $weatherService)
     {
         $validated = $request->validate([
             'weather_station_id' => 'required|exists:weather_stations,id',
@@ -34,6 +35,20 @@ class RainfallDataController extends Controller
             'data_source' => 'required|in:manual,api,sensor',
         ]);
 
+        // Ambil stasiun cuaca
+        $station = WeatherStation::findOrFail($validated['weather_station_id']);
+
+        // Jika data dari API, ambil otomatis
+        if ($validated['data_source'] === 'api') {
+            $rainfall = $weatherService->getRainfall($station->latitude, $station->longitude);
+            $validated['rainfall_amount'] = $rainfall ?? 0;
+        }
+
+        // Jika intensitas tidak diisi, hitung otomatis (mm / jam)
+        if (empty($validated['intensity'])) {
+            $validated['intensity'] = $validated['rainfall_amount'] / 1; // diasumsikan 1 jam
+        }
+        
         $validated['added_by'] = auth()->id();
 
         RainfallData::create($validated);

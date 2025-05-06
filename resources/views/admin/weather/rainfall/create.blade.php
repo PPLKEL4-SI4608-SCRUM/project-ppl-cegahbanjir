@@ -84,3 +84,39 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dataSourceSelect = document.getElementById('data_source');
+        const rainfallInput = document.getElementById('rainfall_amount');
+
+        dataSourceSelect.addEventListener('change', function () {
+            if (this.value === 'api') {
+                rainfallInput.value = 'Memuat...';
+
+                fetch('{{ route('admin.weather.rainfall.api-current') }}')
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.rainfall !== undefined) {
+                            rainfallInput.value = data.rainfall;
+                        } else {
+                            rainfallInput.value = '';
+                            alert('Gagal mengambil data curah hujan dari API.');
+                        }
+                    })
+                    .catch(err => {
+                        rainfallInput.value = '';
+                        alert('Terjadi kesalahan saat mengambil data dari API.');
+                        console.error(err);
+                    });
+            }
+        });
+
+        // Opsional: trigger otomatis kalau form dibuka dan sumbernya udah 'api'
+        if (dataSourceSelect.value === 'api') {
+            dataSourceSelect.dispatchEvent(new Event('change'));
+        }
+    });
+</script>
+@endpush
