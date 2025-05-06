@@ -43,12 +43,30 @@ class WeatherDashboardController extends Controller
         // Ambil notifikasi yang terkait dengan stasiun yang ditampilkan
         $notifications = Notification::latest()->first();
 
+        // Ambil nama stasiun dan lokasi
+        $weatherStation = $notifications ? $notifications->weatherStation : null;
+        $stationName = $weatherStation ? $weatherStation->name : 'Stasiun Tidak Dikenal';
+        $stationLocation = $weatherStation ? $weatherStation->location : 'Lokasi Tidak Dikenal';
+
+        // Tentukan pesan notifikasi yang mencakup nama stasiun dan lokasi
+        $notificationMessage = "Peringatan banjir untuk wilayah " . $stationName . " yang terletak di " . $stationLocation . ". Harap waspada!";
+        
+        // URL untuk berbagi ke Twitter dengan pesan notifikasi
+        $twitterShareUrl = "https://twitter.com/intent/tweet?text=" . urlencode($notificationMessage);
+
+
+
         return view('user.weather', compact(
             'city',
             'stations',
             'rainfalls',
             'predictions',
-            'notifications'
+            'notifications',
+            'twitterShareUrl',
+            'notificationMessage',
+            'stationName',
+            'stationLocation'
         ));
+
     }
 }
