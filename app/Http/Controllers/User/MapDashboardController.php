@@ -9,15 +9,36 @@ use Illuminate\Http\Request;
 class MapDashboardController extends Controller
 {
     public function index(Request $request)
-{
-    $query = FloodMap::query();
+    {
+        $query = FloodMap::query();
 
-    if ($request->has('search') && $request->search !== '') {
-        $query->where('wilayah', 'like', '%' . $request->search . '%');
+        if ($request->has('search') && $request->search !== '') {
+            $query->where('wilayah', 'like', '%' . $request->search . '%');
+        }
+
+        $maps = $query->get();
+        return view('user.map', compact('maps'));
     }
 
-    $maps = $query->get();
+    public function geojson()
+    {
+        $features = FloodMap::whereNotNull('polygon_coordinates')->get()->map(function ($map) {
+            return [
+                'type' => 'Feature',
+                'properties' => [
+                    'wilayah' => $map->wilayah,
+                    'tingkat' => $map->tingkat_risiko
+                ],
+                'geometry' => [
+                    'type' => 'Polygon',
+                    'coordinates' => [json_decode($map->polygon_coordinates)]
+                ]
+            ];
+        });
 
-    return view('user.map', compact('maps'));
-}
+        return response()->json([
+            'type' => 'FeatureCollection',
+            'features' => $features
+        ]);
+    }
 }

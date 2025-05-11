@@ -1,92 +1,67 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Wilayah Banjir')
+@section('title', 'Edit Wilayah Rawan Banjir')
 
 @section('content')
-<div class="w-full max-w-2xl mx-auto bg-[#0F1A21]/80 p-8 rounded-lg shadow-lg mt-10">
-    <h1 class="text-2xl font-bold text-white mb-6 text-center">Edit Wilayah Banjir</h1>
+<div class="max-w-4xl mx-auto p-6 bg-[#0F1A21]/80 rounded text-white mt-10">
+    <h1 class="text-2xl font-semibold mb-6 text-center">Edit Wilayah Rawan Banjir</h1>
 
-    <form method="POST" action="{{ route('admin.flood-maps.update', $floodMap) }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('admin.flood-maps.update', $floodMap) }}">
         @csrf
         @method('PUT')
 
-        <!-- Nama Wilayah -->
-        <div class="mb-6">
-            <label class="block text-white mb-2">Nama Wilayah</label>
-            <input type="text" name="wilayah" value="{{ $floodMap->wilayah }}"
-                class="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white">
+        <div class="mb-4">
+            <label>Nama Wilayah</label>
+            <input type="text" name="wilayah" value="{{ old('wilayah', $floodMap->wilayah) }}" class="w-full p-2 rounded bg-gray-800 border border-gray-600">
         </div>
 
-        <!-- Upload Gambar -->
-        <div class="mb-6">
-            <label class="block text-white mb-2">Ganti Gambar</label>
-            <label class="block w-full cursor-pointer bg-gray-800 text-white rounded border border-gray-600 text-center py-2 hover:border-[#FFA404] hover:text-[#FFA404]">
-                Pilih Gambar
-                <input type="file" name="gambar" accept="image/*" class="hidden" onchange="previewGambar(event)">
-            </label>
-            @if ($floodMap->gambar)
-                <img id="preview" src="{{ asset('storage/' . $floodMap->gambar) }}"
-                    class="mt-4 rounded shadow max-w-full max-h-[400px] mx-auto">
-            @else
-                <img id="preview" class="mt-4 rounded shadow max-w-full max-h-[400px] mx-auto hidden">
-            @endif
+        <div class="mb-4">
+            <label>Tingkat Risiko</label>
+            <select name="tingkat_risiko" class="w-full p-2 rounded bg-gray-800 border border-gray-600">
+                <option value="rendah" {{ $floodMap->tingkat_risiko == 'rendah' ? 'selected' : '' }}>Rendah</option>
+                <option value="sedang" {{ $floodMap->tingkat_risiko == 'sedang' ? 'selected' : '' }}>Sedang</option>
+                <option value="tinggi" {{ $floodMap->tingkat_risiko == 'tinggi' ? 'selected' : '' }}>Tinggi</option>
+                <option value="sangat tinggi" {{ $floodMap->tingkat_risiko == 'sangat tinggi' ? 'selected' : '' }}>Sangat Tinggi</option>
+            </select>
         </div>
 
-        <!-- Map -->
-        <div id="map" style="height: 450px;" class="rounded shadow overflow-hidden mb-6"></div>
+        <input type="hidden" name="polygon_coordinates" id="polygon_coordinates" value="{{ old('polygon_coordinates', json_encode($floodMap->polygon_coordinates)) }}">
 
-        <input type="hidden" name="latitude" id="latitude" value="{{ $floodMap->latitude }}">
-        <input type="hidden" name="longitude" id="longitude" value="{{ $floodMap->longitude }}">
+        <div id="map" style="height: 400px;" class="rounded shadow mb-6"></div>
 
-        <!-- Tombol Submit -->
-        <div class="text-center">
-            <button type="submit"
-                class="bg-[#FFA404] hover:bg-[#ff8c00] text-white px-6 py-2 rounded transition font-semibold">
-                Update
-            </button>
-        </div>
+        <button type="submit" class="bg-[#FFA404] px-6 py-2 rounded">Update</button>
     </form>
 </div>
 
-<!-- Leaflet & Geocoder -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-
-<!-- Script -->
 <script>
-    // Inisialisasi Leaflet Map
-    const map = L.map('map').setView([{{ $floodMap->latitude }}, {{ $floodMap->longitude }}], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
-    let marker = L.marker([{{ $floodMap->latitude }}, {{ $floodMap->longitude }}]).addTo(map);
+    const map = L.map('map').setView([-6.9147, 107.6098], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-    map.on('click', function (e) {
-        marker.setLatLng(e.latlng);
-        document.getElementById('latitude').value = e.latlng.lat;
-        document.getElementById('longitude').value = e.latlng.lng;
+    const drawnItems = new L.FeatureGroup().addTo(map);
+    const drawControl = new L.Control.Draw({
+        draw: { polygon: true, marker: false, circle: false, polyline: false, rectangle: false },
+        edit: { featureGroup: drawnItems }
     });
+    map.addControl(drawControl);
 
-    L.Control.geocoder({ defaultMarkGeocode: false })
-        .on('markgeocode', function (e) {
-            const latlng = e.geocode.center;
-            marker.setLatLng(latlng);
-            map.setView(latlng, 15);
-            document.getElementById('latitude').value = latlng.lat;
-            document.getElementById('longitude').value = latlng.lng;
-        })
-        .addTo(map);
-
-    // Preview Gambar Saat Upload
-    function previewGambar(event) {
-        const reader = new FileReader();
-        reader.onload = function () {
-            const output = document.getElementById('preview');
-            output.src = reader.result;
-            output.classList.remove('hidden');
-        };
-        reader.readAsDataURL(event.target.files[0]);
+    // Render polygon jika sudah ada
+    const existing = {!! $floodMap->polygon_coordinates ? json_encode($floodMap->polygon_coordinates) : 'null' !!};
+    if (existing) {
+        const latlngs = existing.map(coord => [coord[1], coord[0]]);
+        const polygon = L.polygon(latlngs).addTo(drawnItems);
+        map.fitBounds(polygon.getBounds());
     }
+
+    map.on(L.Draw.Event.CREATED, function (e) {
+        drawnItems.clearLayers();
+        drawnItems.addLayer(e.layer);
+        const coordinates = e.layer.getLatLngs()[0].map(latlng => [latlng.lng, latlng.lat]);
+        document.getElementById('polygon_coordinates').value = JSON.stringify(coordinates);
+    });
 </script>
 @endsection
