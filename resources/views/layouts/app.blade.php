@@ -20,13 +20,16 @@
 
         body {
             background-color: #0F1A21;
-            /* fallback while image loads */
             transition: background 0.3s ease-in-out;
         }
     </style>
+    
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Tambahan penting agar <head> dari child ter-load -->
+    @yield('head')
 </head>
 
 <body class="bg-cover bg-center min-h-screen text-gray-900 font-poppins"
@@ -35,7 +38,6 @@
     <!-- Navbar -->
     <nav class="bg-[#0F1A21]/70 text-white shadow-md">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-
             <!-- Logo + Title -->
             <div class="flex items-center gap-2">
                 <img src="{{ asset('images/logo.png') }}" alt="Cegah Banjir Logo" class="w-10 h-10 rounded-full object-cover">
@@ -100,7 +102,10 @@
     <main class="py-12 px-6">
         @yield('content')
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-</body>
 
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+    <!-- Tambahan penting agar script JS dari child view aktif -->
+    @yield('scripts')
+</body>
 </html>
