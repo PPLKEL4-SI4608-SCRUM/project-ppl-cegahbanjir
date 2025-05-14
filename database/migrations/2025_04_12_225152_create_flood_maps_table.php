@@ -11,10 +11,7 @@ return new class extends Migration
         Schema::create('flood_maps', function (Blueprint $table) {
             $table->id();
             $table->string('wilayah');
-            $table->decimal('latitude', 10, 8)->nullable();
-            $table->decimal('longitude', 11, 8)->nullable();
-            $table->json('polygon_coordinates')->nullable();
-            $table->string('tingkat_risiko')->nullable();
+            $table->json('polygons'); 
             $table->timestamps();
         });
     }

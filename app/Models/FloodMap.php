@@ -8,13 +8,10 @@ class FloodMap extends Model
 {
     protected $fillable = [
         'wilayah',
-        'latitude',
-        'longitude',
-        'polygon_coordinates',
-        'tingkat_risiko',
+        'polygons'
     ];
 
     protected $casts = [
-        'polygon_coordinates' => 'array',
+        'polygons' => 'array'
     ];
 }

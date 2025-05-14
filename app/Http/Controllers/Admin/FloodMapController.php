@@ -23,14 +23,12 @@ class FloodMapController extends Controller
     {
         $request->validate([
             'wilayah' => 'required|string|max:255',
-            'tingkat_risiko' => 'required|string',
-            'polygon_coordinates' => 'required|string'
+            'polygons' => 'required|string' // JSON string dari frontend
         ]);
 
         FloodMap::create([
             'wilayah' => $request->wilayah,
-            'tingkat_risiko' => $request->tingkat_risiko,
-            'polygon_coordinates' => $request->polygon_coordinates,
+            'polygons' => $request->polygons
         ]);
 
         return redirect()->route('admin.flood-maps.index')->with('success', 'Data berhasil ditambahkan!');
@@ -45,14 +43,12 @@ class FloodMapController extends Controller
     {
         $request->validate([
             'wilayah' => 'required|string|max:255',
-            'tingkat_risiko' => 'required|string',
-            'polygon_coordinates' => 'required|string'
+            'polygons' => 'required|string'
         ]);
 
         $floodMap->update([
             'wilayah' => $request->wilayah,
-            'tingkat_risiko' => $request->tingkat_risiko,
-            'polygon_coordinates' => $request->polygon_coordinates,
+            'polygons' => $request->polygons
         ]);
 
         return redirect()->route('admin.flood-maps.index')->with('success', 'Data berhasil diperbarui!');

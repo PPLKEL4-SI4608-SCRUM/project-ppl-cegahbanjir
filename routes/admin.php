@@ -31,5 +31,6 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
         // Flood Warning Parameters
         Route::resource('parameters', FloodWarningParameterController::class)->except(['destroy']);
     });
+        // Interactive Map
         Route::resource('flood-maps', FloodMapController::class);
 });

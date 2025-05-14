@@ -19,8 +19,10 @@ Route::get('/dashboard', function () {
 
 // ✅ Cuaca untuk user
 Route::get('/cuaca-user', [WeatherDashboardController::class, 'index'])->name('user.weather.dashboard');
-Route::get('/map', [MapDashboardController::class, 'index'])->name('user.map');
 
+//✅ Map Untuk User
+Route::get('/map', [MapDashboardController::class, 'index'])->name('user.map');
+Route::get('/api/geojson', [MapDashboardController::class, 'geojson']);
 
 // ✅ Group route dengan middleware auth
 Route::middleware('auth')->group(function () {

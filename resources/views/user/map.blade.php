@@ -26,30 +26,45 @@
 
 <script>
     const map = L.map('map').setView([-6.9147, 107.6098], 11);
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    const searchQuery = "{{ request('search') }}";
 
     fetch('/api/geojson')
         .then(res => res.json())
         .then(data => {
-            L.geoJson(data, {
-                style: feature => {
-                    const colorMap = {
-                        'sangat tinggi': '#800026',
-                        'tinggi': '#BD0026',
-                        'sedang': '#E31A1C',
-                        'rendah': '#FED976'
-                    };
-                    return {
-                        fillColor: colorMap[feature.properties.tingkat] || '#FFEDA0',
-                        weight: 1,
-                        color: 'white',
-                        fillOpacity: 0.6
-                    };
-                },
-                onEachFeature: function(feature, layer) {
-                    layer.bindPopup(`<strong>${feature.properties.wilayah}</strong><br>Tingkat: ${feature.properties.tingkat}`);
-                }
-            }).addTo(map);
+            const filtered = searchQuery
+                ? {
+                    "type": "FeatureCollection",
+                    "features": data.features.filter(f =>
+                        f.properties.wilayah.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                  }
+                : data;
+
+            if (filtered.features.length > 0) {
+                const geoLayer = L.geoJson(filtered, {
+                    style: feature => {
+                        const colorMap = {
+                            'sangat tinggi': '#800026',
+                            'tinggi': '#BD0026',
+                            'sedang': '#E31A1C',
+                            'rendah': '#FED976'
+                        };
+                        return {
+                            fillColor: colorMap[feature.properties.tingkat] || '#FFEDA0',
+                            weight: 1,
+                            color: 'white',
+                            fillOpacity: 0.6
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        layer.bindPopup(`<strong>${feature.properties.wilayah}</strong><br>Tingkat: ${feature.properties.tingkat}`);
+                    }
+                }).addTo(map);
+                map.fitBounds(geoLayer.getBounds());
+            }
         });
 </script>
 @endsection
