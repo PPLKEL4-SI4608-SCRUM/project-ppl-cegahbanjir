@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\FloodPredictionController;
 use App\Http\Controllers\Admin\FloodWarningParameterController;
 use App\Http\Controllers\Admin\ArtikelController;
 use App\Http\Controllers\Admin\HandleUsersController;
+use App\Http\Controllers\Admin\FloodMapController;
 use App\Http\Middleware\CheckRole;
 
 // Grup route untuk admin
@@ -41,4 +42,8 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
         Route::get('/', [HandleUsersController::class, 'index'])->name('index');
         Route::delete('/{user}', [HandleUsersController::class, 'destroy'])->name('destroy');
     });
+
+    // Interactive Map
+    Route::resource('flood-maps', FloodMapController::class);
 });
+        

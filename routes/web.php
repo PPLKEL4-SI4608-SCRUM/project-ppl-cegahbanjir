@@ -4,8 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\WeatherDashboardController;
 use App\Http\Controllers\DisasterReportController;
+<<<<<<< HEAD
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\RekomendasiController; // ✅ Controller artikel rekomendasi
+=======
+use App\Http\Controllers\User\MapDashboardController;
+
+>>>>>>> origin/Irdan_interactivemap
 
 // ✅ Redirect ke login saat membuka root
 Route::get('/', function () {
@@ -22,11 +27,19 @@ Route::get('/rekomendasi/{id}', [RekomendasiController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('rekomendasi.show');
 
+<<<<<<< HEAD
 // ✅ Halaman cuaca untuk user
 Route::get('/cuaca-user', [WeatherDashboardController::class, 'index'])
     ->name('user.weather.dashboard');
 
 // ✅ Semua route di bawah ini hanya bisa diakses user yang sudah login
+=======
+//✅ Map Untuk User
+Route::get('/map', [MapDashboardController::class, 'index'])->name('user.map');
+Route::get('/api/geojson', [MapDashboardController::class, 'geojson']);
+
+// ✅ Group route dengan middleware auth
+>>>>>>> origin/Irdan_interactivemap
 Route::middleware('auth')->group(function () {
     // ✅ Laporan Bencana
     Route::get('/laporan', [DisasterReportController::class, 'index'])->name('laporan.index');

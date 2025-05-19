@@ -54,6 +54,7 @@
                             <a href="{{ route('admin.weather.rainfall.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition">Data Curah Hujan</a>
                             <a href="{{ route('admin.weather.predictions.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition">Prediksi Banjir</a>
                             <a href="{{ route('admin.weather.parameters.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition">Parameter Peringatan</a>
+                            <a href="{{ route('admin.flood-maps.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition">Peta Interaktif</a>
                         </div>
                     </div>
                 </div>

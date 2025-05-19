@@ -45,7 +45,7 @@
                 <div class="hidden md:flex space-x-6 text-sm font-medium">
                     <a href="{{ route('dashboard') }}" class="hover:text-[#FFA404] transition">Home</a>
                     <a href="#" class="hover:text-[#FFA404] transition">About</a>
-                    <a href="#" class="hover:text-[#FFA404] transition">Interactive Map</a>
+                    <a href="{{ route('user.map') }}" class="hover:text-[#FFA404] transition">Interactive Map</a>
                     <a href="#" class="hover:text-[#FFA404] transition">Data Portal</a>
                     <a href="#" class="hover:text-[#FFA404] transition">Publications</a>
                     <a href="{{ route('user.weather.dashboard') }}" class="hover:text-[#FFA404] transition">Weather</a>
