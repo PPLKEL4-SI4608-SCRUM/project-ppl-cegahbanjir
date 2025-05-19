@@ -20,7 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //  Registering the web routes
         Route::middleware('web')
             ->group(base_path('routes/web.php'));
 

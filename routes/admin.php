@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\RainfallDataController;
 use App\Http\Controllers\Admin\FloodPredictionController;
 use App\Http\Controllers\Admin\FloodWarningParameterController;
 use App\Http\Controllers\Admin\ArtikelController;
+use App\Http\Controllers\Admin\HandleUsersController;
 use App\Http\Middleware\CheckRole;
 
 // Grup route untuk admin
@@ -35,4 +36,9 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
     // ✅ Artikel Rekomendasi
     Route::resource('artikels', ArtikelController::class);
 
+    // ✅ Pengguna
+    Route::prefix('pengguna')->name('pengguna.')->group(function () {
+        Route::get('/', [HandleUsersController::class, 'index'])->name('index');
+        Route::delete('/{user}', [HandleUsersController::class, 'destroy'])->name('destroy');
+    });
 });
