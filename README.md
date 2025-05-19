@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Project Cegah Banjir
 
 <p align="center">
