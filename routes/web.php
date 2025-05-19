@@ -30,6 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/weather', [WeatherDashboardController::class, 'index'])->name('weather.index');
+    Route::get('/weather/{id}', [WeatherDashboardController::class, 'show'])->name('weather.show');
+    Route::post('/weather/{id}', [WeatherDashboardController::class, 'store'])->name('weather.store');
 });
 
 // ✅ Route auth (login, register, etc)
