@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\FloodWarningParameterController;
 use App\Http\Controllers\Admin\ArtikelController;
 use App\Http\Controllers\Admin\HandleUsersController;
 use App\Http\Controllers\Admin\FloodMapController;
+use App\Http\Controllers\Admin\DisasterReportStatisticsController;
 use App\Http\Middleware\CheckRole;
 
 // Grup route untuk admin
@@ -32,12 +33,16 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
 
         // Flood Warning Parameters
         Route::resource('parameters', FloodWarningParameterController::class)->except(['destroy']);
+
+        // Disaster Reports Statistics
+        Route::get('disaster-statistics', [DisasterReportStatisticsController::class, 'index'])->name('disaster-statistics');
     });
 
     // ✅ Artikel Rekomendasi
     Route::resource('artikels', ArtikelController::class);
 
     // ✅ Pengguna
+    // Route untuk pengelolaan pengguna
     Route::prefix('pengguna')->name('pengguna.')->group(function () {
         Route::get('/', [HandleUsersController::class, 'index'])->name('index');
         Route::delete('/{user}', [HandleUsersController::class, 'destroy'])->name('destroy');
@@ -46,4 +51,3 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
     // Interactive Map
     Route::resource('flood-maps', FloodMapController::class);
 });
-        
