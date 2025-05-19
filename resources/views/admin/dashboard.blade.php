@@ -67,6 +67,14 @@
                 <p class="text-sm text-gray-600 mb-3">Lihat statistik dan data laporan bencana</p>
                 <a href="{{ route('admin.weather.disaster-statistics') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded">Akses</a>
             </div>
+
+            <!-- Card 5 -->
+            <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition">
+                <h4 class="font-semibold text-lg mb-1">Notifikasi</h4>
+                <p class="text-sm text-gray-600 mb-3">Berikan notifikasi banjir kepada pengguna</p>
+                <a href="{{ route('admin.weather.notification.create') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded">Akses</a>
+            </div>
+            
         </div>
     </div>
 </div>

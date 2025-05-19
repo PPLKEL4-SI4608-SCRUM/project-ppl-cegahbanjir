@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ArtikelController;
 use App\Http\Controllers\Admin\HandleUsersController;
 use App\Http\Controllers\Admin\FloodMapController;
 use App\Http\Controllers\Admin\DisasterReportStatisticsController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Middleware\CheckRole;
 
 // Grup route untuk admin
@@ -36,6 +37,8 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
 
         // Disaster Reports Statistics
         Route::get('disaster-statistics', [DisasterReportStatisticsController::class, 'index'])->name('disaster-statistics');
+         // Notificaiton
+         Route::resource('notification', NotificationController::class);
     });
 
     // ✅ Artikel Rekomendasi
