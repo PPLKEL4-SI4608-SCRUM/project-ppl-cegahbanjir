@@ -11,6 +11,7 @@ class DisasterReport extends Model
         'location',
         'description',
         'status',
+        'disaster_image',
     ];
 
     public function user()

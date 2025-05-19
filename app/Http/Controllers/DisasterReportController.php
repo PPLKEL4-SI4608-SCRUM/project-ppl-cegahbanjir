@@ -17,15 +17,26 @@ class DisasterReportController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'status' => 'required',
             'description' => 'required|string|max:255',
             'location' => 'required|string',
         ]);
 
         $input = $request->only('status', 'description', 'location');
 
-        $input['user_id'] = Auth::user()->id;
+        $files = $request->file('disaster_image');
+        $ext = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
+        $file_ext = $files->getClientOriginalExtension();
 
+        if (in_array($file_ext, $ext)) {
+            $name = \Illuminate\Support\Str::random(7) . "_" . Auth::user()->id . "_" . $files->getClientOriginalName();
+            $input['disaster_image'] = $name;
+            $request->disaster_image->move(public_path() . "/disaster_images", $name);
+        } else {
+            return redirect()->route('laporan.index')->with('gagal', 'Format tidak sesuai');
+        }
+
+        $input['user_id'] = Auth::user()->id;
+        $input['status'] = 'pending';
 
         $create = DisasterReport::create($input);
 
@@ -41,12 +52,25 @@ class DisasterReportController extends Controller
         $laporan = DisasterReport::findOrFail($id);
 
         $request->validate([
-            'status' => 'required',
             'description' => 'required|string|max:255',
             'location' => 'required|string',
         ]);
 
-        $input = $request->only('status', 'description', 'location');
+        $input = $request->only('description', 'location');
+
+        if ($request->file('disaster_image')) {
+            $files = $request->file('disaster_image');
+            $ext = ['jpg', 'jpeg', 'png', 'gif', 'svg'];
+            $file_ext = $files->getClientOriginalExtension();
+
+            if (in_array($file_ext, $ext)) {
+                $name = \Illuminate\Support\Str::random(7) . "_" . Auth::user()->id . "_" . $files->getClientOriginalName();
+                $input['disaster_image'] = $name;
+                $request->disaster_image->move(public_path() . "/disaster_images", $name);
+            } else {
+                return redirect()->route('laporan.index')->with('gagal', 'Format tidak sesuai');
+            }
+        }
 
         $update = $laporan->update($input);
 
