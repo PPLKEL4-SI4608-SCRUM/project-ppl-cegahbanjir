@@ -56,7 +56,6 @@
                     <a href="#" class="hover:text-[#FFA404] transition">Data Portal</a>
                     <a href="#" class="hover:text-[#FFA404] transition">Publications</a>
                     <a href="{{ route('user.weather.dashboard') }}" class="hover:text-[#FFA404] transition">Weather</a>
-                    <a href="#" class="hover:text-[#FFA404] transition">Resources</a>
                     <a href="#" class="hover:text-[#FFA404] transition">Past Floods</a>
                 </div>
 
