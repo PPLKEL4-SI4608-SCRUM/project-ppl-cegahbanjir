@@ -13,8 +13,8 @@
             <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition">
                 <h4 class="font-semibold text-lg mb-1">Stasiun Cuaca</h4>
                 <p class="text-sm text-gray-600 mb-3">Kelola stasiun cuaca</p>
-                <a href="{{ route('admin.weather.stations.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center">
-                    <i class="fas fa-cloud-sun mr-2"></i> Akses
+                <a href="{{ route('admin.weather.stations.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded inline-block">
+                    Akses
                 </a>
             </div>
 
@@ -22,8 +22,8 @@
             <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition">
                 <h4 class="font-semibold text-lg mb-1">Data Curah Hujan</h4>
                 <p class="text-sm text-gray-600 mb-3">Input dan edit data curah hujan</p>
-                <a href="{{ route('admin.weather.rainfall.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center">
-                    <i class="fas fa-cloud-rain mr-2"></i> Akses
+                <a href="{{ route('admin.weather.rainfall.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded inline-block">
+                    Akses
                 </a>
             </div>
 
@@ -31,8 +31,8 @@
             <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition">
                 <h4 class="font-semibold text-lg mb-1">Prediksi Banjir</h4>
                 <p class="text-sm text-gray-600 mb-3">Kelola prediksi potensi banjir</p>
-                <a href="{{ route('admin.weather.predictions.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center">
-                    <i class="fas fa-water mr-2"></i> Akses
+                <a href="{{ route('admin.weather.predictions.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded inline-block">
+                    Akses
                 </a>
             </div>
 
@@ -40,8 +40,8 @@
             <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition">
                 <h4 class="font-semibold text-lg mb-1">Parameter Peringatan</h4>
                 <p class="text-sm text-gray-600 mb-3">Atur parameter peringatan banjir</p>
-                <a href="{{ route('admin.weather.parameters.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center">
-                    <i class="fas fa-exclamation-triangle mr-2"></i> Akses
+                <a href="{{ route('admin.weather.parameters.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded inline-block">
+                    Akses
                 </a>
             </div>
 
@@ -49,37 +49,37 @@
             <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition">
                 <h4 class="font-semibold text-lg mb-1">Artikel Rekomendasi</h4>
                 <p class="text-sm text-gray-600 mb-3">Kelola artikel dan solusi banjir</p>
-                <a href="{{ route('admin.artikels.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center">
-                    <i class="fas fa-newspaper mr-2"></i> Akses
+                <a href="{{ route('admin.artikels.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded inline-block">
+                    Akses
                 </a>
             </div>
 
-            <!-- Card 5 -->
+            <!-- Card 6 - Data Pengguna -->
             <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition">
                 <h4 class="font-semibold text-lg mb-1">Data Pengguna</h4>
                 <p class="text-sm text-gray-600 mb-3">Kelola data pengguna</p>
-                <a href="{{ route('admin.pengguna.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded">Akses</a>
+                <a href="{{ route('admin.pengguna.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded inline-block">Akses</a>
             </div>
 
-            <!-- Card 6 - Disaster Report Statistics -->
+            <!-- Card 7 - Statistik Laporan Banjir -->
             <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition">
                 <h4 class="font-semibold text-lg mb-1">Statistik Laporan Banjir</h4>
                 <p class="text-sm text-gray-600 mb-3">Lihat statistik dan data laporan bencana</p>
-                <a href="{{ route('admin.weather.disaster-statistics') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded">Akses</a>
+                <a href="{{ route('admin.weather.disaster-statistics') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded inline-block">Akses</a>
             </div>
 
-            <!-- Card 5 -->
+            <!-- Card 8 - Notifikasi -->
             <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition">
                 <h4 class="font-semibold text-lg mb-1">Notifikasi</h4>
                 <p class="text-sm text-gray-600 mb-3">Berikan notifikasi banjir kepada pengguna</p>
-                <a href="{{ route('admin.weather.notification.create') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded">Akses</a>
+                <a href="{{ route('admin.weather.notification.create') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded inline-block">Akses</a>
             </div>
             
-            <!-- Card 5 -->
+            <!-- Card 9 - Laporan Bencana -->
             <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition">
                 <h4 class="font-semibold text-lg mb-1">Laporan Bencana</h4>
                 <p class="text-sm text-gray-600 mb-3">Terima atau tolak laporan dari user</p>
-                <a href="{{ route('admin.disaster-reports.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded">Akses</a>
+                <a href="{{ route('admin.disaster-reports.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded inline-block">Akses</a>
             </div>
 
         </div>
