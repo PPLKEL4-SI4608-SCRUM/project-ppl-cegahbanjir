@@ -21,7 +21,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'last_login_at',
     ];
 
     /**
@@ -42,7 +41,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
-            'last_login_at' => 'datetime',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
