@@ -39,6 +39,35 @@
             </div>
         </div>
     </div>
+
+    {{-- ✨ Rekomendasi Artikel Banjir --}}
+            <div class="mt-16">
+                <h2 class="text-2xl font-extrabold text-blue-700 text-center">Rekomendasi Tindakan Saat Banjir</h2>
+                <p class="text-gray-500 text-center mb-6">Jadi apa yang harus kamu lakukan ketika banjir ada di daerah kamu?</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    @foreach ($rekomendasis as $item)
+                        <div class="bg-white border border-gray-300 rounded-xl text-center shadow-sm hover:shadow-md w-full max-w-xs py-6 px-4 flex flex-col justify-between">
+                            <div class="flex justify-center mb-4">
+                                <img src="{{ url('artikel_icons/' . $item->icon_path) }}"
+                                    alt="{{ $item->title }} icon" class="w-10 h-10">
+                            </div>
+                            <h3 class="text-md font-semibold text-gray-900 mb-2">{{ $item->title }}</h3>
+                            <p class="text-sm text-gray-600 mb-4">
+                                {{ Str::limit(strip_tags($item->description), 100) }}</p>
+                            <div class="text-right">
+                                <a href="{{ route('rekomendasi.show', $item->id) }}"
+                                    class="text-sm font-medium text-blue-500 hover:underline">More info</a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- Pagination links --}}
+                <div class="mt-6">
+                    {{ $rekomendasis->links() }}
+                </div>
+            </div>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Kolom Kiri: Informasi Profil & Aktivitas -->
