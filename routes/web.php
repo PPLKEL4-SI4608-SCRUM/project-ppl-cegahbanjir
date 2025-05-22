@@ -8,7 +8,6 @@ use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\RekomendasiController; // ✅ Controller artikel rekomendasi
 use App\Http\Controllers\User\MapDashboardController;
 
-
 // ✅ Redirect ke login saat membuka root
 Route::get('/', function () {
     return redirect()->route('login');
