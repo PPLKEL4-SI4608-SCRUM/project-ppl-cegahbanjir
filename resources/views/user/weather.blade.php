@@ -4,101 +4,94 @@
 
 @section('content')
     @if($notifications)
-        <div id="notification-alert" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-yellow-200 text-yellow-800 px-6 py-4 rounded-lg shadow-lg z-50 max-w-md w-full">
+        <div id="notification-alert"
+             class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-yellow-200 text-yellow-800 px-6 py-4 rounded-lg shadow-lg z-50 max-w-md w-full">
             <div class="flex justify-between items-center mb-2">
                 <h3 class="text-lg font-semibold">📢 PERINGATAN BANJIR 📢</h3>
-                <button onclick="document.getElementById('notification-alert').remove()" class="text-xl font-bold text-yellow-800 hover:text-red-600">&times;</button>
+                <button onclick="document.getElementById('notification-alert').remove()"
+                        class="text-xl font-bold text-yellow-800 hover:text-red-600">&times;</button>
             </div>
             <div class="space-y-2 max-h-60 overflow-y-auto">
                 <div class="border-t border-yellow-400 pt-2">
-                    <!-- Menampilkan Nama Stasiun dan Lokasi -->
                     <p><strong>Stasiun:</strong> {{ $stationName }}</p>
                     <p><strong>Lokasi:</strong> {{ $stationLocation }}</p>
                 </div>
             </div>
-
-             <!-- Tombol untuk berbagi ke Twitter dengan Tailwind CSS -->
-            <a href="{{ $twitterShareUrl }}" target="_blank" class="inline-block px-6 py-3 mt-4 text-white bg-red-600 rounded-full text-center font-semibold hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-white-500 focus:ring-opacity-50">
+            <a href="{{ $twitterShareUrl }}" target="_blank"
+               class="inline-block px-6 py-3 mt-4 text-white bg-red-600 rounded-full text-center font-semibold hover:bg-red-500">
                 Bagikan ke Twitter
             </a>
-
         </div>
-
-        <!-- <script>
-            setTimeout(() => {
-                const el = document.getElementById('notification-alert');
-                if (el) el.remove();
-            }, 15000); // hilang setelah 15 detik
-        </script> -->
     @endif
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-
-
-    {{-- Fontawesome & Boxicons --}}
-    <link href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" rel="stylesheet">
-    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
-
-    <div style="max-width: 1200px; margin: -40px auto 0; padding: 10px 20px;">
+    <div class="max-w-5xl mx-auto px-4 py-8">
 
         {{-- 🔍 Search Bar --}}
-        <div style="text-align: center; margin-bottom: 30px;">
-            <h2 style="font-size: 32px; margin-bottom: 10px;">Cuaca & Prediksi</h2>
-            <form action="{{ route('user.weather.dashboard') }}" method="GET" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-semibold mb-4 text-white">Cuaca</h2>
+            <form action="{{ route('user.weather.dashboard') }}" method="GET"
+                  class="flex flex-wrap justify-center gap-3">
                 <input type="text" name="search" placeholder="Cari nama kota..."
                        value="{{ request('search') }}"
-                       style="padding: 12px 20px; border-radius: 25px; border: none; background-color: #2a2b2d; color: white; width: 250px;">
-                <button type="submit" style="padding: 12px 20px; border-radius: 25px; border: none; background-color: #FFA404; color: white;">
-                    <i class="fa-regular fa-search"></i> Cari
+                       class="px-5 py-3 rounded-full border border-gray-300 bg-white shadow w-64 text-sm">
+                <button type="submit"
+                        class="px-6 py-3 rounded-full bg-[#FFA404] text-white font-semibold hover:bg-[#e59300] text-sm">
+                    <i class="fas fa-search mr-1"></i> Cari
                 </button>
             </form>
         </div>
 
-        {{-- 🌤️ Grid Data --}}
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
+        {{-- 🌤️ Cuaca dalam 1 Frame --}}
+        <div class="bg-white/80 rounded-2xl p-6 shadow-xl space-y-6">
+            @if(!empty($forecast7days))
+    <div class="mt-8">
+        <h3 class="text-lg font-semibold mb-4">
+            <i class="fas fa-calendar-alt text-blue-500 mr-2"></i>Prakiraan Cuaca 7 Hari Kedepan
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            @foreach($forecast7days as $day)
+                <div class="bg-white/90 rounded-xl p-4 shadow text-sm text-gray-800 space-y-1">
+                    <p class="font-semibold">{{ \Carbon\Carbon::parse($day['dt'])->format('l, d M Y') }}</p>
+                    <p><i class="fas fa-cloud-sun mr-1"></i> Cuaca: {{ $day['weather'][0]['description'] }}</p>
+                    <p><i class="fas fa-temperature-high mr-1"></i> Max: {{ round($day['temp']['max']) }}°C</p>
+                    <p><i class="fas fa-temperature-low mr-1"></i> Min: {{ round($day['temp']['min']) }}°C</p>
+                    <p><i class="fas fa-tint mr-1"></i> Curah Hujan: {{ $day['rain'] ?? 0 }} mm</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+@endif
 
-            {{-- Cuaca Sekarang --}}
-            <div style="background-color: #2a2b2d; padding: 20px; border-radius: 15px; color: white;">
-                <h3 style="margin-bottom: 10px;">🌡️ Cuaca Sekarang</h3>
-                @if(count($rainfalls) > 0)
-                    <h2 style="font-size: 36px;">{{ $rainfalls[0]->rainfall_amount }}&deg;C</h2>
-                    <p>{{ $rainfalls[0]->weatherStation->name ?? 'Stasiun tidak diketahui' }}</p>
-                    <p><i class="fa-light fa-calendar"></i> {{ \Carbon\Carbon::parse($rainfalls[0]->recorded_at)->format('d M Y H:i') }}</p>
-                @else
-                    <p>Data tidak tersedia.</p>
+            {{-- Cuaca Saat Ini --}}
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
+                <div class="flex items-center gap-6">
+                    <div class="text-6xl text-yellow-400">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    @if(request('search') && count($rainfalls) > 0)
+                        <div>
+                            <h3 class="text-4xl font-bold">{{ $rainfalls[0]->rainfall_amount }}&deg;C</h3>
+                            <p class="text-gray-600 text-sm">{{ $rainfalls[0]->weatherStation->name ?? 'Stasiun tidak diketahui' }}</p>
+                            <p class="text-xs text-gray-500"><i class="fas fa-calendar-alt mr-1"></i> {{ \Carbon\Carbon::parse($rainfalls[0]->recorded_at)->format('d M Y H:i') }}</p>
+                        </div>
+                    @elseif(request('search'))
+                        <div class="text-sm text-gray-600">Data tidak tersedia.</div>
+                    @else
+                        <div class="text-sm text-gray-400 italic">Silakan cari kota untuk menampilkan data cuaca.</div>
+                    @endif
+                </div>
+
+                @if(request('search') && count($rainfalls) > 0)
+                    <div class="border-l pl-6 text-sm text-gray-700 space-y-1">
+                        <p><i class="fas fa-tint mr-2"></i>Kelembaban: 80%</p>
+                        <p><i class="fas fa-cloud-rain mr-2"></i>Curah Hujan: 10mm</p>
+                        <p><i class="fas fa-wind mr-2"></i>Angin: 12 km/h</p>
+                    </div>
                 @endif
             </div>
-
-            {{-- Daftar Stasiun Cuaca --}}
-            <div style="background-color: #2a2b2d; padding: 20px; border-radius: 15px; color: white;">
-                <h3 style="margin-bottom: 10px;">📍 Stasiun Cuaca</h3>
-                @forelse($stations as $station)
-                    <div style="margin-bottom: 10px; border-bottom: 1px solid #999; padding-bottom: 5px;">
-                        <p><i class="bx bx-map"></i> {{ $station->name }}</p>
-                        <p><i class="bx bx-location-plus"></i> {{ $station->location }}</p>
-                        <p><i class="bx bx-current-location"></i> {{ $station->latitude }}, {{ $station->longitude }}</p>
-                        <p><i class="bx bx-signal-4"></i> Status: {{ ucfirst($station->status) }}</p>
-                    </div>
-                @empty
-                    <p>Belum ada stasiun cuaca.</p>
-                @endforelse
-            </div>
-
-            {{-- Prediksi Banjir --}}
-            <div style="background-color: #2a2b2d; padding: 20px; border-radius: 15px; color: white; grid-column: span 2;">
-                <h3 style="margin-bottom: 10px;">🌊 Prediksi Banjir</h3>
-                @forelse($predictions as $pred)
-                    <div style="margin-bottom: 15px; border-bottom: 1px solid #999; padding-bottom: 5px;">
-                        <p><i class="bx bx-calendar-alt"></i> {{ \Carbon\Carbon::parse($pred->prediction_date)->format('d M Y') }}</p>
-                        <p><i class="bx bx-map-pin"></i> {{ $pred->weatherStation->name ?? '-' }}</p>
-                        <p><i class="bx bx-error-circle"></i> Risiko: <strong>{{ ucfirst($pred->risk_level) }}</strong></p>
-                        <p><i class="bx bx-cloud-rain"></i> Prediksi Curah Hujan: {{ $pred->predicted_rainfall ?? '-' }} mm</p>
-                        <p><i class="bx bx-note"></i> {{ $pred->notes }}</p>
-                    </div>
-                @empty
-                    <p>Tidak ada data prediksi.</p>
-                @endforelse
-            </div>
         </div>
+
     </div>
 @endsection
