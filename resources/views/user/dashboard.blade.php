@@ -28,7 +28,7 @@
             <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
                 <h3 class="text-lg font-bold text-gray-800">Titik Pantau</h3>
                 <p class="text-sm text-gray-600 mt-1">Pantau status titik banjir</p>
-                <a href="#" class="mt-4 inline-block bg-[#FFA404] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#FF8C00] transition">Akses</a>
+                <a href="{{ route('user.map') }}" class="mt-4 inline-block bg-[#FFA404] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#FF8C00] transition">Akses</a>
             </div>
             
             <!-- Card: Informasi & Tips -->
@@ -211,7 +211,7 @@
                     </div>
                 </div>
                 <div class="mt-4 text-center">
-                    <a href="#" class="text-[#FFA404] font-medium hover:underline">Lihat semua titik pantau</a>
+                    <a href="{{ route('user.map') }}" class="text-[#FFA404] font-medium hover:underline">Lihat semua titik pantau</a>
                 </div>
             </div>
             

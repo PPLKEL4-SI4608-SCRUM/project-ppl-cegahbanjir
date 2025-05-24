@@ -3,31 +3,56 @@
 @section('title', 'Peta Rawan Banjir')
 
 @section('content')
-<div class="relative w-full min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/background-banjir2.png') }}')">
-    <div class="bg-[#0F1A21]/80 w-full h-full py-16 px-4">
-        <h1 class="text-3xl font-bold text-white text-center mb-6">Peta Rawan Banjir</h1>
+<div class="w-full min-h-screen">
+    <div class="bg-white/80 backdrop-blur-sm max-w-6xl mx-auto px-6 py-10 mt-10 rounded-2xl shadow-xl space-y-10">
 
-        <form method="GET" action="{{ route('user.map') }}" class="flex justify-center mb-6">
-            <input type="text" name="search" value="{{ request('search') }}"
-                placeholder="Cari nama wilayah..."
-                class="rounded-l-full bg-gray-800 text-white px-6 py-2 w-72 placeholder-gray-400">
-            <button type="submit"
-                class="bg-[#FFA404] text-white px-6 py-2 rounded-r-full hover:bg-[#ff8c00]">
-                Cari
-            </button>
-        </form>
+        {{-- 🌊 Judul & Search --}}
+        <div class="text-center">
+            <h2 class="text-3xl font-semibold mb-4 text-gray-900">Peta Rawan Banjir</h2>
+            <form method="GET" action="{{ route('user.map') }}" class="flex flex-wrap justify-center gap-3">
+                <input type="text" name="search" value="{{ request('search') }}"
+                    placeholder="Cari nama wilayah..."
+                    class="px-5 py-3 rounded-full border border-gray-300 bg-white shadow w-64 text-sm placeholder-gray-500">
+                <button type="submit"
+                    class="px-6 py-3 rounded-full bg-[#FFA404] text-white font-semibold hover:bg-[#e59300] text-sm">
+                    <i class="fas fa-search mr-1"></i> Cari
+                </button>
+            </form>
+        </div>
 
-        <div id="map" class="mx-auto rounded shadow" style="height: 500px; max-width: 90%;"></div>
+        {{-- 🗺️ Map Container with Frame --}}
+        <div class="bg-white/90 rounded-xl shadow-inner p-4 mx-auto max-w-4xl">
+            <div id="map" class="w-full rounded-lg" style="height: 400px;"></div>
+        </div>
+
     </div>
 </div>
+@endsection
 
+@push('styles')
+    <style>
+        body {
+            background-image: url('{{ asset('images/background-banjir2.png') }}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+    </style>
+@endpush
+
+@section('scripts')
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
     const map = L.map('map').setView([-6.9147, 107.6098], 11);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
     const searchQuery = "{{ request('search') }}";
 
@@ -40,7 +65,7 @@
                     "features": data.features.filter(f =>
                         f.properties.wilayah.toLowerCase().includes(searchQuery.toLowerCase())
                     )
-                  }
+                }
                 : data;
 
             if (filtered.features.length > 0) {
@@ -59,12 +84,14 @@
                             fillOpacity: 0.6
                         };
                     },
-                    onEachFeature: function(feature, layer) {
+                    onEachFeature: function (feature, layer) {
                         layer.bindPopup(`<strong>${feature.properties.wilayah}</strong><br>Tingkat: ${feature.properties.tingkat}`);
                     }
                 }).addTo(map);
+
                 map.fitBounds(geoLayer.getBounds());
             }
         });
+});
 </script>
 @endsection
