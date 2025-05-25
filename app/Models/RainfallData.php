@@ -12,15 +12,19 @@ class RainfallData extends Model
 
     protected $fillable = [
         'weather_station_id',
-        'recorded_at',
+        'date',
+        'category',
         'rainfall_amount',
         'intensity',
-        'data_source',
-        'added_by',
+        'updated_by',
+        'added_by',          
+        'data_source'        
     ];
 
     protected $casts = [
-        'recorded_at' => 'datetime',
+        'date' => 'date',
+        'rainfall_amount' => 'decimal:2',
+        'intensity' => 'decimal:2'
     ];
 
     public function weatherStation(): BelongsTo
@@ -28,8 +32,35 @@ class RainfallData extends Model
         return $this->belongsTo(WeatherStation::class);
     }
 
-    public function addedBy(): BelongsTo
+    public function updatedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function addedBy(): BelongsTo 
     {
         return $this->belongsTo(User::class, 'added_by');
+    }
+
+    public function getCategoryBadgeClass(): string
+    {
+        return match($this->category) {
+            'rendah' => 'bg-green-500',
+            'sedang' => 'bg-yellow-500',
+            'tinggi' => 'bg-orange-500',
+            'sangat_tinggi' => 'bg-red-500',
+            default => 'bg-gray-500'
+        };
+    }
+
+    public function getCategoryLabel(): string
+    {
+        return match($this->category) {
+            'rendah' => 'Rendah',
+            'sedang' => 'Sedang',
+            'tinggi' => 'Tinggi',
+            'sangat_tinggi' => 'Sangat Tinggi',
+            default => 'Tidak Diketahui'
+        };
     }
 }
