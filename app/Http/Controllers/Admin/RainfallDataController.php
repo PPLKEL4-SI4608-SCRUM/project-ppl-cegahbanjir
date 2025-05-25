@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\RainfallData;
 use App\Models\WeatherStation;
@@ -11,12 +10,12 @@ use Carbon\Carbon;
 class RainfallDataController extends Controller
 {
     protected $weatherService;
-
+    
     public function __construct(OpenWeatherService $weatherService)
     {
         $this->weatherService = $weatherService;
     }
-
+    
     /**
      * Klasifikasi curah hujan berdasarkan jumlah mm
      */
@@ -32,7 +31,7 @@ class RainfallDataController extends Controller
             return 'sangat_tinggi';
         }
     }
-
+    
     public function index(Request $request)
     {
         $stations = WeatherStation::where('status', 'active')->orderBy('name')->get();
@@ -40,7 +39,7 @@ class RainfallDataController extends Controller
         $selectedStationId = $request->query('station_id');
         $rainfallData = [];
         $selectedStation = null;
-
+        
         if ($selectedStationId) {
             $selectedStation = WeatherStation::findOrFail($selectedStationId);
             
@@ -52,11 +51,12 @@ class RainfallDataController extends Controller
                 ->whereBetween('date', [$startDate, $endDate])
                 ->orderBy('date', 'desc')
                 ->get();
-
+            
             // Masukkan data historis/manual ke array
             foreach ($historicalData as $entry) {
                 $dateKey = Carbon::parse($entry->date)->format('Y-m-d');
                 $rainfallData[$dateKey] = [
+                    'id' => $entry->id, // Tambahkan ID untuk edit/delete
                     'date' => $dateKey,
                     'rainfall_amount' => $entry->rainfall_amount,
                     'intensity' => $entry->intensity,
@@ -64,9 +64,10 @@ class RainfallDataController extends Controller
                     'type' => 'historical',
                     'data_source' => $entry->data_source,
                     'is_saved' => true,
+                    'can_edit' => in_array($entry->data_source, ['manual', 'sensor']), // Hanya manual dan sensor yang bisa diedit
                 ];
             }
-
+            
             // Jika belum ada data untuk hari ini, ambil dari API
             $today = now()->format('Y-m-d');
             if (!isset($rainfallData[$today])) {
@@ -77,6 +78,7 @@ class RainfallDataController extends Controller
                     );
                     
                     $rainfallData[$today] = [
+                        'id' => null,
                         'date' => $today,
                         'rainfall_amount' => $currentData['rainfall_amount'],
                         'intensity' => $currentData['intensity'],
@@ -84,10 +86,12 @@ class RainfallDataController extends Controller
                         'type' => 'current',
                         'data_source' => 'api',
                         'is_saved' => false,
+                        'can_edit' => false, // Data API tidak bisa diedit
                     ];
                 } catch (\Exception $e) {
                     // Jika API gagal, buat data kosong untuk hari ini
                     $rainfallData[$today] = [
+                        'id' => null,
                         'date' => $today,
                         'rainfall_amount' => 0,
                         'intensity' => 0,
@@ -95,6 +99,7 @@ class RainfallDataController extends Controller
                         'type' => 'current',
                         'data_source' => 'api',
                         'is_saved' => false,
+                        'can_edit' => false,
                     ];
                 }
             }
@@ -102,7 +107,7 @@ class RainfallDataController extends Controller
             // Urutkan data berdasarkan tanggal (terbaru dulu)
             krsort($rainfallData);
         }
-
+        
         return view('admin.weather.rainfall.index', compact(
             'stations', 
             'rainfallData', 
@@ -110,7 +115,7 @@ class RainfallDataController extends Controller
             'selectedStation'
         ));
     }
-
+    
     public function updateCategory(Request $request)
     {
         $request->validate([
@@ -122,10 +127,10 @@ class RainfallDataController extends Controller
             'categories.*.intensity' => 'required|numeric|min:0',
             'categories.*.data_source' => 'required|string',
         ]);
-
+        
         $stationId = $request->input('station_id');
         $categories = $request->input('categories');
-
+        
         foreach ($categories as $item) {
             RainfallData::updateOrCreate(
                 [
@@ -141,17 +146,17 @@ class RainfallDataController extends Controller
                 ]
             );
         }
-
+        
         return redirect()->route('admin.weather.rainfall.index', ['station_id' => $stationId])
             ->with('success', 'Kategori curah hujan berhasil diperbarui');
     }
-
+    
     public function create()
     {
         $stations = WeatherStation::where('status', 'active')->orderBy('name')->get();
         return view('admin.weather.rainfall.create', compact('stations'));
     }
-
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -160,9 +165,9 @@ class RainfallDataController extends Controller
             'rainfall_amount' => 'required|numeric|min:0',
             'intensity' => 'nullable|numeric|min:0',
             'category' => 'nullable|string|in:rendah,sedang,tinggi,sangat_tinggi',
-            'data_source' => 'required|in:manual,api,sensor',
+            'data_source' => 'required|in:manual,sensor', // Hapus 'api' karena tidak boleh input manual
         ]);
-
+        
         // Konversi recorded_at ke date
         $date = Carbon::parse($request->recorded_at)->format('Y-m-d');
         
@@ -176,11 +181,11 @@ class RainfallDataController extends Controller
                 ->withInput()
                 ->withErrors(['recorded_at' => 'Data untuk tanggal ini sudah ada. Silakan edit data yang sudah ada atau pilih tanggal lain.']);
         }
-
+        
         // Hitung intensitas jika tidak diisi (asumsi data untuk 24 jam)
         $intensity = $request->intensity ?? ($request->rainfall_amount / 24);
         $category = $request->category ?? $this->classifyRainfall($request->rainfall_amount);
-
+        
         RainfallData::create([
             'weather_station_id' => $request->weather_station_id,
             'date' => $date,
@@ -190,32 +195,44 @@ class RainfallDataController extends Controller
             'data_source' => $request->data_source,
             'added_by' => auth()->id(),
         ]);
-
+        
         return redirect()->route('admin.weather.rainfall.index', ['station_id' => $request->weather_station_id])
             ->with('success', 'Data curah hujan berhasil ditambahkan');
     }
-
+    
     public function edit(RainfallData $rainfallData)
     {
+        // Pastikan hanya data manual dan sensor yang bisa diedit
+        if (!in_array($rainfallData->data_source, ['manual', 'sensor'])) {
+            return redirect()->route('admin.weather.rainfall.index', ['station_id' => $rainfallData->weather_station_id])
+                ->with('error', 'Hanya data manual dan sensor yang dapat diedit');
+        }
+        
         $stations = WeatherStation::where('status', 'active')->orderBy('name')->get();
         return view('admin.weather.rainfall.edit', compact('rainfallData', 'stations'));
     }
-
+    
     public function update(Request $request, RainfallData $rainfallData)
     {
+        // Pastikan hanya data manual dan sensor yang bisa diedit
+        if (!in_array($rainfallData->data_source, ['manual', 'sensor'])) {
+            return redirect()->route('admin.weather.rainfall.index', ['station_id' => $rainfallData->weather_station_id])
+                ->with('error', 'Hanya data manual dan sensor yang dapat diedit');
+        }
+        
         $request->validate([
             'weather_station_id' => 'required|exists:weather_stations,id',
             'recorded_at' => 'required|date',
             'rainfall_amount' => 'required|numeric|min:0',
             'intensity' => 'nullable|numeric|min:0',
             'category' => 'nullable|string|in:rendah,sedang,tinggi,sangat_tinggi',
-            'data_source' => 'required|in:manual,api,sensor',
+            'data_source' => 'required|in:manual,sensor', // Hapus 'api'
         ]);
-
+        
         $date = Carbon::parse($request->recorded_at)->format('Y-m-d');
         $intensity = $request->intensity ?? ($request->rainfall_amount / 24);
         $category = $request->category ?? $this->classifyRainfall($request->rainfall_amount);
-
+        
         $rainfallData->update([
             'weather_station_id' => $request->weather_station_id,
             'date' => $date,
@@ -225,13 +242,19 @@ class RainfallDataController extends Controller
             'data_source' => $request->data_source,
             'updated_by' => auth()->id(),
         ]);
-
+        
         return redirect()->route('admin.weather.rainfall.index', ['station_id' => $request->weather_station_id])
             ->with('success', 'Data curah hujan berhasil diperbarui');
     }
-
+    
     public function destroy(RainfallData $rainfallData)
     {
+        // Pastikan hanya data manual dan sensor yang bisa dihapus
+        if (!in_array($rainfallData->data_source, ['manual', 'sensor'])) {
+            return redirect()->route('admin.weather.rainfall.index', ['station_id' => $rainfallData->weather_station_id])
+                ->with('error', 'Hanya data manual dan sensor yang dapat dihapus');
+        }
+        
         $stationId = $rainfallData->weather_station_id;
         $rainfallData->delete();
         

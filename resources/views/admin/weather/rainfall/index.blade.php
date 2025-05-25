@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('title', 'Manajemen Data Curah Hujan')
+
 @section('content')
 <div class="bg-white shadow rounded-lg p-6 mb-10">
     <div class="flex items-center justify-between mb-6">
@@ -8,6 +9,7 @@
             <i class="fas fa-plus mr-2"></i> Tambah Data Manual
         </a>
     </div>
+
     <!-- Filter Stasiun -->
     <div class="bg-gray-50 p-4 rounded-lg mb-6">
         <form method="GET" action="{{ route('admin.weather.rainfall.index') }}" class="flex items-end gap-4">
@@ -29,6 +31,7 @@
             </div>
         </form>
     </div>
+
     @if($selectedStation && !empty($rainfallData))
         <!-- Info Stasiun -->
         <div class="bg-blue-50 p-4 rounded-lg mb-6">
@@ -38,6 +41,7 @@
                 Koordinat: {{ $selectedStation->latitude }}, {{ $selectedStation->longitude }}
             </p>
         </div>
+
         <!-- Form Update Kategori -->
         <form action="{{ route('admin.weather.rainfall.update-category') }}" method="POST" id="categoryForm">
             @csrf
@@ -62,6 +66,7 @@
                                 <th class="px-4 py-3 text-left font-semibold">Klasifikasi</th>
                                 <th class="px-4 py-3 text-left font-semibold">Status</th>
                                 <th class="px-4 py-3 text-left font-semibold">Tipe Data</th>
+                                <th class="px-4 py-3 text-left font-semibold">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -121,6 +126,34 @@
                                             <span class="inline-block px-2 py-1 text-xs font-semibold text-white bg-green-600 rounded">API</span>
                                         @endif
                                     </td>
+                                    <td class="px-4 py-3">
+                                        @if(isset($data['can_edit']) && $data['can_edit'] && isset($data['id']))
+                                            <div class="flex items-center gap-2">
+                                                <!-- Tombol Edit -->
+                                                <a href="{{ route('admin.weather.rainfall.edit', $data['id']) }}" 
+                                                   class="inline-flex items-center px-2 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700"
+                                                   title="Edit Data">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                
+                                                <!-- Tombol Hapus -->
+                                                <form action="{{ route('admin.weather.rainfall.destroy', $data['id']) }}" 
+                                                      method="POST" 
+                                                      class="inline-block"
+                                                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" 
+                                                            class="inline-flex items-center px-2 py-1 text-xs font-medium text-white bg-red-600 rounded hover:bg-red-700"
+                                                            title="Hapus Data">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @else
+                                            <span class="text-xs text-gray-400">Tidak dapat diedit</span>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -138,6 +171,8 @@
                         <span class="inline-block w-3 h-3 bg-blue-200 rounded mr-1"></span> Manual | 
                         <span class="inline-block w-3 h-3 bg-purple-200 rounded mr-1 ml-2"></span> Sensor | 
                         <span class="inline-block w-3 h-3 bg-green-200 rounded mr-1 ml-2"></span> API
+                        <br><br>
+                        <strong>Catatan:</strong> Hanya data manual dan sensor yang dapat diedit/dihapus.
                     </div>
                     <div class="flex gap-2">
                         <button type="button" onclick="resetCategories()" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
@@ -162,17 +197,21 @@
         </div>
     @endif
 </div>
+
 @if(session('success'))
     <div class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg z-50" id="successAlert">
         <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
     </div>
 @endif
+
 @if(session('error'))
     <div class="fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded shadow-lg z-50" id="errorAlert">
         <i class="fas fa-exclamation-circle mr-2"></i>{{ session('error') }}
     </div>
 @endif
+
 @endsection
+
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
