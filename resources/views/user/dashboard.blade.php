@@ -170,7 +170,7 @@
                     </a>
                 </div>
             </div>
-            <!-- Peringatan Banjir -->
+           <!-- Peringatan Banjir -->
             <div class="bg-white/90 rounded-xl shadow-lg p-5 border-l-4 border-yellow-500">
                 <div class="flex items-center mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -178,18 +178,23 @@
                     </svg>
                     <h2 class="text-xl font-semibold text-[#0F1A21]">Peringatan Dini</h2>
                 </div>
-                <p class="text-gray-700 mb-3">
-                    Waspada hujan lebat disertai angin kencang di wilayah Jakarta, Bogor, Depok, dan sekitarnya dalam 24 jam ke depan.
-                </p>
-                <div class="bg-yellow-50 p-3 rounded-lg">
-                    <div class="flex items-center">
-                        <div class="h-2 w-2 rounded-full bg-yellow-500 mr-2"></div>
-                        <span class="text-sm font-medium text-yellow-700">Status: Siaga</span>
-                    </div>
-                    <p class="text-xs text-yellow-600 mt-1">
-                        Diperbarui: 29 April 2025, 09:30 WIB
-                    </p>
-                </div>
+                @if(count($peringatanDini) > 0)
+                    @foreach($peringatanDini as $peringatan)
+                         <p class="text-gray-700 mb-3">Waspad hujan lebat disertai angin kencang di wilayah {{ $peringatan['lokasi'] }} dan sekitarnya dalam 24 jam ke depan.</p>
+                        <div class="bg-yellow-50 p-3 rounded-lg mb-2">
+                            <div class="flex items-center">
+                                <div class="h-2 w-2 rounded-full bg-yellow-500 mr-2"></div>
+                                <span class="text-sm font-medium text-yellow-700">
+                                     <p class="text-xs text-yellow-600 mt-1">
+                                        Status: {{ $peringatan['peringatan'] }}
+                                    </p>
+                                </span>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-gray-500 italic">Tidak ada peringatan dini saat ini.</p>
+                @endif
             </div>
         </div>
         

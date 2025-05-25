@@ -60,6 +60,33 @@ class DashboardController extends Controller
 }
         $maps = FloodMap::all();
 
-        return view('user.dashboard', ['rekomendasis' => $paginated,'rainfall' => $rainfall, 'locationName' => $defaultLocation, 'maps' => $maps]);
+ // Kategorikan peringatan dini berdasarkan tingkat risiko
+        $peringatanDini = [];
+        foreach ($maps as $map) {
+            $polygonData = is_array($map->polygons) ? $map->polygons : json_decode($map->polygons, true);
+            $risikos = collect($polygonData)->pluck('tingkat_risiko')->filter()->unique()->toArray();
+            foreach ($risikos as $tingkat) {
+                $peringatan = '';
+                if (strtolower($tingkat) === 'sangat tinggi') {
+                    $peringatan = 'Siaga';
+                } elseif (strtolower($tingkat) === 'tinggi') {
+                    $peringatan = 'Waspada';
+                } else {
+                    continue; // Lewati jika tidak Siaga atau Waspada
+                }
+                $peringatanDini[] = [
+                    'lokasi' => $map->wilayah,
+                    'peringatan' => $peringatan,
+                ];
+            }
+        }
+        return view('user.dashboard', [
+            'rekomendasis' => $paginated,
+            'rainfall' => $rainfall,
+            'locationName' => $defaultLocation,
+            'maps' => $maps,
+            'peringatanDini' => $peringatanDini,
+        ]);
+
     }
 }
