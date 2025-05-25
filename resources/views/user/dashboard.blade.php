@@ -195,6 +195,10 @@
                 @else
                     <p class="text-gray-500 italic">Tidak ada peringatan dini saat ini.</p>
                 @endif
+                <a href="{{ $twitterShareUrl }}" target="_blank"
+                        class="inline-block px-6 py-3 mt-4 text-white bg-red-600 rounded-full text-center font-semibold hover:bg-red-500">
+                        Bagikan ke Twitter
+                </a>
             </div>
         </div>
         

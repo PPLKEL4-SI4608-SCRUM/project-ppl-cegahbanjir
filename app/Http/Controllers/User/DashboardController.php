@@ -60,7 +60,7 @@ class DashboardController extends Controller
 }
         $maps = FloodMap::all();
 
- // Kategorikan peringatan dini berdasarkan tingkat risiko
+         // Kategorikan peringatan dini berdasarkan tingkat risiko
         $peringatanDini = [];
         foreach ($maps as $map) {
             $polygonData = is_array($map->polygons) ? $map->polygons : json_decode($map->polygons, true);
@@ -80,12 +80,24 @@ class DashboardController extends Controller
                 ];
             }
         }
+        // Generate notification messages and Twitter share URLs
+        $notificationMessages = [];
+        foreach ($peringatanDini as $item) {
+            $notificationMessage = "Peringatan banjir untuk wilayah {$item['lokasi']}. Tingkat risiko {$item['peringatan']}. Harap waspada!";
+            $twitterShareUrl = "https://twitter.com/intent/tweet?text=" . urlencode($notificationMessage);
+            $notificationMessages[] = [
+                'message' => $notificationMessage,
+                'twitterShareUrl' => $twitterShareUrl,
+            ];
+        }
         return view('user.dashboard', [
             'rekomendasis' => $paginated,
             'rainfall' => $rainfall,
             'locationName' => $defaultLocation,
             'maps' => $maps,
             'peringatanDini' => $peringatanDini,
+            'notificationMessages' => $notificationMessages,
+            'twitterShareUrl' => $twitterShareUrl,
         ]);
 
     }
