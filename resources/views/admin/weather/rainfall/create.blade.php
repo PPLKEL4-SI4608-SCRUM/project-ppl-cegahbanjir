@@ -11,7 +11,6 @@
         </a>
     </div>
 
-<div class="bg-white shadow rounded-lg p-6">
     <form action="{{ route('admin.weather.rainfall.store') }}" method="POST">
         @csrf
 
@@ -33,7 +32,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
                 <label for="recorded_at" class="block text-sm font-medium text-gray-700">Tanggal dan Waktu <span class="text-red-500">*</span></label>
-                <input type="datetime-local" id="recorded_at" name="recorded_at" required value="{{ old('recorded_at') ?? now()->format('Y-m-d\TH:i') }}"
+                <input type="date" id="recorded_at" name="recorded_at" required value="{{ old('recorded_at') ?? now()->format('Y-m-d\TH:i') }}"
                     class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('recorded_at') border-red-500 @enderror">
                 @error('recorded_at')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -45,7 +44,6 @@
                 <select id="data_source" name="data_source" required
                     class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('data_source') border-red-500 @enderror">
                     <option value="manual" {{ old('data_source') == 'manual' ? 'selected' : '' }}>Manual</option>
-                    <option value="api" {{ old('data_source') == 'api' ? 'selected' : '' }}>API</option>
                     <option value="sensor" {{ old('data_source') == 'sensor' ? 'selected' : '' }}>Sensor</option>
                 </select>
                 @error('data_source')
@@ -77,9 +75,9 @@
             </div>
         </div>
 
-        <div class="flex justify-end gap-2">
+        <div class="flex justify-end gap-2 mt-6">
             <button type="reset" class="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200">Reset</button>
-            <button type="submit" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-[#f97316] rounded hover:bg-[#ea580c]">Simpan</button>
+            <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-[#f97316] rounded hover:bg-[#ea580c]">Simpan</button>
         </div>
     </form>
 </div>
@@ -113,7 +111,6 @@
             }
         });
 
-        // Opsional: trigger otomatis kalau form dibuka dan sumbernya udah 'api'
         if (dataSourceSelect.value === 'api') {
             dataSourceSelect.dispatchEvent(new Event('change'));
         }

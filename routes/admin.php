@@ -32,6 +32,8 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
 
         // Rainfall Data
         Route::resource('rainfall', RainfallDataController::class);
+        Route::post('rainfall/update-category', [RainfallDataController::class, 'updateCategory'])
+            ->name('rainfall.update-category');
 
         // Flood Predictions
         Route::resource('predictions', FloodPredictionController::class);
