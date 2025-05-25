@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\FloodMap;
 use Illuminate\Http\Request;
+use App\Models\WeatherStation;
+use App\Models\FloodMap;
+use App\Models\RainfallData;
 
 class FloodMapController extends Controller
 {
@@ -14,16 +16,27 @@ class FloodMapController extends Controller
         return view('admin.flood_maps.index', compact('floodMaps'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin.flood_maps.create');
+        $stations = WeatherStation::all();
+        $selectedStation = $request->input('station_id');
+
+        $rainfalls = collect();
+        if ($selectedStation) {
+            $rainfalls = RainfallData::where('weather_station_id', $selectedStation)
+                ->whereDate('date', now()->toDateString())
+                ->orderByDesc('created_at')
+                ->get();
+        }
+
+        return view('admin.flood_maps.create', compact('stations', 'selectedStation', 'rainfalls'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'wilayah' => 'required|string|max:255',
-            'polygons' => 'required|string' // JSON string dari frontend
+            'polygons' => 'required|string'
         ]);
 
         FloodMap::create([
@@ -34,9 +47,20 @@ class FloodMapController extends Controller
         return redirect()->route('admin.flood-maps.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
-    public function edit(FloodMap $floodMap)
+    public function edit(FloodMap $floodMap, Request $request)
     {
-        return view('admin.flood_maps.edit', compact('floodMap'));
+        $stations = WeatherStation::all();
+        $selectedStation = $request->input('station_id');
+
+        $rainfalls = collect();
+        if ($selectedStation) {
+            $rainfalls = RainfallData::where('weather_station_id', $selectedStation)
+                ->whereDate('date', now()->toDateString())
+                ->orderByDesc('created_at')
+                ->get();
+        }
+
+        return view('admin.flood_maps.edit', compact('floodMap', 'stations', 'selectedStation', 'rainfalls'));
     }
 
     public function update(Request $request, FloodMap $floodMap)

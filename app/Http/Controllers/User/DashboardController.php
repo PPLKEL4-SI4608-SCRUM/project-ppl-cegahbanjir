@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RainfallData;
+use App\Models\FloodMap;
 use App\Models\WeatherStation;
 use Carbon\Carbon;
 use App\Models\Artikel; // Ganti dari Rekomendasi ke Artikel
@@ -57,7 +58,8 @@ class DashboardController extends Controller
         if ($station) {
             $rainfall = RainfallData::where('weather_station_id', $station->id)->whereDate('date', Carbon::today())->latest('date')->first();
 }
+        $maps = FloodMap::all();
 
-        return view('user.dashboard', ['rekomendasis' => $paginated,'rainfall' => $rainfall, 'locationName' => $defaultLocation]);
+        return view('user.dashboard', ['rekomendasis' => $paginated,'rainfall' => $rainfall, 'locationName' => $defaultLocation, 'maps' => $maps]);
     }
 }

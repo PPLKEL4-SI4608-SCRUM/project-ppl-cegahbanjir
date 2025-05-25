@@ -199,28 +199,35 @@
             <div class="bg-white/90 rounded-xl shadow-lg p-5">
                 <h2 class="text-xl font-semibold text-[#0F1A21] mb-4">Titik Pantau Banjir</h2>
                 <div class="space-y-3">
-                    <div class="flex justify-between items-center pb-2 border-b border-gray-200">
-                        <span class="font-medium">Katulampa</span>
-                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Normal</span>
-                    </div>
-                    <div class="flex justify-between items-center pb-2 border-b border-gray-200">
-                        <span class="font-medium">Manggarai</span>
-                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Waspada</span>
-                    </div>
-                    <div class="flex justify-between items-center pb-2 border-b border-gray-200">
-                        <span class="font-medium">Depok</span>
-                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Normal</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium">Jembatan Merah</span>
-                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Normal</span>
-                    </div>
+                    @foreach ($maps as $map)
+                        @php
+                            $polygonData = is_array($map->polygons) ? $map->polygons : json_decode($map->polygons, true);
+                            $risikos = collect($polygonData)
+                                ->pluck('tingkat_risiko')
+                                ->filter()
+                                ->unique()
+                                ->toArray();
+
+                            $badgeHtml = '';
+                            foreach ($risikos as $tingkat) {
+                                $badgeHtml .= match(strtolower($tingkat)) {
+                                    'sangat tinggi' => "<span class='px-2 py-1 bg-red-600 text-white rounded-full text-xs'>Sangat Tinggi</span>",
+                                    'tinggi' => "<span class='px-2 py-1 bg-orange-500 text-white rounded-full text-xs'>Tinggi</span>",
+                                    'sedang' => "<span class='px-2 py-1 bg-yellow-300 text-gray-800 rounded-full text-xs'>Sedang</span>",
+                                    'rendah' => "<span class='px-2 py-1 bg-green-200 text-gray-800 rounded-full text-xs'>Rendah</span>",
+                                    default => "<span class='px-2 py-1 bg-gray-300 text-gray-800 rounded-full text-xs'>Tidak diketahui</span>",
+                                };
+                            }
+                        @endphp
+                        <div class="flex justify-between items-center pb-2 border-b border-gray-200">
+                            <span class="font-medium">{{ $map->wilayah }}</span>
+                            <span class="flex gap-1">{!! $badgeHtml !!}</span>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="mt-4 text-center">
                     <a href="{{ route('user.map') }}" class="text-[#FFA404] font-medium hover:underline">Lihat semua titik pantau</a>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+
 @endsection
