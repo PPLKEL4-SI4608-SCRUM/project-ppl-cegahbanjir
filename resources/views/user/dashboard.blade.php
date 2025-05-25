@@ -30,18 +30,11 @@
                 <p class="text-sm text-gray-600 mt-1">Pantau status titik banjir</p>
                 <a href="{{ route('user.map') }}" class="mt-4 inline-block bg-[#FFA404] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#FF8C00] transition">Akses</a>
             </div>
-            
-            <!-- Card: Informasi & Tips -->
-            <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
-                <h3 class="text-lg font-bold text-gray-800">Informasi & Tips</h3>
-                <p class="text-sm text-gray-600 mt-1">Panduan menghadapi banjir</p>
-                <a href="#" class="mt-4 inline-block bg-[#FFA404] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#FF8C00] transition">Akses</a>
-            </div>
         </div>
     </div>
 
     {{-- ✨ Rekomendasi Artikel Banjir --}}
-            <div class="mt-16">
+            <<div class="bg-white/80 p-6 rounded-2xl shadow-xl backdrop-blur-md mb-8">
                 <h2 class="text-2xl font-extrabold text-blue-700 text-center">Rekomendasi Tindakan Saat Banjir</h2>
                 <p class="text-gray-500 text-center mb-6">Jadi apa yang harus kamu lakukan ketika banjir ada di daerah kamu?</p>
 
@@ -125,45 +118,58 @@
         
         <!-- Kolom Tengah: Informasi Cuaca & Peringatan -->
         <div class="space-y-6">
-            <!-- Informasi Cuaca -->
+           <!-- Informasi Cuaca -->
             <div class="bg-white/90 rounded-xl shadow-lg p-5">
                 <h2 class="text-xl font-semibold text-[#0F1A21] mb-4">Informasi Cuaca Hari Ini</h2>
-                <div class="flex items-center justify-between">
-                    <div class="text-center">
-                        <div class="text-5xl text-[#FFA404] mb-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
+
+                @if ($rainfall)
+                    @php
+                        $kategori = str_replace('_', ' ', strtolower($rainfall->category));
+                        $icon = match($kategori) {
+                            'rendah' => 'fa-cloud',
+                            'sedang' => 'fa-cloud-rain',
+                            'tinggi' => 'fa-cloud-showers-heavy',
+                            'sangat tinggi' => 'fa-bolt',
+                            default => 'fa-question'
+                        };
+                    @endphp
+
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="text-center md:text-left">
+                            <div class="text-5xl text-[#FFA404] mb-2">
+                                <i class="fas {{ $icon }}"></i>
+                            </div>
+                            <div class="text-3xl font-bold">{{ number_format($rainfall->rainfall_amount, 2) }} mm</div>
+                            <div class="text-gray-700 text-base mt-1">
+                                {{ $rainfall->weatherStation->name ?? 'Lokasi tidak diketahui' }}
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">
+                                <i class="fas fa-calendar-alt mr-1"></i>
+                                {{ \Carbon\Carbon::parse($rainfall->date)->format('d M Y') }}
+                            </p>
                         </div>
-                        <div class="text-2xl font-bold">29°C</div>
-                        <div class="text-gray-600">Jakarta</div>
+
+                        <div class="border-t md:border-t-0 md:border-l border-gray-300 pt-4 md:pt-0 md:pl-6 space-y-2">
+                            <div class="flex items-center text-sm text-gray-700">
+                                <i class="fas fa-tint text-gray-500 mr-2"></i>
+                                Curah Hujan: {{ number_format($rainfall->rainfall_amount, 2) }} mm
+                            </div>
+                            <div class="flex items-center text-sm text-gray-700">
+                                <i class="fas fa-exclamation-circle text-gray-500 mr-2"></i>
+                                Kategori: {{ ucfirst($kategori) }}
+                            </div>
+                        </div>
                     </div>
-                    <div class="border-l border-gray-200 pl-6">
-                        <div class="flex items-center mb-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-                            </svg>
-                            <span class="text-sm">Kelembaban: 80%</span>
-                        </div>
-                        <div class="flex items-center mb-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M9 10h.01M15 10h.01M9 10h.01M15 10h.01M9 10h.01M15 10h.01" />
-                            </svg>
-                            <span class="text-sm">Curah Hujan: 70mm</span>
-                        </div>
-                        <div class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                            </svg>
-                            <span class="text-sm">Angin: 12 km/h</span>
-                        </div>
-                    </div>
-                </div>
+                @else
+                    <p class="text-gray-500 italic">Data cuaca belum tersedia.</p>
+                @endif
+
                 <div class="mt-4 text-center">
-                    <a href="{{ route('user.weather.dashboard') }}" class="text-[#FFA404] font-medium hover:underline">Lihat prakiraan lengkap</a>
+                    <a href="{{ route('user.weather.dashboard') }}" class="text-[#FFA404] font-medium hover:underline">
+                        Lihat prakiraan lengkap
+                    </a>
                 </div>
             </div>
-            
             <!-- Peringatan Banjir -->
             <div class="bg-white/90 rounded-xl shadow-lg p-5 border-l-4 border-yellow-500">
                 <div class="flex items-center mb-4">
@@ -212,40 +218,6 @@
                 </div>
                 <div class="mt-4 text-center">
                     <a href="{{ route('user.map') }}" class="text-[#FFA404] font-medium hover:underline">Lihat semua titik pantau</a>
-                </div>
-            </div>
-            
-            <!-- Tips Banjir -->
-            <div class="bg-white/90 rounded-xl shadow-lg p-5">
-                <h2 class="text-xl font-semibold text-[#0F1A21] mb-4">Tips Menghadapi Banjir</h2>
-                <ul class="space-y-2 text-gray-700">
-                    <li class="flex items-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#FFA404] mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Siapkan tas darurat berisi dokumen penting, obat-obatan, pakaian & makanan</span>
-                    </li>
-                    <li class="flex items-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#FFA404] mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Pantau informasi cuaca secara berkala</span>
-                    </li>
-                    <li class="flex items-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#FFA404] mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Ketahui rute evakuasi terdekat di lingkungan Anda</span>
-                    </li>
-                    <li class="flex items-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#FFA404] mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Matikan listrik jika air mulai masuk ke rumah</span>
-                    </li>
-                </ul>
-                <div class="mt-4 text-center">
-                    <a href="#" class="text-[#FFA404] font-medium hover:underline">Lihat semua tips</a>
                 </div>
             </div>
         </div>

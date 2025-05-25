@@ -14,7 +14,7 @@ Route::get('/', function () {
 });
 
 // ✅ Dashboard utama (tampilkan slider artikel rekomendasi)
-Route::get('/dashboard', [RekomendasiController::class, 'index'])
+Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 

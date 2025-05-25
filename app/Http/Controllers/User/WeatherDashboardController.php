@@ -9,14 +9,13 @@ use App\Models\WeatherStation;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Arr;
 use Carbon\Carbon;
 
 class WeatherDashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $city = $request->input('search');
+        $city = trim(strtolower($request->input('search')));
 
         if (!$city) {
             return view('user.weather', [
@@ -33,10 +32,16 @@ class WeatherDashboardController extends Controller
             ]);
         }
 
+        // Ambil stasiun berdasarkan lokasi yang paling mirip
         $stations = WeatherStation::where(function ($query) use ($city) {
-            $query->where('name', 'like', "%$city%")
-                ->orWhere('location', 'like', "%$city%");
-        })->orderBy('name')->get();
+            $query->whereRaw('LOWER(location) = ?', [$city])
+                  ->orWhereRaw('LOWER(name) = ?', [$city])
+                  ->orWhere('name', 'like', "%$city%")
+                  ->orWhere('location', 'like', "%$city%");
+        })
+        ->orderByRaw("CASE WHEN LOWER(location) = ? THEN 0 ELSE 1 END", [$city])
+        ->orderBy('name')
+        ->get();
 
         $stationIds = $stations->pluck('id');
 
@@ -53,10 +58,10 @@ class WeatherDashboardController extends Controller
             ->get();
 
         $notifications = Notification::latest()->first();
-        $weatherStation = $notifications ? $notifications->weatherStation : null;
-        $stationName = $weatherStation ? $weatherStation->name : 'Stasiun Tidak Dikenal';
-        $stationLocation = $weatherStation ? $weatherStation->location : 'Lokasi Tidak Dikenal';
-        $notificationMessage = "Peringatan banjir untuk wilayah " . $stationName . " yang terletak di " . $stationLocation . ". Harap waspada!";
+        $weatherStation = $notifications?->weatherStation;
+        $stationName = $weatherStation->name ?? 'Stasiun Tidak Dikenal';
+        $stationLocation = $weatherStation->location ?? 'Lokasi Tidak Dikenal';
+        $notificationMessage = "Peringatan banjir untuk wilayah $stationName yang terletak di $stationLocation. Harap waspada!";
         $twitterShareUrl = "https://twitter.com/intent/tweet?text=" . urlencode($notificationMessage);
 
         $forecast7days = [];
@@ -64,22 +69,24 @@ class WeatherDashboardController extends Controller
         if ($stations->isNotEmpty()) {
             try {
                 $apiKey = env('OPENWEATHER_API_KEY');
+                $lat = $stations[0]->latitude;
+                $lon = $stations[0]->longitude;
+
                 $response = Http::get("https://api.openweathermap.org/data/2.5/forecast", [
-                    'q' => $city,
-                    'units' => 'metric',
+                    'lat' => $lat,
+                    'lon' => $lon,
                     'appid' => $apiKey,
+                    'units' => 'metric',
                     'lang' => 'id'
                 ]);
 
                 if ($response->successful()) {
                     $data = $response->json()['list'];
 
-                    // Kelompokkan per tanggal
                     $grouped = collect($data)->groupBy(function ($item) {
                         return Carbon::parse($item['dt_txt'])->format('Y-m-d');
                     });
 
-                    // Ambil hanya tanggal mulai besok (bukan hari ini)
                     $forecast7days = $grouped->filter(function ($items, $date) {
                         return Carbon::parse($date)->greaterThanOrEqualTo(Carbon::tomorrow());
                     })->map(function ($items, $date) {
@@ -90,9 +97,7 @@ class WeatherDashboardController extends Controller
                                 'max' => collect($items)->max('main.temp_max'),
                                 'min' => collect($items)->min('main.temp_min')
                             ],
-                            'rain' => collect($items)->sum(function ($i) {
-                                return $i['rain']['3h'] ?? 0;
-                            })
+                            'rain' => collect($items)->sum(fn($i) => $i['rain']['3h'] ?? 0)
                         ];
                     })->take(5)->values()->toArray();
                 }

@@ -43,39 +43,56 @@
             </form>
         </div>
 
-        {{-- 🌤️ Cuaca dalam 1 Frame --}}
+        {{-- 🌧️ Cuaca Saat Ini --}}
         <div class="bg-white/80 rounded-2xl p-6 shadow-xl space-y-6">
-
-            {{-- ☀️ Cuaca Saat Ini --}}
             <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-6">
                 <div class="flex items-center gap-6">
-                    <div class="text-6xl text-yellow-400">
-                        <i class="fas fa-sun"></i>
-                    </div>
-
                     @if(request('search') && count($rainfalls) > 0)
+                        @php
+                            $kategori = str_replace('_', ' ', strtolower($rainfalls[0]->category ?? ''));
+                            $iconClass = match($kategori) {
+                                'rendah' => 'fa-solid fa-cloud',
+                                'sedang' => 'fa-solid fa-cloud-rain',
+                                'tinggi' => 'fa-solid fa-cloud-showers-heavy',
+                                'sangat tinggi' => 'fa-solid fa-bolt',
+                                default => 'fa-solid fa-question-circle'
+                            };
+                        @endphp
+
+                        <div class="text-6xl text-blue-500">
+                            <i class="{{ $iconClass }}" title="Kategori: {{ ucfirst($kategori) }}"></i>
+                        </div>
+
                         <div>
-                            <h3 class="text-4xl font-bold">{{ $rainfalls[0]->rainfall_amount }}&deg;C</h3>
-                            <p class="text-gray-600 text-sm">{{ $rainfalls[0]->weatherStation->name ?? 'Stasiun tidak diketahui' }}</p>
-                            <p class="text-xs text-gray-500"><i class="fas fa-calendar-alt mr-1"></i> {{ \Carbon\Carbon::parse($rainfalls[0]->recorded_at)->format('d M Y H:i') }}</p>
+                            <h3 class="text-4xl font-bold">{{ $rainfalls[0]->rainfall_amount }} mm</h3>
+                            <p class="text-gray-600 text-sm">
+                                {{ $rainfalls[0]->weatherStation->location ?? 'Lokasi tidak diketahui' }}
+                            </p>
+                            <p class="text-xs text-gray-500">
+                                <i class="fas fa-calendar-alt mr-1"></i>
+                                {{ \Carbon\Carbon::parse($rainfalls[0]->date)->format('d M Y') }}
+                            </p>
+                            <p class="text-sm">
+                                <i class="fas fa-bolt mr-1"></i> Intensitas: {{ $rainfalls[0]->intensity }}
+                            </p>
+                            <p class="text-sm">
+                                <i class="fas fa-exclamation-circle mr-1"></i>
+                                Kategori: {{ ucfirst(str_replace('_', ' ', strtolower($rainfalls[0]->category))) }}
+                            </p>
                         </div>
                     @elseif(request('search'))
                         <div class="text-sm text-gray-600">Data tidak tersedia.</div>
                     @else
-                        <div class="text-sm text-gray-400 italic">Silakan cari kota untuk menampilkan data cuaca.</div>
+                        {{-- ❌ Tidak ada pencarian, tidak tampil icon --}}
+                        <div class="flex items-center gap-3 text-gray-400 italic text-sm">
+                            <i class="fas fa-cloud text-6xl opacity-10"></i>
+                            <span>Silakan cari kota untuk menampilkan data cuaca.</span>
+                        </div>
                     @endif
                 </div>
-
-                @if(request('search') && count($rainfalls) > 0)
-                    <div class="border-l pl-6 text-sm text-gray-700 space-y-1">
-                        <p><i class="fas fa-tint mr-2"></i>Kelembaban: 80%</p>
-                        <p><i class="fas fa-cloud-rain mr-2"></i>Curah Hujan: 10mm</p>
-                        <p><i class="fas fa-wind mr-2"></i>Angin: 12 km/h</p>
-                    </div>
-                @endif
             </div>
 
-            {{-- 🔮 Prakiraan 7 Hari --}}
+            {{-- 🔮 Prakiraan 5 Hari --}}
             @if(!empty($forecast7days))
                 <div class="mt-8">
                     <h3 class="text-lg font-semibold mb-4">
@@ -97,7 +114,6 @@
                     </div>
                 </div>
             @endif
-
         </div>
     </div>
 @endsection
