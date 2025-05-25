@@ -20,10 +20,40 @@
             </form>
         </div>
 
-        {{-- 🗺️ Map Container with Frame --}}
+        {{-- 🗺️ Map Container --}}
         <div class="bg-white/90 rounded-xl shadow-inner p-4 mx-auto max-w-4xl">
             <div id="map" class="w-full rounded-lg" style="height: 400px;"></div>
         </div>
+
+        {{-- 📍 Daftar Wilayah dan Tingkat Rawan --}}
+        @if ($maps->count())
+            <div class="mt-8">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Titik Pantau Banjir</h3>
+                @foreach ($maps as $map)
+                    @php
+                        $badges = [];
+                        $polygonData = is_array($map->polygons) ? $map->polygons : json_decode($map->polygons, true);
+                        foreach ($polygonData as $poly) {
+                            $tingkat = strtolower($poly['tingkat_risiko'] ?? 'tidak diketahui');
+                            $class = match ($tingkat) {
+                                'sangat tinggi' => 'bg-red-600 text-white',
+                                'tinggi' => 'bg-orange-400 text-white',
+                                'sedang' => 'bg-yellow-300 text-gray-800',
+                                'rendah' => 'bg-green-200 text-gray-800',
+                                default => 'bg-gray-300 text-gray-700'
+                            };
+                            $badges[] = "<span class='px-3 py-1 rounded-full text-sm font-semibold {$class}'>" . ucfirst($tingkat) . "</span>";
+                        }
+                    @endphp
+                    <div class="flex justify-between items-center border-b py-2">
+                        <span class="text-gray-900 font-medium">{{ $map->wilayah }}</span>
+                        <div class="flex flex-wrap gap-2">
+                            {!! implode('', $badges) !!}
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
 
     </div>
 </div>
