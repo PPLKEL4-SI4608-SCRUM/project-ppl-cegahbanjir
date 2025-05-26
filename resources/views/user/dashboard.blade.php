@@ -1,126 +1,134 @@
 @extends('layouts.app')
+
 @section('content')
-<div class="max-w-7xl mx-auto px-4 py-6">
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white">Selamat datang, {{ Auth::user()->name }}!</h1>
-        <p class="text-white/80 mt-2">Ini adalah dashboard untuk pengguna <strong>CeBan</strong> (Cegah Banjir)</p>
+<div class="max-w-7xl mx-auto px-4 py-8 md:py-12">
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-8 rounded-2xl shadow-xl text-white mb-10 md:mb-12">
+        <h1 class="text-3xl font-extrabold mb-2">Selamat datang, {{ Auth::user()->name }}!</h1>
+        <p class="text-blue-200 text-lg">Ini adalah dashboard Anda untuk memantau informasi dan tips seputar banjir.</p>
     </div>
-    
-    <!-- Quick Links Section -->
-    <div class="bg-white/80 p-6 rounded-2xl shadow-xl backdrop-blur-md mb-8">
-        <h2 class="text-xl font-semibold text-[#0F1A21] mb-4">Quick Links</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <!-- Card: Laporan Bencana -->
-            <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
-                <h3 class="text-lg font-bold text-gray-800">Laporan Bencana</h3>
-                <p class="text-sm text-gray-600 mt-1">Input & pantau laporan kejadian banjir</p>
-                <a href="{{ route('laporan.index') }}" class="mt-4 inline-block bg-[#FFA404] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#FF8C00] transition">Akses</a>
+
+    <div class="bg-white p-6 rounded-2xl shadow-xl mb-10 md:mb-12">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Akses Cepat</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border-l-4 border-[#FFA404]">
+                <div class="flex items-center justify-center bg-[#FFE8B7] w-12 h-12 rounded-full mb-4 mx-auto">
+                    <i class="fas fa-exclamation-triangle text-[#FFA404] text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 text-center mb-2">Laporan Bencana</h3>
+                <p class="text-sm text-gray-600 text-center mb-4">Input & pantau laporan kejadian banjir Anda.</p>
+                <a href="{{ route('laporan.index') }}" class="block w-full text-center bg-[#FFA404] text-white font-bold py-3 rounded-lg hover:bg-[#FF8C00] transition duration-300">
+                    Akses Laporan
+                </a>
             </div>
-            
-            <!-- Card: Prakiraan Cuaca -->
-            <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
-                <h3 class="text-lg font-bold text-gray-800">Prakiraan Cuaca</h3>
-                <p class="text-sm text-gray-600 mt-1">Lihat prakiraan cuaca terkini</p>
-                <a href="{{ route('user.weather.dashboard') }}" class="mt-4 inline-block bg-[#FFA404] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#FF8C00] transition">Akses</a>
+
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border-l-4 border-blue-500">
+                <div class="flex items-center justify-center bg-blue-100 w-12 h-12 rounded-full mb-4 mx-auto">
+                    <i class="fas fa-cloud-sun-rain text-blue-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 text-center mb-2">Prakiraan Cuaca</h3>
+                <p class="text-sm text-gray-600 text-center mb-4">Lihat prakiraan cuaca terkini di lokasi Anda.</p>
+                <a href="{{ route('user.weather.dashboard') }}" class="block w-full text-center bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition duration-300">
+                    Lihat Cuaca
+                </a>
             </div>
-            
-            <!-- Card: Titik Pantau -->
-            <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition">
-                <h3 class="text-lg font-bold text-gray-800">Titik Pantau</h3>
-                <p class="text-sm text-gray-600 mt-1">Pantau status titik banjir</p>
-                <a href="{{ route('user.map') }}" class="mt-4 inline-block bg-[#FFA404] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#FF8C00] transition">Akses</a>
+
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border-l-4 border-green-500">
+                <div class="flex items-center justify-center bg-green-100 w-12 h-12 rounded-full mb-4 mx-auto">
+                    <i class="fas fa-map-marker-alt text-green-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 text-center mb-2">Titik Pantau</h3>
+                <p class="text-sm text-gray-600 text-center mb-4">Pantau status titik potensi banjir di peta.</p>
+                <a href="{{ route('user.map') }}" class="block w-full text-center bg-green-500 text-white font-bold py-3 rounded-lg hover:bg-green-600 transition duration-300">
+                    Akses Peta
+                </a>
             </div>
         </div>
     </div>
 
-    {{-- ✨ Rekomendasi Artikel Banjir --}}
-            <<div class="bg-white/80 p-6 rounded-2xl shadow-xl backdrop-blur-md mb-8">
-                <h2 class="text-2xl font-extrabold text-blue-700 text-center">Rekomendasi Tindakan Saat Banjir</h2>
-                <p class="text-gray-500 text-center mb-6">Jadi apa yang harus kamu lakukan ketika banjir ada di daerah kamu?</p>
+    {{-- Rekomendasi Artikel Banjir Section --}}
+    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl shadow-xl mb-10 md:mb-12">
+        <h2 class="text-3xl font-extrabold text-indigo-800 text-center mb-4">Rekomendasi Tindakan Saat Banjir</h2>
+        <p class="text-indigo-600 text-lg text-center mb-8">Informasi dan tips penting untuk kesiapan Anda menghadapi banjir.</p>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    @foreach ($rekomendasis as $item)
-                        <div class="bg-white border border-gray-300 rounded-xl text-center shadow-sm hover:shadow-md w-full max-w-xs py-6 px-4 flex flex-col justify-between">
-                            <div class="flex justify-center mb-4">
-                                <img src="{{ url('artikel_icons/' . $item->icon_path) }}"
-                                    alt="{{ $item->title }} icon" class="w-10 h-10">
-                            </div>
-                            <h3 class="text-md font-semibold text-gray-900 mb-2">{{ $item->title }}</h3>
-                            <p class="text-sm text-gray-600 mb-4">
-                                {{ Str::limit(strip_tags($item->description), 100) }}</p>
-                            <div class="text-right">
-                                <a href="{{ route('rekomendasi.show', $item->id) }}"
-                                    class="text-sm font-medium text-blue-500 hover:underline">More info</a>
-                            </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            @foreach ($rekomendasis as $item)
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
+                    <div class="p-6 flex-grow">
+                        <div class="flex justify-center mb-4">
+                            <img src="{{ url('artikel_icons/' . $item->icon_path) }}"
+                                alt="{{ $item->title }} icon" class="w-16 h-16 object-contain">
                         </div>
-                    @endforeach
+                        <h3 class="text-lg font-bold text-gray-900 text-center mb-3">{{ $item->title }}</h3>
+                        <p class="text-sm text-gray-700 text-center leading-relaxed">
+                            {{ Str::limit(strip_tags($item->description), 100) }}
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 p-4 text-center border-t border-gray-100">
+                        <a href="{{ route('rekomendasi.show', $item->id) }}"
+                            class="text-base font-semibold text-blue-600 hover:text-blue-800 hover:underline transition duration-300">
+                            Selengkapnya <i class="fas fa-arrow-right ml-1 text-sm"></i>
+                        </a>
+                    </div>
                 </div>
+            @endforeach
+        </div>
 
-                {{-- Pagination links --}}
-                <div class="mt-6">
-                    {{ $rekomendasis->links() }}
-                </div>
-            </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Kolom Kiri: Informasi Profil & Aktivitas -->
-        <div class="space-y-6">
-            <!-- Profil Card -->
-            <div class="bg-white/90 rounded-xl shadow-lg p-5">
-                <div class="flex items-center mb-4">
-                    <div class="h-16 w-16 rounded-full bg-gray-300 flex items-center justify-center text-2xl font-bold text-gray-600 mr-4">
+        {{-- Pagination links --}}
+        <div class="mt-8">
+            {{ $rekomendasis->links() }}
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="space-y-8">
+            <div class="bg-white p-6 rounded-2xl shadow-xl">
+                <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-4 border-gray-200">Profil Saya</h2>
+                <div class="flex items-center mb-5">
+                    <div class="h-20 w-20 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-4xl font-bold mr-5 flex-shrink-0">
                         {{ substr(Auth::user()->name, 0, 1) }}
                     </div>
                     <div>
-                        <h2 class="text-xl font-semibold text-[#0F1A21]">{{ Auth::user()->name }}</h2>
-                        <p class="text-gray-600">{{ Auth::user()->email }}</p>
+                        <h3 class="text-2xl font-semibold text-gray-900">{{ Auth::user()->name }}</h3>
+                        <p class="text-gray-600 text-base">{{ Auth::user()->email }}</p>
                     </div>
                 </div>
-                <div class="border-t border-gray-200 pt-4 mt-2">
-                    <a href="{{ route('profile.edit') }}" class="bg-[#FFA404] text-white px-4 py-2 rounded-lg inline-block hover:bg-[#FF8C00] transition">
-                        Edit Profil
+                <div class="pt-4 mt-2">
+                    <a href="{{ route('profile.edit') }}" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 font-semibold">
+                        <i class="fas fa-user-edit mr-2"></i> Edit Profil
                     </a>
                 </div>
             </div>
-            
-            <!-- Aktivitas Terbaru -->
-            <div class="bg-white/90 rounded-xl shadow-lg p-5">
-                <h2 class="text-xl font-semibold text-[#0F1A21] mb-4">Aktivitas Terbaru</h2>
-                <div class="space-y-3">
-                    <div class="flex items-start">
-                        <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
+
+            <div class="bg-white p-6 rounded-2xl shadow-xl">
+                <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-4 border-gray-200">Aktivitas Terbaru</h2>
+                <div class="space-y-4">
+                    <div class="flex items-start bg-blue-50 p-4 rounded-lg">
+                        <div class="h-10 w-10 rounded-full bg-blue-200 flex items-center justify-center text-blue-600 flex-shrink-0 mr-4">
+                            <i class="fas fa-clock text-lg"></i>
                         </div>
-                        <div class="ml-3">
-                            <p class="text-sm font-medium text-gray-800">Login terakhir</p>
-                            <p class="text-xs text-gray-500">{{ Auth::user()->created_at->diffForHumans() }}</p>
+                        <div>
+                            <p class="text-base font-semibold text-gray-800">Login terakhir</p>
+                            <p class="text-sm text-gray-600">{{ Auth::user()->created_at->diffForHumans() }}</p>
                         </div>
                     </div>
-                    <div class="flex items-start">
-                        <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-500 flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
+                    <div class="flex items-start bg-green-50 p-4 rounded-lg">
+                        <div class="h-10 w-10 rounded-full bg-green-200 flex items-center justify-center text-green-600 flex-shrink-0 mr-4">
+                            <i class="fas fa-clipboard-list text-lg"></i>
                         </div>
-                        <div class="ml-3">
-                            <p class="text-sm font-medium text-gray-800">Laporan banjir terakhir</p>
-                            <p class="text-xs text-gray-500">Belum ada laporan</p>
+                        <div>
+                            <p class="text-base font-semibold text-gray-800">Laporan banjir terakhir</p>
+                            <p class="text-sm text-gray-600">Belum ada laporan</p> {{-- You can dynamically fetch this --}}
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Nomor Darurat Banjir -->
+
             <x-emergency-numbers />
         </div>
-        
-        <!-- Kolom Tengah: Informasi Cuaca & Peringatan -->
-        <div class="space-y-6">
-           <!-- Informasi Cuaca -->
-            <div class="bg-white/90 rounded-xl shadow-lg p-5">
-                <h2 class="text-xl font-semibold text-[#0F1A21] mb-4">Informasi Cuaca Hari Ini</h2>
+
+        <div class="space-y-8 lg:col-span-2"> {{-- This column now spans 2 for better layout --}}
+            <div class="bg-white p-6 rounded-2xl shadow-xl">
+                <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-4 border-gray-200">Informasi Cuaca Hari Ini</h2>
 
                 @if ($rainfall)
                     @php
@@ -134,13 +142,13 @@
                         };
                     @endphp
 
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div class="text-center md:text-left">
-                            <div class="text-5xl text-[#FFA404] mb-2">
+                    <div class="flex flex-col md:flex-row items-center md:justify-between gap-6">
+                        <div class="text-center md:text-left flex-shrink-0">
+                            <div class="text-6xl text-blue-600 mb-3">
                                 <i class="fas {{ $icon }}"></i>
                             </div>
-                            <div class="text-3xl font-bold">{{ number_format($rainfall->rainfall_amount, 2) }} mm</div>
-                            <div class="text-gray-700 text-base mt-1">
+                            <div class="text-4xl font-extrabold text-gray-900">{{ number_format($rainfall->rainfall_amount, 2) }} mm</div>
+                            <div class="text-lg text-gray-700 mt-2">
                                 {{ $rainfall->weatherStation->name ?? 'Lokasi tidak diketahui' }}
                             </div>
                             <p class="text-sm text-gray-500 mt-1">
@@ -149,67 +157,61 @@
                             </p>
                         </div>
 
-                        <div class="border-t md:border-t-0 md:border-l border-gray-300 pt-4 md:pt-0 md:pl-6 space-y-2">
-                            <div class="flex items-center text-sm text-gray-700">
-                                <i class="fas fa-tint text-gray-500 mr-2"></i>
-                                Curah Hujan: {{ number_format($rainfall->rainfall_amount, 2) }} mm
+                        <div class="w-full md:w-auto border-t md:border-t-0 md:border-l border-gray-200 pt-6 md:pt-0 md:pl-8 space-y-3">
+                            <div class="flex items-center text-lg text-gray-700">
+                                <i class="fas fa-tint text-blue-500 mr-3"></i>
+                                Curah Hujan: <span class="font-semibold ml-1">{{ number_format($rainfall->rainfall_amount, 2) }} mm</span>
                             </div>
-                            <div class="flex items-center text-sm text-gray-700">
-                                <i class="fas fa-exclamation-circle text-gray-500 mr-2"></i>
-                                Kategori: {{ ucfirst($kategori) }}
+                            <div class="flex items-center text-lg text-gray-700">
+                                <i class="fas fa-exclamation-circle text-blue-500 mr-3"></i>
+                                Kategori: <span class="font-semibold ml-1">{{ ucfirst($kategori) }}</span>
                             </div>
                         </div>
                     </div>
                 @else
-                    <p class="text-gray-500 italic">Data cuaca belum tersedia.</p>
+                    <p class="text-gray-600 italic text-center py-4">Data cuaca belum tersedia.</p>
                 @endif
 
-                <div class="mt-4 text-center">
-                    <a href="{{ route('user.weather.dashboard') }}" class="text-[#FFA404] font-medium hover:underline">
-                        Lihat prakiraan lengkap
+                <div class="mt-6 text-center">
+                    <a href="{{ route('user.weather.dashboard') }}" class="inline-block bg-blue-600 text-white font-bold px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300">
+                        <i class="fas fa-chart-area mr-2"></i> Lihat Prakiraan Lengkap
                     </a>
                 </div>
             </div>
-           <!-- Peringatan Banjir -->
-            <div class="bg-white/90 rounded-xl shadow-lg p-5 border-l-4 border-yellow-500">
-                <div class="flex items-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                    </svg>
-                    <h2 class="text-xl font-semibold text-[#0F1A21]">Peringatan Dini</h2>
+
+            <div class="bg-white p-6 rounded-2xl shadow-xl border-l-8 border-yellow-500">
+                <div class="flex items-center mb-5">
+                    <i class="fas fa-exclamation-triangle text-yellow-600 text-3xl mr-4"></i>
+                    <h2 class="text-2xl font-bold text-gray-800">Peringatan Dini Banjir</h2>
                 </div>
                 @if(count($peringatanDini) > 0)
                     @foreach($peringatanDini as $peringatan)
-                         <p class="text-gray-700 mb-3">Waspad hujan lebat disertai angin kencang di wilayah {{ $peringatan['lokasi'] }} dan sekitarnya dalam 24 jam ke depan.</p>
-                        <div class="bg-yellow-50 p-3 rounded-lg mb-2">
+                        <div class="bg-yellow-50 p-5 rounded-lg mb-4 border border-yellow-200">
+                            <p class="text-gray-800 font-medium mb-2">Waspada hujan lebat disertai angin kencang di wilayah <span class="text-yellow-700 font-bold">{{ $peringatan['lokasi'] }}</span> dan sekitarnya dalam 24 jam ke depan.</p>
                             <div class="flex items-center">
-                                <div class="h-2 w-2 rounded-full bg-yellow-500 mr-2"></div>
-                                <span class="text-sm font-medium text-yellow-700">
-                                     <p class="text-xs text-yellow-600 mt-1">
-                                        Status: {{ $peringatan['peringatan'] }}
-                                    </p>
+                                <div class="h-3 w-3 rounded-full bg-yellow-500 mr-3"></div>
+                                <span class="text-sm font-semibold text-yellow-700">
+                                    Status: {{ $peringatan['peringatan'] }}
                                 </span>
                             </div>
                         </div>
                     @endforeach
                 @else
-                    <p class="text-gray-500 italic">Tidak ada peringatan dini saat ini.</p>
+                    <p class="text-gray-600 italic text-center py-4">Tidak ada peringatan dini saat ini.</p>
                 @endif
-                {{-- Tombol Bagikan ke Twitter sekarang menggunakan $twitterShareUrl yang sudah didefinisikan --}}
-                <a href="{{ $twitterShareUrl }}" target="_blank"
-                    class="inline-block px-6 py-3 mt-4 text-white bg-red-600 rounded-full text-center font-semibold hover:bg-red-500 transition-colors duration-150">
-                    Bagikan Info Peringatan ke Twitter
-                </a>
+
+                <div class="mt-6 text-center">
+                    <a href="{{ $twitterShareUrl }}" target="_blank"
+                        class="inline-block px-6 py-3 text-white bg-red-600 rounded-lg text-center font-bold hover:bg-red-700 transition duration-300">
+                        <i class="fab fa-twitter mr-2"></i> Bagikan Info Peringatan ke Twitter
+                    </a>
+                </div>
             </div>
-        </div>
-        
-        <!-- Kolom Kanan: Titik Pantau & Tips Banjir -->
-        <div class="space-y-6">
-            <!-- Titik Pantau Banjir -->
-            <div class="bg-white/90 rounded-xl shadow-lg p-5">
-                <h2 class="text-xl font-semibold text-[#0F1A21] mb-4">Titik Pantau Banjir</h2>
-                <div class="space-y-3">
-                    @foreach ($maps as $map)
+
+            <div class="bg-white p-6 rounded-2xl shadow-xl">
+                <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-4 border-gray-200">Titik Pantau Banjir</h2>
+                <div class="space-y-4">
+                    @forelse ($maps as $map)
                         @php
                             $polygonData = is_array($map->polygons) ? $map->polygons : json_decode($map->polygons, true);
                             $risikos = collect($polygonData)
@@ -221,23 +223,29 @@
                             $badgeHtml = '';
                             foreach ($risikos as $tingkat) {
                                 $badgeHtml .= match(strtolower($tingkat)) {
-                                    'sangat tinggi' => "<span class='px-2 py-1 bg-red-600 text-white rounded-full text-xs'>Sangat Tinggi</span>",
-                                    'tinggi' => "<span class='px-2 py-1 bg-orange-500 text-white rounded-full text-xs'>Tinggi</span>",
-                                    'sedang' => "<span class='px-2 py-1 bg-yellow-300 text-gray-800 rounded-full text-xs'>Sedang</span>",
-                                    'rendah' => "<span class='px-2 py-1 bg-green-200 text-gray-800 rounded-full text-xs'>Rendah</span>",
-                                    default => "<span class='px-2 py-1 bg-gray-300 text-gray-800 rounded-full text-xs'>Tidak diketahui</span>",
+                                    'sangat tinggi' => "<span class='px-3 py-1 bg-red-600 text-white rounded-full text-xs font-semibold'>Sangat Tinggi</span>",
+                                    'tinggi' => "<span class='px-3 py-1 bg-orange-500 text-white rounded-full text-xs font-semibold'>Tinggi</span>",
+                                    'sedang' => "<span class='px-3 py-1 bg-yellow-400 text-gray-900 rounded-full text-xs font-semibold'>Sedang</span>",
+                                    'rendah' => "<span class='px-3 py-1 bg-green-400 text-gray-900 rounded-full text-xs font-semibold'>Rendah</span>",
+                                    default => "<span class='px-3 py-1 bg-gray-300 text-gray-800 rounded-full text-xs font-semibold'>Tidak diketahui</span>",
                                 };
                             }
                         @endphp
-                        <div class="flex justify-between items-center pb-2 border-b border-gray-200">
-                            <span class="font-medium">{{ $map->wilayah }}</span>
-                            <span class="flex gap-1">{!! $badgeHtml !!}</span>
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <span class="font-semibold text-lg text-gray-800 mb-2 sm:mb-0">{{ $map->wilayah }}</span>
+                            <span class="flex gap-2 flex-wrap justify-end">{!! $badgeHtml !!}</span>
                         </div>
-                    @endforeach
+                    @empty
+                        <p class="text-gray-600 italic text-center py-4">Belum ada titik pantau banjir yang tersedia.</p>
+                    @endforelse
                 </div>
-                <div class="mt-4 text-center">
-                    <a href="{{ route('user.map') }}" class="text-[#FFA404] font-medium hover:underline">Lihat semua titik pantau</a>
+                <div class="mt-6 text-center">
+                    <a href="{{ route('user.map') }}" class="inline-block bg-purple-600 text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300">
+                        <i class="fas fa-map-marked-alt mr-2"></i> Lihat Semua Titik Pantau
+                    </a>
                 </div>
             </div>
-
+        </div>
+    </div>
+</div>
 @endsection
