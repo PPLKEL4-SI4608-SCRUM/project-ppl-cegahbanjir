@@ -53,11 +53,24 @@
             <div class="flex items-center space-x-10">
                 <!-- Main Links -->
                 <div class="hidden md:flex space-x-6 text-sm font-medium">
-                    <a href="{{ route('dashboard') }}" class="hover:text-[#FFA404] transition">Home</a>
-                    <a href="{{ route('about') }}" class="hover:text-[#FFA404] transition">About</a>
-                    <a href="{{ route('user.map') }}" class="hover:text-[#FFA404] transition">Interactive Map</a>
-                    <a href="{{ route('user.weather.dashboard') }}" class="hover:text-[#FFA404] transition">Weather</a>
-                    <a href="#" class="hover:text-[#FFA404] transition">Past Floods</a>
+                    <a href="{{ route('dashboard') }}" class="hover:text-[#FFA404] transition flex items-center gap-1">
+                        <i class="fas fa-home"></i> Beranda
+                    </a>
+                    <a href="{{ route('about') }}" class="hover:text-[#FFA404] transition flex items-center gap-1">
+                        <i class="fas fa-info-circle"></i> Tentang
+                    </a>
+                    <a href="{{ route('user.map') }}" class="hover:text-[#FFA404] transition flex items-center gap-1">
+                        <i class="fas fa-map"></i> Peta Interaktif
+                    </a>
+                    <a href="{{ route('user.weather.dashboard') }}" class="hover:text-[#FFA404] transition flex items-center gap-1">
+                        <i class="fas fa-cloud-sun-rain"></i> Cuaca
+                    </a>
+                    <a href="#" class="hover:text-[#FFA404] transition flex items-center gap-1">
+                        <i class="fas fa-history"></i> Riwayat Banjir
+                    </a>
+                    <a href="{{ route('laporan.index') }}" class="hover:text-[#FFA404] transition flex items-center gap-1">
+                        <i class="fas fa-file-alt"></i> Laporan Bencana
+                    </a>
                 </div>
 
                 <!-- Profile Dropdown -->
