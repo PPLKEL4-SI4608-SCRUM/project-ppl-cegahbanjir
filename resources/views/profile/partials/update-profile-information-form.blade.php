@@ -24,7 +24,7 @@
                 id="name" 
                 name="name" 
                 type="text" 
-                class="mt-1 block w-full bg-[#0F1A21] text-white border border-[#FFA404]/40 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                class="mt-1 block w-full bg-[#0F1A21] text-white border border-[#FFA404]/70 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
                 :value="old('name', $user->name)" 
                 required autofocus 
                 autocomplete="name" 
@@ -38,7 +38,7 @@
                 id="email" 
                 name="email" 
                 type="email" 
-                class="mt-1 block w-full bg-[#0F1A21] text-white border border-[#FFA404]/40 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
+                class="mt-1 block w-full bg-[#0F1A21] text-white border border-[#FFA404]/70 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400" 
                 :value="old('email', $user->email)" 
                 required 
                 autocomplete="username" 

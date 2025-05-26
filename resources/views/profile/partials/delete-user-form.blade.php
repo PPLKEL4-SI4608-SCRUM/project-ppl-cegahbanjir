@@ -38,7 +38,7 @@
                     id="modal_password"
                     name="password"
                     type="password"
-                    class="block w-full bg-[#0F1A21] text-white border border-white/20 rounded-md px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-[#FFA404]"
+                    class="block w-full bg-[#0F1A21] text-white border border-[#FFA404]/70 rounded-md px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-[#FFA404]"
                     placeholder="{{ __('Password') }}"
                 />
                 <!-- Eye Icon Button (Same as update password) -->

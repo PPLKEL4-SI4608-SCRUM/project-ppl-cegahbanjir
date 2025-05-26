@@ -21,7 +21,7 @@
 @section('content')
 <!-- Main modal -->
 <div class="max-w-5xl mx-auto p-6">
-<h1 class="text-3xl font-bold mb-6 text-gray-800">Laporan Kejadian Bencana</h1>
+<h1 class="text-3xl font-bold mb-6 text-white-800">Laporan Kejadian Bencana</h1>
     {{-- Flash message --}}
     @if (session('success'))
         <div class="bg-green-100 text-green-800 p-3 rounded mb-6">
@@ -34,7 +34,7 @@
         <form method="POST" action="{{ route('laporan.store') }}" class="space-y-4" enctype="multipart/form-data">
             @csrf
             <div>
-                <label for="location" class="block text-black font-medium bg-[#121B22] px-3 py-1 rounded">Lokasi Kejadian</label>
+                <label for="location" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Lokasi Kejadian</label>
                 <input type="text" id="location" name="location" value="{{ old('location') }}" required
                     class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">
                 <div id="map" class="w-full mt-4 rounded" style="height: 300px;"></div>
@@ -43,7 +43,7 @@
                 @enderror
             </div>
             <div>
-                <label for="description" class="block text-black font-medium bg-[#121B22] px-3 py-1 rounded">Deskripsi Kejadian</label>
+                <label for="description" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Deskripsi Kejadian</label>
                 <textarea id="description" name="description" rows="3" required
                     class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">{{ old('description') }}</textarea>
                 @error('description')
@@ -51,9 +51,7 @@
                 @enderror
             </div>
             <div>
-                <label class="block mb-2 text-black font-medium bg-[#121B22] px-3 py-1 rounded" for="file_input">Foto Lokasi Kejadian</label>
-                <label class="block mb-2 text-black font-medium bg-[#121B22] px-3 py-1 rounded" for="file_input">Foto Lokasi
-                    Kejadian</label>
+                <label class="block mb-2 text-white font-medium bg-[#121B22] px-3 py-1 rounded" for="file_input">Foto Lokasi Kejadian</label>
                 <input
                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                     id="disaster_image" name="disaster_image" type="file" required>
@@ -62,7 +60,7 @@
                 @enderror
             </div>
             <div>
-                <button type="submit" class="bg-[#FFA404] text-black px-4 py-2 rounded hover:bg-[#e69400] transition">
+                <button type="submit" class="bg-[#FFA404] text-white px-4 py-2 rounded hover:bg-[#e69400] transition">
                     Simpan Laporan
                 </button>
             </div>

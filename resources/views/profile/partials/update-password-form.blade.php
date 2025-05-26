@@ -15,7 +15,7 @@
         @method('put')
 
         @php
-            $inputClasses = "mt-1 block w-full px-4 py-3 pr-10 rounded-lg bg-[#0F1A21] border border-[#FFA404]/40 placeholder-[#CCCCCC] text-white focus:outline-none focus:ring-2 focus:ring-[#FFA404] transition";
+            $inputClasses = "mt-1 block w-full px-4 py-3 pr-10 rounded-lg bg-[#0F1A21] border border-[#FFA404]/70 placeholder-[#CCCCCC] text-white focus:outline-none focus:ring-2 focus:ring-[#FFA404] transition";
         @endphp
 
         <!-- Current Password -->

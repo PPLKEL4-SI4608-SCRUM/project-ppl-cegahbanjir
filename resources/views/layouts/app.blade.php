@@ -3,8 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ config('app.name', 'CegahBanjir') }}</title>
     <title>Cegah Banjir - Dashboard</title>
 
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
     <!-- Font: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -53,7 +56,6 @@
                     <a href="{{ route('dashboard') }}" class="hover:text-[#FFA404] transition">Home</a>
                     <a href="#" class="hover:text-[#FFA404] transition">About</a>
                     <a href="{{ route('user.map') }}" class="hover:text-[#FFA404] transition">Interactive Map</a>
-                    <a href="#" class="hover:text-[#FFA404] transition">Data Portal</a>
                     <a href="#" class="hover:text-[#FFA404] transition">Publications</a>
                     <a href="{{ route('user.weather.dashboard') }}" class="hover:text-[#FFA404] transition">Weather</a>
                     <a href="#" class="hover:text-[#FFA404] transition">Past Floods</a>
@@ -77,14 +79,14 @@
                         <x-slot name="content">
                             <div class="bg-[#0F1A21] rounded-md shadow-md py-2">
                                 <x-dropdown-link href="{{ route('profile.edit') }}"
-                                    class="font-poppins text-white hover:bg-[#FFA404]/70 hover:text-white transition px-4 py-2 block">
+                                    class="font-poppins text-white hover:bg-[#FFA404]/30 hover:text-white transition px-4 py-2 block">
                                     {{ __('Edit Profile') }}
                                 </x-dropdown-link>
 
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <x-dropdown-link href="{{ route('logout') }}"
-                                        class="font-poppins text-white hover:bg-[#FFA404]/70 hover:text-white transition px-4 py-2 block"
+                                        class="font-poppins text-white hover:bg-[#FFA404]/30 hover:text-white transition px-4 py-2 block"
                                         onclick="event.preventDefault(); this.closest('form').submit();">
                                         {{ __('Log Out') }}
                                     </x-dropdown-link>
@@ -104,7 +106,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
-    <!-- Tambahan penting agar script JS dari child view aktif -->
     @yield('scripts')
 </body>
 
