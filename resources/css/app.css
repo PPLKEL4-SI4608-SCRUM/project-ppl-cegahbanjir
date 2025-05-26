@@ -2,14 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tambahkan font (opsional) */
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-/* Import Flowbite jika kamu pakai */
 @import 'flowbite';
 @import 'flowbite/dist/flowbite.css';
 
-/* Styling tambahan (opsional) */
 body {
   font-family: 'Poppins', sans-serif;
-}
+} */
