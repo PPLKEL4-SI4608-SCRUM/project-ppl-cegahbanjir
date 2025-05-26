@@ -5,7 +5,6 @@
         <h2 class="text-2xl font-semibold mb-4">Selamat datang, {{ Auth::user()->name }}!</h2>
         <p class="mb-8">Ini adalah panel admin <strong>CeBan (Cegah Banjir)</strong>.</p>
         
-        <!-- 1. Manajemen Data Cuaca -->
         <div class="mb-10">
             <div class="flex items-center gap-3 mb-6">
                 <div class="bg-blue-500 p-2 rounded-lg">
@@ -14,7 +13,6 @@
                 <h3 class="text-xl font-semibold text-gray-800">Manajemen Data Cuaca</h3>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <!-- Card - Stasiun Cuaca -->
                 <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-blue-500">
                     <div class="flex justify-center mb-3">
                         <div class="bg-blue-100 p-3 rounded-full">
@@ -27,7 +25,6 @@
                         <i class="fas fa-broadcast-tower mr-2"></i> Akses
                     </a>
                 </div>
-                <!-- Card - Data Curah Hujan -->
                 <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-blue-500">
                     <div class="flex justify-center mb-3">
                         <div class="bg-blue-100 p-3 rounded-full">
@@ -43,7 +40,6 @@
             </div>
         </div>
 
-        <!-- 2. Manajemen Data Banjir -->
         <div class="mb-10">
             <div class="flex items-center gap-3 mb-6">
                 <div class="bg-cyan-500 p-2 rounded-lg">
@@ -52,7 +48,6 @@
                 <h3 class="text-xl font-semibold text-gray-800">Manajemen Data Banjir</h3>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                <!-- Card - Prediksi Banjir -->
                 <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-cyan-500">
                     <div class="flex justify-center mb-3">
                         <div class="bg-cyan-100 p-3 rounded-full">
@@ -65,7 +60,6 @@
                         <i class="fas fa-chart-line mr-2"></i> Akses
                     </a>
                 </div>
-                <!-- Card - Laporan Bencana -->
                 <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-cyan-500">
                     <div class="flex justify-center mb-3">
                         <div class="bg-cyan-100 p-3 rounded-full">
@@ -78,7 +72,6 @@
                         <i class="fas fa-exclamation-triangle mr-2"></i> Akses
                     </a>
                 </div>
-                <!-- Card - Statistik Laporan Banjir -->
                 <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-cyan-500">
                     <div class="flex justify-center mb-3">
                         <div class="bg-cyan-100 p-3 rounded-full">
@@ -91,7 +84,6 @@
                         <i class="fas fa-chart-bar mr-2"></i> Akses
                     </a>
                 </div>
-                <!-- Card - Notifikasi -->
                 <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-cyan-500">
                     <div class="flex justify-center mb-3">
                         <div class="bg-cyan-100 p-3 rounded-full">
@@ -104,7 +96,6 @@
                         <i class="fas fa-bell mr-2"></i> Akses
                     </a>
                 </div>
-                <!-- Card - Artikel Rekomendasi -->
                 <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-cyan-500">
                     <div class="flex justify-center mb-3">
                         <div class="bg-cyan-100 p-3 rounded-full">
@@ -119,20 +110,18 @@
                 </div>
             </div>
         </div>
-                <!-- Card - Peta Interaktif -->
-                    <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-cyan-500">
-                            <div class="flex justify-center mb-3">
-                                <div class="bg-cyan-100 p-3 rounded-full">
-                                    <i class="fas fa-map text-cyan-600 text-xl"></i>
+                <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-cyan-500">
+                                <div class="flex justify-center mb-3">
+                                    <div class="bg-cyan-100 p-3 rounded-full">
+                                        <i class="fas fa-map text-cyan-600 text-xl"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <h4 class="font-semibold text-lg mb-1">Peta Interaktif</h4>
-                            <p class="text-sm text-gray-600 mb-3">Membuat mapping Peta Interaktif</p>
-                            <a href="{{ route('admin.flood-maps.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
-                                <i class="fas fa-map mr-2"></i> Akses
-                            </a>
-                        </div>  
-        <!-- 3. Manajemen Data Pengguna -->
+                                <h4 class="font-semibold text-lg mb-1">Peta Interaktif</h4>
+                                <p class="text-sm text-gray-600 mb-3">Membuat mapping Peta Interaktif</p>
+                                <a href="{{ route('admin.flood-maps.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
+                                    <i class="fas fa-map mr-2"></i> Akses
+                                </a>
+                            </div> 
         <div class="mb-6 mt-10">
             <div class="flex items-center gap-3 mb-6">
                 <div class="bg-green-500 p-2 rounded-lg">
@@ -141,7 +130,6 @@
                 <h3 class="text-xl font-semibold text-gray-800">Manajemen Data Pengguna</h3>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                <!-- Card - Data Pengguna -->
                 <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-green-500">
                     <div class="flex justify-center mb-3">
                         <div class="bg-green-100 p-3 rounded-full">
@@ -152,6 +140,21 @@
                     <p class="text-sm text-gray-600 mb-3">Kelola data pengguna aplikasi</p>
                     <a href="{{ route('admin.pengguna.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
                         <i class="fas fa-user mr-2"></i> Akses
+                    </a>
+                </div>
+
+                {{-- CORRECTED NEW CARD: Riwayat Banjir --}}
+                <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-purple-500">
+                    <div class="flex justify-center mb-3">
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <i class="fas fa-history text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                    <h4 class="font-semibold text-lg mb-1">Riwayat Banjir</h4>
+                    <p class="text-sm text-gray-600 mb-3">Lihat data riwayat kejadian banjir</p>
+                    {{-- THIS IS THE CORRECTION --}}
+                    <a href="{{ route('admin.flood_history.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
+                        <i class="fas fa-history mr-2"></i> Akses
                     </a>
                 </div>
             </div>

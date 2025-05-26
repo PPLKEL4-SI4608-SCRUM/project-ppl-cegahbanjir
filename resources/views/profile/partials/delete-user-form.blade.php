@@ -1,84 +1,74 @@
 <section class="space-y-6 font-poppins">
-    <!-- Header -->
-    <header class="bg-[#0F1A21]/80 text-white rounded-lg p-6 shadow-md">
-        <h2 class="text-lg font-semibold">
-            {{ __('Delete Account') }}
-        </h2>
-        <p class="mt-1 mb-3 text-sm text-white/90 leading-relaxed">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
-        </p>
+    <header class="bg-[#121B22] text-white rounded-t-lg p-6 shadow-md border-b border-red-500/50"> {{-- Rounded-t-lg for cohesive top, subtle red border for danger --}}
+        <div class="flex items-center gap-3">
+            <div class="bg-red-600 p-3 rounded-full shadow-lg"> {{-- Red circle for danger icon --}}
+                <i class="fas fa-trash-alt text-white text-xl"></i> {{-- Trash icon for deletion --}}
+            </div>
+            <div>
+                <h2 class="text-xl font-bold"> {{-- Slightly larger title --}}
+                    {{ __('Delete Account') }}
+                </h2>
+                <p class="mt-1 text-sm text-gray-300 leading-relaxed"> {{-- Lighter gray for more contrast on dark background --}}
+                    {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+                </p>
+            </div>
+        </div>
 
-        <!-- Button Trigger -->
-        <x-danger-button
+        <button
             x-data=""
             x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-            class="bg-[#FFA404] hover:bg-[#e39603] text-black font-medium px-4 py-2 rounded-md transition"
-        >
+            class="mt-6 bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2.5 rounded-lg transition shadow-md flex items-center justify-center"> {{-- Red button for delete action --}}
+            <i class="fas fa-trash-alt mr-2"></i>
             {{ __('Delete Account') }}
-        </x-danger-button>
+        </button>
     </header>
 
-    <!-- Modal Form -->
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('profile.destroy') }}" class="p-6 bg-[#0F1A21] text-white rounded-lg shadow-lg font-poppins">
+        <form method="post" action="{{ route('profile.destroy') }}" class="p-8 bg-[#121B22] text-white rounded-lg shadow-lg font-poppins"> {{-- Increased padding, solid dark background --}}
             @csrf
             @method('delete')
 
-            <h2 class="text-lg font-semibold text-white">
+            <h2 class="text-2xl font-bold text-white mb-2"> {{-- Increased title size, bold --}}
                 {{ __('Are you sure you want to delete your account?') }}
             </h2>
-            <p class="mt-2 text-sm text-white/90 leading-relaxed">
+            <p class="mt-2 text-sm text-gray-300 leading-relaxed"> {{-- Lighter gray for content text --}}
                 {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
             </p>
 
-            <!-- Password Input -->
             <div class="mt-6 relative">
                 <x-input-label for="modal_password" value="{{ __('Password') }}" class="sr-only" />
                 <input
                     id="modal_password"
                     name="password"
                     type="password"
-                    class="block w-full bg-[#0F1A21] text-white border border-[#FFA404]/70 rounded-md px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-[#FFA404]"
+                    class="block w-full bg-[#0F1A21] text-white border border-gray-600 rounded-lg px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200 ease-in-out" {{-- Red focus ring for danger --}}
                     placeholder="{{ __('Password') }}"
                 />
-                <!-- Eye Icon Button (Same as update password) -->
-                <span class="absolute right-3 inset-y-0 flex items-center cursor-pointer text-white hover:text-[#FFA404]"
+                <span class="absolute right-3 inset-y-0 flex items-center cursor-pointer text-gray-400 hover:text-white transition"
                     onclick="togglePassword('modal_password', 'modalEyeOpen', 'modalEyeClosed')">
-                    <svg id="modalEyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7
-                            -1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                    <svg id="modalEyeClosed" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7A10.05 10.05 0 015.22 6.222M9.88 9.88a3 3 0 104.24 4.24M6.1 6.1l11.8 11.8" />
-                    </svg>
+                    {{-- Using Font Awesome eye icons directly --}}
+                    <i id="modalEyeOpen" class="fas fa-eye h-5 w-5"></i>
+                    <i id="modalEyeClosed" class="fas fa-eye-slash h-5 w-5 hidden"></i>
                 </span>
                 <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2 text-red-400" />
             </div>
 
-            <!-- Actions -->
-            <div class="mt-6 flex justify-end space-x-4">
-                <!-- Cancel Button Re-styled -->
+            <div class="mt-8 flex justify-end space-x-4"> {{-- Increased top margin --}}
                 <button
                     type="button"
                     x-on:click="$dispatch('close')"
-                    class="bg-black text-white font-medium px-4 py-2 rounded-md transition hover:bg-red-600 hover:text-white"
-                >
+                    class="bg-gray-700 text-white font-semibold px-6 py-2.5 rounded-lg transition hover:bg-gray-600 shadow-md"> {{-- Dark gray cancel button --}}
+                    <i class="fas fa-times mr-2"></i> {{-- Times icon --}}
                     {{ __('Cancel') }}
                 </button>
 
-                <x-danger-button class="bg-[#FFA404] hover:bg-[#e39603] text-black font-medium px-4 py-2 rounded-md transition">
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2.5 rounded-lg transition shadow-md"> {{-- Red delete button --}}
+                    <i class="fas fa-trash-alt mr-2"></i> {{-- Trash icon --}}
                     {{ __('Delete Account') }}
-                </x-danger-button>
+                </button>
             </div>
         </form>
 
-        <!-- Toggle Password Script -->
         <script>
             function togglePassword(inputId, openIconId, closedIconId) {
                 const input = document.getElementById(inputId);

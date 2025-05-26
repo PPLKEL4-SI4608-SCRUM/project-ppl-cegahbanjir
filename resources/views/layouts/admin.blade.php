@@ -6,14 +6,10 @@
     <title>{{ config('app.name', 'Admin CegahBanjir') }}</title>
     <title>@yield('title') - Admin CeBan</title>
 
-    <!-- Favicon -->
     <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
-    <!-- Font: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Preload background -->
     <link rel="preload" as="image" href="{{ asset('images/background-banjir2.png') }}">
-    <!-- Custom Styles -->
     <style>
         .font-poppins {
             font-family: 'Poppins', sans-serif;
@@ -21,6 +17,10 @@
         body {
             background-color: #0F1A21;
             transition: background 0.3s ease-in-out;
+            /* Flexbox for sticky footer */
+            display: flex; /* NEW */
+            flex-direction: column; /* NEW */
+            min-height: 100vh; /* Ensure body takes full viewport height */
         }
         .dropdown-menu {
             min-width: 220px;
@@ -36,21 +36,16 @@
 </head>
 <body class="bg-cover bg-center min-h-screen text-white font-poppins"
       style="background-image: url('{{ asset('images/background-banjir2.png') }}')">
-    <!-- Navbar Admin -->
     <nav class="bg-[#0F1A21]/80 shadow-md">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <!-- Brand -->
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
                 <img src="{{ asset('images/logo.png') }}" alt="CeBan" class="w-10 h-10 rounded-full object-cover">
                 <span class="text-2xl font-semibold tracking-wide text-white">CeBan <span class="text-[#FFA404]">Admin</span></span>
             </a>
-            <!-- Menu & Profile -->
             <div class="flex items-center space-x-10">
-                <!-- Admin Menu -->
                 <div class="hidden md:flex space-x-6 text-sm font-medium">
                     <a href="{{ route('admin.dashboard') }}" class="hover:text-[#FFA404] transition">Dashboard</a>
                     
-                    <!-- 1. Manajemen Data Cuaca -->
                     <div class="relative dropdown">
                         <button class="hover:text-[#FFA404] transition focus:outline-none flex items-center gap-1">
                             <i class="fas fa-cloud-sun text-sm"></i>
@@ -69,7 +64,6 @@
                         </div>
                     </div>
 
-                    <!-- 2. Manajemen Data Banjir -->
                     <div class="relative dropdown">
                         <button class="hover:text-[#FFA404] transition focus:outline-none flex items-center gap-1">
                             <i class="fas fa-water text-sm"></i>
@@ -100,7 +94,6 @@
                         </div>
                     </div>
 
-                    <!-- 3. Manajemen Data Pengguna -->
                     <div class="relative dropdown">
                         <button class="hover:text-[#FFA404] transition focus:outline-none flex items-center gap-1">
                             <i class="fas fa-users text-sm"></i>
@@ -112,18 +105,21 @@
                                 <i class="fas fa-user text-sm"></i>
                                 Data Pengguna
                             </a>
+                            <a href="{{ route('admin.flood_history.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition flex items-center gap-2">
+                                <i class="fas fa-history text-sm"></i>
+                                Riwayat Banjir
+                            </a>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Profile -->
                 <div class="relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button class="flex items-center space-x-2 text-sm font-medium hover:text-[#FFA404] focus:outline-none transition">
                                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                          d="M5.121 17.804A8 8 0 0112 4a8 8 0 016.879 13.804M15 21H9a3 3 0 01-3-3v-1a6 6 0 0112 0v1a3 3 0 01-3 3z"/>
+                                            d="M5.121 17.804A8 8 0 0112 4a8 8 0 016.879 13.804M15 21H9a3 3 0 01-3-3v-1a6 6 0 0112 0v1a3 3 0 01-3 3z"/>
                                 </svg>
                                 <span>{{ Auth::user()->name }}</span>
                                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke="currentColor">
@@ -149,9 +145,7 @@
         </div>
     </nav>
     
-    <!-- Flash Messages -->
-    <main class="py-10 px-6">
-        @if(session('success'))
+    <main class="py-10 px-6 flex-grow"> @if(session('success'))
             <div class="bg-green-500/80 text-white px-4 py-3 rounded mb-4 shadow-md">
                 {{ session('success') }}
             </div>
@@ -169,7 +163,6 @@
         @yield('content')
     </main>
     
-    <!-- Footer -->
     <footer class="bg-[#0F1A21]/90 text-white py-6 mt-12">
         <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-4">
             <div>
