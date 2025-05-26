@@ -145,21 +145,7 @@
         </div>
     </nav>
     
-    <main class="py-10 px-6 flex-grow"> @if(session('success'))
-            <div class="bg-green-500/80 text-white px-4 py-3 rounded mb-4 shadow-md">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if(session('warning'))
-            <div class="bg-yellow-500/80 text-white px-4 py-3 rounded mb-4 shadow-md">
-                {{ session('warning') }}
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="bg-red-500/80 text-white px-4 py-3 rounded mb-4 shadow-md">
-                {{ session('error') }}
-            </div>
-        @endif
+    <main class="py-10 px-6 flex-grow"> 
         @yield('content')
     </main>
     
