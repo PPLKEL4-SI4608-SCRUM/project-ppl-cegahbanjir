@@ -56,7 +56,6 @@
                     <a href="{{ route('dashboard') }}" class="hover:text-[#FFA404] transition">Home</a>
                     <a href="{{ route('about') }}" class="hover:text-[#FFA404] transition">About</a>
                     <a href="{{ route('user.map') }}" class="hover:text-[#FFA404] transition">Interactive Map</a>
-                    <a href="#" class="hover:text-[#FFA404] transition">Publications</a>
                     <a href="{{ route('user.weather.dashboard') }}" class="hover:text-[#FFA404] transition">Weather</a>
                     <a href="#" class="hover:text-[#FFA404] transition">Past Floods</a>
                 </div>
