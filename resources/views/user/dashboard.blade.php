@@ -2,12 +2,13 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 py-8 md:py-12">
-    <div class="bg-gradient-to-r from-yellow-600 to-orange-600 p-8 rounded-2xl shadow-xl text-white mb-10 md:mb-12">
+    {{-- Perubahan di sini: Menggunakan gradien biru tua ke abu-abu gelap --}}
+    <div class="bg-gradient-to-r from-orange-500 to-yellow-500 p-8 rounded-2xl shadow-xl text-white mb-10 md:mb-12">
         <h1 class="text-3xl font-extrabold mb-2">Selamat datang, {{ Auth::user()->name }}!</h1>
-        <p class="text-orange-200 text-lg">Ini adalah dashboard Anda untuk memantau informasi dan tips seputar banjir.</p>
+        <p class="text-white text-lg">Ini adalah dashboard Anda untuk memantau informasi dan tips seputar banjir.</p>
     </div>
 
-    <div class="bg-white  p-6 rounded-2xl shadow-xl mb-10 md:mb-12">
+    <div class="bg-white p-6 rounded-2xl shadow-xl mb-10 md:mb-12">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Akses Cepat</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border-l-4 border-[#FFA404]">
