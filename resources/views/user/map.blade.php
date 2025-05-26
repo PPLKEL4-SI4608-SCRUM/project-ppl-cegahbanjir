@@ -39,7 +39,7 @@
                                 'sangat tinggi' => 'bg-red-600 text-white',
                                 'tinggi' => 'bg-orange-400 text-white',
                                 'sedang' => 'bg-yellow-300 text-gray-800',
-                                'rendah' => 'bg-green-200 text-gray-800',
+                                'rendah' => 'bg-green-500 text-gray-800',
                                 default => 'bg-gray-300 text-gray-700'
                             };
                             $badges[] = "<span class='px-3 py-1 rounded-full text-sm font-semibold {$class}'>" . ucfirst($tingkat) . "</span>";

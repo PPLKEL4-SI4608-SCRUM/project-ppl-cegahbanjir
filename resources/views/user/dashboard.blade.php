@@ -2,12 +2,12 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 py-8 md:py-12">
-    <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-8 rounded-2xl shadow-xl text-white mb-10 md:mb-12">
+    <div class="bg-gradient-to-r from-yellow-600 to-orange-600 p-8 rounded-2xl shadow-xl text-white mb-10 md:mb-12">
         <h1 class="text-3xl font-extrabold mb-2">Selamat datang, {{ Auth::user()->name }}!</h1>
-        <p class="text-blue-200 text-lg">Ini adalah dashboard Anda untuk memantau informasi dan tips seputar banjir.</p>
+        <p class="text-orange-200 text-lg">Ini adalah dashboard Anda untuk memantau informasi dan tips seputar banjir.</p>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-xl mb-10 md:mb-12">
+    <div class="bg-white  p-6 rounded-2xl shadow-xl mb-10 md:mb-12">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Akses Cepat</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border-l-4 border-[#FFA404]">
@@ -46,13 +46,13 @@
     </div>
 
     {{-- Rekomendasi Artikel Banjir Section --}}
-    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl shadow-xl mb-10 md:mb-12">
+    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl shadow-xl mb-10 md:mb-12 ">
         <h2 class="text-3xl font-extrabold text-indigo-800 text-center mb-4">Rekomendasi Tindakan Saat Banjir</h2>
         <p class="text-indigo-600 text-lg text-center mb-8">Informasi dan tips penting untuk kesiapan Anda menghadapi banjir.</p>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 ">
             @foreach ($rekomendasis as $item)
-                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col border-l-4 border-blue-500">
                     <div class="p-6 flex-grow">
                         <div class="flex justify-center mb-4">
                             <img src="{{ url('artikel_icons/' . $item->icon_path) }}"
@@ -81,7 +81,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="space-y-8">
-            <div class="bg-white p-6 rounded-2xl shadow-xl">
+            <div class="bg-white p-6 rounded-2xl shadow-xl border-l-8 border-indigo-700">
                 <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-4 border-gray-200">Profil Saya</h2>
                 <div class="flex items-center mb-5">
                     <div class="h-20 w-20 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-4xl font-bold mr-5 flex-shrink-0">
@@ -99,7 +99,7 @@
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-xl">
+            <div class="bg-white p-6 rounded-2xl shadow-xl border-l-8 border-blue-600">
                 <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-4 border-gray-200">Aktivitas Terbaru</h2>
                 <div class="space-y-4">
                     <div class="flex items-start bg-blue-50 p-4 rounded-lg">
@@ -127,8 +127,8 @@
         </div>
 
         <div class="space-y-8 lg:col-span-2"> {{-- This column now spans 2 for better layout --}}
-            <div class="bg-white p-6 rounded-2xl shadow-xl">
-                <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-4 border-gray-200">Informasi Cuaca Hari Ini</h2>
+            <div class="bg-white p-6 rounded-2xl shadow-xl border-l-8 border-blue-500">
+                <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-4 border-gray-200 ">Informasi Cuaca Hari Ini</h2>
 
                 @if ($rainfall)
                     @php
@@ -202,13 +202,13 @@
 
                 <div class="mt-6 text-center">
                     <a href="{{ $twitterShareUrl }}" target="_blank"
-                        class="inline-block px-6 py-3 text-white bg-red-600 rounded-lg text-center font-bold hover:bg-red-700 transition duration-300">
-                        <i class="fab fa-twitter mr-2"></i> Bagikan Info Peringatan ke Twitter
+                        class="inline-block px-6 py-3 text-white bg-[#FF8C00] rounded-lg text-center font-bold hover:bg-[#855821] transition duration-300">
+                        <i class="fab fa-twitter mr-2"></i> Bagikan Info Peringatan ke X
                     </a>
                 </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-xl">
+            <div class="bg-white p-6 rounded-2xl shadow-xl border-l-8 border-purple-500">
                 <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-4 border-gray-200">Titik Pantau Banjir</h2>
                 <div class="space-y-4">
                     @forelse ($maps as $map)
