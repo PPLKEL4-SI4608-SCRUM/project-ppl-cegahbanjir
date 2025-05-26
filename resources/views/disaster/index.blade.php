@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         #map, .modal-map {
             height: 300px;
@@ -100,6 +101,18 @@
         body.overflow-hidden {
             overflow: hidden !important;
         }
+
+        /* === Tambahan untuk background blur dan transparan pada 3 container utama === */
+        .blur-bg {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            box-shadow:
+                0 10px 15px -3px rgb(0 0 0 / 0.1),
+                0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border: 1px solid rgba(156, 163, 175, 0.3);
+        }
     </style>
 @endsection
 
@@ -107,18 +120,20 @@
     <div class="max-w-5xl mx-auto p-6">
         <h1 class="text-3xl font-bold mb-6 text-white">Laporan Kejadian Bencana</h1>
 
+        {{-- Notifikasi sukses dengan blur background --}}
         @if (session('success'))
-            <div class="bg-green-100 text-green-800 p-3 rounded mb-6">
+            <div class="blur-bg p-6 mb-10 md:mb-12">
                 {{ session('success') }}
             </div>
         @endif
 
-        <div class="bg-white rounded-lg shadow p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 text-black-700">Tambah Laporan Baru</h2>
+        {{-- Form tambah laporan dengan blur background --}}
+        <div class="blur-bg p-6 mb-10 md:mb-12">
+           <h2 class="text-xl font-semibold mb-4 text-black-700">Tambah Laporan Baru</h2>
             <form method="POST" action="{{ route('laporan.store') }}" class="space-y-4" enctype="multipart/form-data">
                 @csrf
                 <div>
-                    <label for="location" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Lokasi Kejadian</label>
+                    <label for="location" class="block text-gray-800 font-medium bg-[#F1F5F9] px-3 py-1 rounded">Lokasi Kejadian</label>
                     <input type="text" id="location" name="location" value="{{ old('location') }}" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">
                     <div id="map" class="w-full mt-4 rounded"></div>
                     @error('location')
@@ -126,14 +141,14 @@
                     @enderror
                 </div>
                 <div>
-                    <label for="description" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Deskripsi Kejadian</label>
+                    <label for="description" class="block text-gray-800 font-medium bg-[#F1F5F9] px-3 py-1 rounded">Deskripsi Kejadian</label>
                     <textarea id="description" name="description" rows="3" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">{{ old('description') }}</textarea>
                     @error('description')
                         <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
                 <div>
-                    <label class="block mb-2 text-white font-medium bg-[#121B22] px-3 py-1 rounded" for="disaster_image">Foto Lokasi Kejadian</label>
+                    <label class="block mb-2 text-gray-800 font-medium bg-[#F1F5F9] px-3 py-1 rounded" for="disaster_image">Foto Lokasi Kejadian</label>
                     <div class="custom-file-input-wrapper">
                         <input class="custom-file-input" id="disaster_image" name="disaster_image" type="file" required>
                         <label for="disaster_image" class="custom-file-label">
@@ -155,7 +170,8 @@
             </form>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
+        {{-- Riwayat laporan juga pakai blur background sekarang --}}
+        <div class="blur-bg p-6 rounded-lg shadow mb-10 md:mb-12">
             <h2 class="text-xl font-semibold mb-4 text-gray-700">Riwayat Laporan</h2>
             @if ($reports->isEmpty())
                 <p class="text-gray-600">Belum ada laporan yang tersedia.</p>
