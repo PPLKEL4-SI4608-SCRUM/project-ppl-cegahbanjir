@@ -2,8 +2,8 @@
 
 @section('head')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-    {{-- Leaflet Geocoding Control CSS --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         #map, .modal-map {
             height: 300px;
@@ -16,7 +16,6 @@
             margin-left: 10px;
         }
 
-        /* Custom File Input Styling */
         .custom-file-input-wrapper {
             position: relative;
             display: inline-block;
@@ -34,45 +33,72 @@
             height: 100%;
             opacity: 0;
             cursor: pointer;
-            z-index: 10; /* Ensure it's clickable */
+            z-index: 10;
         }
 
         .custom-file-label {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* To push icon to the right */
-            background-color: #374151; /* Darker gray for better contrast */
-            color: #d1d5db; /* Light gray text */
-            border: 1px solid #4b5563; /* Darker border */
+            justify-content: space-between;
+            background-color: #374151;
+            color: #d1d5db;
+            border: 1px solid #4b5563;
             border-radius: 0.5rem;
-            padding: 0.625rem 1rem; /* Equivalent to px-3 py-2.5 */
-            font-size: 0.875rem; /* text-sm */
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
             line-height: 1.25rem;
-            overflow: hidden; /* Hide overflow text */
-            white-space: nowrap; /* Prevent text wrap */
-            text-overflow: ellipsis; /* Add ellipsis for long file names */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
         }
 
         .custom-file-label:hover {
-            background-color: #4b5563; /* Slightly lighter on hover */
+            background-color: #4b5563;
             border-color: #6b7280;
         }
 
         .custom-file-label svg {
-            flex-shrink: 0; /* Prevent icon from shrinking */
-            margin-left: 0.5rem; /* Space between text and icon */
+            flex-shrink: 0;
+            margin-left: 0.5rem;
         }
 
-        /* Ensure modal backdrop covers everything */
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-            z-index: 49; /* Just below the modal's z-index */
+        .modal-content-container {
+            background-color: #fff;
+            color: #1a202c;
+            position: relative;
+            z-index: 60;
+        }
+        .dark .modal-content-container {
+            background-color: rgba(55, 65, 81, 5);
+            color: #d1d5db;
+        }
+
+        .leaflet-control-geocoder .leaflet-control-geocoder-form input {
+            font-family: 'Poppins', sans-serif !important;
+            border-radius: 0.25rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            border: 1px solid #ccc;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .leaflet-control-geocoder-form.geocoding-icon-throbber input {
+            background-image: url('{{ asset('images/loading-cute.gif') }}');
+            background-repeat: no-repeat;
+            background-position: calc(100% - 8px) center;
+            background-size: 20px 20px;
+            padding-right: 30px;
+        }
+
+        [data-modal-show][data-modal-target],
+        [data-modal-toggle][data-modal-target] {
+            cursor: pointer;
+        }
+
+        body.overflow-hidden {
+            overflow: hidden !important;
         }
     </style>
 @endsection
@@ -81,14 +107,12 @@
     <div class="max-w-5xl mx-auto p-6">
         <h1 class="text-3xl font-bold mb-6 text-white">Laporan Kejadian Bencana</h1>
 
-        {{-- Flash Messages --}}
         @if (session('success'))
             <div class="bg-green-100 text-green-800 p-3 rounded mb-6">
                 {{ session('success') }}
             </div>
         @endif
 
-        {{-- Form Tambah Laporan Baru --}}
         <div class="bg-white rounded-lg shadow p-6 mb-8">
             <h2 class="text-xl font-semibold mb-4 text-black-700">Tambah Laporan Baru</h2>
             <form method="POST" action="{{ route('laporan.store') }}" class="space-y-4" enctype="multipart/form-data">
@@ -131,7 +155,6 @@
             </form>
         </div>
 
-        {{-- Daftar Laporan --}}
         <div class="bg-white rounded-lg shadow p-6">
             <h2 class="text-xl font-semibold mb-4 text-gray-700">Riwayat Laporan</h2>
             @if ($reports->isEmpty())
@@ -141,7 +164,7 @@
                     <table class="w-full border-collapse">
                         <thead>
                             <tr class="bg-gray-100 text-left">
-                                <th class="px-4 py-2 border">#</th>
+                                <th class="px-4 py-2 border">No.</th>
                                 <th class="px-4 py-2 border">Nama Pelapor</th>
                                 <th class="px-4 py-2 border">Lokasi</th>
                                 <th class="px-4 py-2 border">Deskripsi</th>
@@ -167,7 +190,7 @@
                                         @elseif($report->status == 'pending')
                                             <span class="text-yellow-600 font-semibold">Pending</span>
                                         @else
-                                            <span class="text-blue-600 font-semibold">Approved</span>
+                                            <span class="text-blue-400 font-semibold">Approved</span>
                                         @endif
                                     </td>
                                     <td class="px-4 py-2 border">{{ $report->created_at->format('d M Y, H:i') }}</td>
@@ -177,100 +200,6 @@
                                         </button>
                                     </td>
                                 </tr>
-
-                                {{-- Detail/Edit Modal for each report --}}
-                                {{-- Added a backdrop and adjusted z-index for the modal --}}
-                                <div id="default-modal{{ $report->id }}" tabindex="-1" aria-hidden="true" class="fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full overflow-y-auto overflow-x-hidden hidden">
-                                    <div class="modal-backdrop"></div> {{-- Custom backdrop --}}
-                                    <div class="relative p-4 w-full max-w-2xl max-h-full z-50"> {{-- Ensure modal content has high z-index --}}
-                                        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                                            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Detail</h3>
-                                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal{{ $report->id }}">
-                                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                                    </svg>
-                                                    <span class="sr-only">Close modal</span>
-                                                </button>
-                                            </div>
-                                            <div class="p-4 md:p-5 space-y-4">
-                                                <form method="POST" action="{{ route('laporan.update', $report->id) }}" class="space-y-4" enctype="multipart/form-data">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div>
-                                                        <label for="location_{{ $report->id }}" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Lokasi Kejadian</label>
-                                                        <input type="text" id="location_{{ $report->id }}" name="location" value="{{ $report->location }}" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">
-                                                        <div id="modal-map-{{ $report->id }}" class="modal-map w-full mt-4 rounded"></div>
-                                                        @error('location')
-                                                            <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
-                                                        @enderror
-                                                    </div>
-                                                    <div>
-                                                        <label for="description_{{ $report->id }}" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Deskripsi Kejadian</label>
-                                                        <textarea id="description_{{ $report->id }}" name="description" rows="3" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">{{ $report->description }}</textarea>
-                                                        @error('description')
-                                                            <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
-                                                        @enderror
-                                                    </div>
-                                                    <div>
-                                                        <label for="status_{{ $report->id }}" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Status</label>
-                                                        <select id="status_{{ $report->id }}" name="status" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">
-                                                            <option value="">Pilih Status</option>
-                                                            <option value="rejected" {{ $report->status == 'rejected' ? 'selected' : '' }}>Merah (Rejected)</option>
-                                                            <option value="pending" {{ $report->status == 'pending' ? 'selected' : '' }}>Kuning (Pending)</option>
-                                                            <option value="approved" {{ $report->status == 'approved' ? 'selected' : '' }}>Biru (Approved)</option>
-                                                        </select>
-                                                        @error('status')
-                                                            <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
-                                                        @enderror
-                                                    </div>
-                                                    <div>
-                                                        <label class="block mb-2 text-white font-medium bg-[#121B22] px-3 py-1 rounded" for="disaster_image_{{ $report->id }}">Foto Lokasi Kejadian</label>
-                                                        <div class="custom-file-input-wrapper">
-                                                            <input class="custom-file-input" id="disaster_image_{{ $report->id }}" name="disaster_image" type="file">
-                                                            <label for="disaster_image_{{ $report->id }}" class="custom-file-label">
-                                                                <span id="disaster_image_filename_{{ $report->id }}">Pilih file...</span>
-                                                                <svg class="w-5 h-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
-                                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 8h6m-3 3V5m-3 6H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5l2-3h9a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h6l2-3h7a1 1 0 0 1 1 1v7.5"/>
-                                                                </svg>
-                                                            </label>
-                                                        </div>
-                                                        @error('disaster_image')
-                                                            <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
-                                                        @enderror
-                                                    </div>
-                                                    <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                                        <button type="submit" class="text-white bg-[#FFA404] hover:bg-[#e69400] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">update</button>
-                                                        <button type="button" data-modal-target="popup-modal{{ $report->id }}" data-modal-toggle="popup-modal{{ $report->id }}" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-red rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Delete</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-
-                                            {{-- Delete Confirmation Modal --}}
-                                            <div id="popup-modal{{ $report->id }}" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                                <div class="relative p-4 w-full max-w-md max-h-full">
-                                                    <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal{{ $report->id }}">
-                                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                                            </svg>
-                                                            <span class="sr-only">Close modal</span>
-                                                        </button>
-                                                        <div class="p-4 md:p-5 text-center">
-                                                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this Data?</h3>
-                                                            <form action="{{ route('laporan.destroy', $report->id) }}" method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">Yes, I'm sure</button>
-                                                            </form>
-                                                            <button data-modal-hide="popup-modal{{ $report->id }}" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             @endforeach
                         </tbody>
                     </table>
@@ -278,15 +207,114 @@
             @endif
         </div>
     </div>
+
+    {{-- Detail/Edit Modals (Moved outside the loop for better structure) --}}
+    @foreach ($reports as $report)
+        <div id="default-modal{{ $report->id }}" tabindex="-1" aria-hidden="true" class="fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full overflow-y-auto overflow-x-hidden hidden bg-gray-900 bg-opacity-50">
+            <div class="relative p-4 w-full max-w-2xl max-h-full">
+                <div class="relative rounded-lg shadow-sm modal-content-container">
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Detail</h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal{{ $report->id }}">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <div class="p-4 md:p-5 space-y-4">
+                        <form method="POST" action="{{ route('laporan.update', $report->id) }}" class="space-y-4" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <div>
+                                <label for="location_{{ $report->id }}" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Lokasi Kejadian</label>
+                                <input type="text" id="location_{{ $report->id }}" name="location" value="{{ $report->location }}" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">
+                                <div id="modal-map-{{ $report->id }}" class="modal-map w-full mt-4 rounded"></div>
+                                @error('location')
+                                    <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="description_{{ $report->id }}" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Deskripsi Kejadian</label>
+                                <textarea id="description_{{ $report->id }}" name="description" rows="3" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">{{ $report->description }}</textarea>
+                                @error('description')
+                                    <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="status_{{ $report->id }}" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Status</label>
+                                <select id="status_{{ $report->id }}" name="status" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">
+                                    <option value="">Pilih Status</option>
+                                    <option value="rejected" {{ $report->status == 'rejected' ? 'selected' : '' }}>Merah (Rejected)</option>
+                                    <option value="pending" {{ $report->status == 'pending' ? 'selected' : '' }}>Kuning (Pending)</option>
+                                    <option value="approved" {{ $report->status == 'approved' ? 'selected' : '' }}>Biru (Approved)</option>
+                                </select>
+                                @error('status')
+                                    <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-white font-medium bg-[#121B22] px-3 py-1 rounded" for="disaster_image_{{ $report->id }}">Foto Lokasi Kejadian</label>
+                                <div class="custom-file-input-wrapper">
+                                    <input class="custom-file-input" id="disaster_image_{{ $report->id }}" name="disaster_image" type="file">
+                                    <label for="disaster_image_{{ $report->id }}" class="custom-file-label">
+                                        <span id="disaster_image_filename_{{ $report->id }}">Pilih file...</span>
+                                        <svg class="w-5 h-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 8h6m-3 3V5m-3 6H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5l2-3h9a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h6l2-3h7a1 1 0 0 1 1 1v7.5"/>
+                                        </svg>
+                                    </label>
+                                </div>
+                                @error('disaster_image')
+                                    <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                <button type="submit" class="text-white bg-[#FFA404] hover:bg-[#e69400] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Update</button>
+                                <button type="button" data-modal-target="popup-modal{{ $report->id }}" data-modal-toggle="popup-modal{{ $report->id }}" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-red rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Delete Confirmation Modal (Now a sibling of the detail modal) --}}
+        <div id="popup-modal{{ $report->id }}" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-900 bg-opacity-50">
+            <div class="relative p-4 w-full max-w-md max-h-full">
+                <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                    <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal{{ $report->id }}">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                    <div class="p-4 md:p-5 text-center">
+                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this Data?</h3>
+                        {{-- BEGIN MODIFICATION --}}
+                        <div class="flex justify-center items-center space-x-4"> {{-- Added flexbox for side-by-side alignment and spacing --}}
+                            <form action="{{ route('laporan.destroy', $report->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">Yes, I'm sure</button>
+                            </form>
+                            <button data-modal-hide="popup-modal{{ $report->id }}" type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
+                        </div>
+                        {{-- END MODIFICATION --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
 @endsection
 
 @section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    {{-- Leaflet Geocoding Control JS --}}
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Function to reverse geocode and update location input
             function updateLocationInput(lat, lon, inputElementId) {
                 fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`)
                     .then(response => response.json())
@@ -299,15 +327,13 @@
                     });
             }
 
-            // --- Map for "Tambah Laporan Baru" Form ---
-            var map = L.map('map').setView([-6.200000, 106.816666], 10); // Default to Jakarta
+            var map = L.map('map').setView([-6.200000, 106.816666], 10);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
             }).addTo(map);
 
             var marker;
 
-            // Add Geocoding control to the main map
             var geocoder = L.Control.Geocoder.nominatim();
             var searchControl = L.Control.geocoder({
                 geocoder: geocoder,
@@ -337,45 +363,52 @@
                 updateLocationInput(lat, lon, 'location');
             });
 
-            // --- Initialize maps for update modals when they are opened ---
+            let openModalsCount = 0;
+            const mainMapElement = document.getElementById('map');
+
             document.querySelectorAll('[data-modal-toggle^="default-modal"]').forEach(button => {
                 button.addEventListener('click', function() {
+                    openModalsCount++;
+                    if (mainMapElement) {
+                        mainMapElement.style.display = 'none'; // Hide main map
+                    }
+
                     const modalId = this.dataset.modalTarget;
                     const reportId = modalId.replace('default-modal', '');
                     const mapContainerId = `modal-map-${reportId}`;
                     const locationInputId = `location_${reportId}`;
 
-                    // Show the modal
-                    document.getElementById(modalId).classList.remove('hidden');
+                    document.body.classList.add('overflow-hidden');
 
                     setTimeout(() => {
                         let modalMapElement = document.getElementById(mapContainerId);
 
-                        // Destroy existing map instance if it exists to prevent re-initialization issues
-                        if (modalMapElement._leaflet_id) {
+                        if (modalMapElement && modalMapElement._leaflet_id) {
                             modalMapElement._leaflet_map.remove();
+                            modalMapElement._leaflet_map = null;
                         }
+                        
+                        modalMapElement.style.display = 'block';
 
-                        // Try to parse coordinates from the existing location value
+
                         const initialLocationInput = document.getElementById(locationInputId);
-                        let initialLat = -6.200000; // Default to Jakarta
+                        let initialLat = -6.200000;
                         let initialLon = 106.816666;
 
                         const locationValue = initialLocationInput.value;
-                        // Regex to find coordinates like "latitude, longitude"
                         const latLonMatch = locationValue.match(/(-?\d+\.\d+),\s*(-?\d+\.\d+)/);
 
                         if (latLonMatch) {
                             initialLat = parseFloat(latLonMatch[1]);
                             initialLon = parseFloat(latLonMatch[2]);
                         } else {
-                            // If direct coordinates are not found, attempt to geocode the location string
-                            // This might take a moment, so the map will initially center on default, then update
                             geocoder.geocode(locationValue, function(results) {
                                 if (results && results.length > 0) {
                                     const firstResult = results[0];
-                                    modalMap.setView(firstResult.center, 13);
-                                    modalMarker.setLatLng(firstResult.center);
+                                    if (modalMap) {
+                                        modalMap.setView(firstResult.center, 13);
+                                        modalMarker.setLatLng(firstResult.center);
+                                    }
                                 }
                             });
                         }
@@ -387,7 +420,6 @@
 
                         let modalMarker = L.marker([initialLat, initialLon]).addTo(modalMap);
 
-                        // Add Geocoding control to the modal map
                         var modalGeocoder = L.Control.Geocoder.nominatim();
                         L.Control.geocoder({
                             geocoder: modalGeocoder,
@@ -413,15 +445,14 @@
                         });
 
                         modalMap.invalidateSize();
-                        modalMapElement._leaflet_map = modalMap; // Store the map instance
+                        modalMapElement._leaflet_map = modalMap;
                     }, 100);
                 });
             });
 
-            // --- Custom File Input Scripting ---
             document.querySelectorAll('.custom-file-input').forEach(inputElement => {
                 inputElement.addEventListener('change', function(event) {
-                    const filenameDisplay = event.target.nextElementSibling.querySelector('span'); // Get the span element within the label
+                    const filenameDisplay = event.target.nextElementSibling.querySelector('span');
                     if (event.target.files.length > 0) {
                         filenameDisplay.textContent = event.target.files[0].name;
                     } else {
@@ -430,11 +461,52 @@
                 });
             });
 
-            // --- Handle modal closing to hide backdrop ---
+            // Handle showing/hiding of the delete confirmation modal
+            document.querySelectorAll('[data-modal-toggle^="popup-modal"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Hide the detail modal's map when the delete modal opens
+                    const detailModalId = this.dataset.modalTarget.replace('popup-modal', 'default-modal');
+                    const detailModalElement = document.getElementById(detailModalId);
+                    const detailMapElement = detailModalElement.querySelector('.modal-map');
+
+                    if (detailMapElement) {
+                        detailMapElement.style.display = 'none';
+                    }
+                });
+            });
+
             document.querySelectorAll('[data-modal-hide]').forEach(button => {
                 button.addEventListener('click', function() {
-                    const modalId = this.dataset.modalHide;
-                    document.getElementById(modalId).classList.add('hidden');
+                    const modalIdToHide = this.dataset.modalHide;
+                    
+                    // If the hidden modal is a delete confirmation modal, show the detail modal's map again
+                    if (modalIdToHide.startsWith('popup-modal')) {
+                        const reportId = modalIdToHide.replace('popup-modal', '');
+                        const detailModalId = `default-modal${reportId}`;
+                        const detailModalElement = document.getElementById(detailModalId);
+                        const detailMapElement = detailModalElement.querySelector('.modal-map');
+                        
+                        // Check if the detail modal is still open before showing its map
+                        if (detailModalElement && !detailModalElement.classList.contains('hidden')) {
+                            if (detailMapElement) {
+                                detailMapElement.style.display = 'block';
+                                // Invalidate size of the detail map after showing it
+                                if (detailMapElement._leaflet_map) {
+                                    detailMapElement._leaflet_map.invalidateSize();
+                                }
+                            }
+                        }
+                    }
+                    if (modalIdToHide.startsWith('default-modal')) {
+                        openModalsCount--;
+                        if (openModalsCount <= 0) {
+                            document.body.classList.remove('overflow-hidden');
+                            if (mainMapElement) {
+                                mainMapElement.style.display = 'block';
+                                map.invalidateSize();
+                            }
+                        }
+                    }
                 });
             });
         });
