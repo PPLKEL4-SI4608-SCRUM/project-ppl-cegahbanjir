@@ -1,4 +1,4 @@
-<div class="bg-white/90 rounded-xl shadow-lg p-5 border-l-4 border-[#FFA404]">
+<div class="bg-white rounded-xl shadow-lg p-5 border-l-8 border-[#FFA404]">
     <div class="flex items-center mb-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -7,7 +7,7 @@
     </div>
     
     <div class="space-y-3 mb-3">
-        <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+        <div class="flex justify-between items-center border-b border-gray-200 pb-2 bg-[#FFF7E6] rounded-lg p-3">
             <div class="flex items-center">
                 <span class="font-medium text-gray-800">BNPB (Badan Nasional Penanggulangan Bencana)</span>
             </div>
@@ -19,7 +19,7 @@
             </a>
         </div>
         
-        <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+        <div class="flex justify-between items-center border-b border-gray-200 pb-2 bg-[#FFF7E6] rounded-lg p-3">
             <div class="flex items-center">
                 <span class="font-medium text-gray-800">Basarnas (Search and Rescue)</span>
             </div>
@@ -31,7 +31,7 @@
             </a>
         </div>
         
-        <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+        <div class="flex justify-between items-center border-b border-gray-200 pb-2 bg-[#FFF7E6] rounded-lg p-3">
             <div class="flex items-center">
                 <span class="font-medium text-gray-800">Call Center PMI</span>
             </div>
@@ -43,7 +43,7 @@
             </a>
         </div>
         
-        <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+        <div class="flex justify-between items-center border-b border-gray-200 pb-2 bg-[#FFF7E6] rounded-lg p-3">
             <div class="flex items-center">
                 <span class="font-medium text-gray-800">Polisi</span>
             </div>
@@ -55,7 +55,7 @@
             </a>
         </div>
         
-        <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+        <div class="flex justify-between items-center border-b border-gray-200 pb-2 bg-[#FFF7E6] rounded-lg p-3">
             <div class="flex items-center">
                 <span class="font-medium text-gray-800">Ambulans</span>
             </div>
@@ -67,7 +67,7 @@
             </a>
         </div>
         
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center bg-[#FFF7E6] rounded-lg p-3">
             <div class="flex items-center">
                 <span class="font-medium text-gray-800">Pemadam Kebakaran</span>
             </div>
