@@ -43,6 +43,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/{id}', [WeatherDashboardController::class, 'store'])->name('weather.store');
     });
 
+    Route::get('/about', function () {
+        return view('user.about'); 
+    })->name('about');
+
 });
 
 require __DIR__.'/auth.php';
