@@ -22,8 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/rekomendasi/{id}', [RekomendasiController::class, 'show'])
-        ->name('rekomendasi.show');
+    Route::get('/rekomendasi/{id}', [RekomendasiController::class, 'detail']) 
+        ->name('rekomendasi.show'); 
 
     Route::get('/rekomendasi', [RekomendasiController::class, 'index'])
         ->name('rekomendasi.index');
