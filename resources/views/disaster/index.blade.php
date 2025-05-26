@@ -208,13 +208,12 @@
         </div>
     </div>
 
-    {{-- Detail/Edit Modals (Moved outside the loop for better structure) --}}
     @foreach ($reports as $report)
         <div id="default-modal{{ $report->id }}" tabindex="-1" aria-hidden="true" class="fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full overflow-y-auto overflow-x-hidden hidden bg-gray-900 bg-opacity-50">
             <div class="relative p-4 w-full max-w-2xl max-h-full">
                 <div class="relative rounded-lg shadow-sm modal-content-container">
                     <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Detail</h3>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-black">Detail</h3>
                         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal{{ $report->id }}">
                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
@@ -278,7 +277,6 @@
             </div>
         </div>
 
-        {{-- Delete Confirmation Modal (Now a sibling of the detail modal) --}}
         <div id="popup-modal{{ $report->id }}" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-900 bg-opacity-50">
             <div class="relative p-4 w-full max-w-md max-h-full">
                 <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
@@ -290,8 +288,7 @@
                     </button>
                     <div class="p-4 md:p-5 text-center">
                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this Data?</h3>
-                        {{-- BEGIN MODIFICATION --}}
-                        <div class="flex justify-center items-center space-x-4"> {{-- Added flexbox for side-by-side alignment and spacing --}}
+                        <div class="flex justify-center items-center space-x-4">
                             <form action="{{ route('laporan.destroy', $report->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -299,7 +296,6 @@
                             </form>
                             <button data-modal-hide="popup-modal{{ $report->id }}" type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
                         </div>
-                        {{-- END MODIFICATION --}}
                     </div>
                 </div>
             </div>
@@ -309,10 +305,9 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js" defer></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js" defer></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             function updateLocationInput(lat, lon, inputElementId) {
@@ -370,7 +365,7 @@
                 button.addEventListener('click', function() {
                     openModalsCount++;
                     if (mainMapElement) {
-                        mainMapElement.style.display = 'none'; // Hide main map
+                        mainMapElement.style.display = 'none';
                     }
 
                     const modalId = this.dataset.modalTarget;
@@ -461,10 +456,8 @@
                 });
             });
 
-            // Handle showing/hiding of the delete confirmation modal
             document.querySelectorAll('[data-modal-toggle^="popup-modal"]').forEach(button => {
                 button.addEventListener('click', function() {
-                    // Hide the detail modal's map when the delete modal opens
                     const detailModalId = this.dataset.modalTarget.replace('popup-modal', 'default-modal');
                     const detailModalElement = document.getElementById(detailModalId);
                     const detailMapElement = detailModalElement.querySelector('.modal-map');
@@ -479,24 +472,22 @@
                 button.addEventListener('click', function() {
                     const modalIdToHide = this.dataset.modalHide;
                     
-                    // If the hidden modal is a delete confirmation modal, show the detail modal's map again
                     if (modalIdToHide.startsWith('popup-modal')) {
                         const reportId = modalIdToHide.replace('popup-modal', '');
                         const detailModalId = `default-modal${reportId}`;
                         const detailModalElement = document.getElementById(detailModalId);
                         const detailMapElement = detailModalElement.querySelector('.modal-map');
                         
-                        // Check if the detail modal is still open before showing its map
                         if (detailModalElement && !detailModalElement.classList.contains('hidden')) {
                             if (detailMapElement) {
                                 detailMapElement.style.display = 'block';
-                                // Invalidate size of the detail map after showing it
                                 if (detailMapElement._leaflet_map) {
                                     detailMapElement._leaflet_map.invalidateSize();
                                 }
                             }
                         }
                     }
+
                     if (modalIdToHide.startsWith('default-modal')) {
                         openModalsCount--;
                         if (openModalsCount <= 0) {
