@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{-- CONSOLIDATED TITLE TAG: Gabungkan menjadi satu --}}
-    <title>@yield('title', config('app.name', 'CegahBanjir')) - Cegah Banjir</title>
+    <title>@yield('title', config('app.name', 'CegahBanjir'))</title>
 
     <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
@@ -65,12 +65,89 @@
             </a>
 
             <div class="flex items-center space-x-10">
-                <div class="hidden md:flex space-x-6 text-sm font-medium">
-                    <a href="{{ route('dashboard') }}" class="hover:text-[#FFA404] transition">Home</a>
-                    <a href="{{ route('about') }}" class="hover:text-[#FFA404] transition">About</a>
-                    <a href="{{ route('user.map') }}" class="hover:text-[#FFA404] transition">Interactive Map</a>
-                    <a href="{{ route('user.weather.dashboard') }}" class="hover:text-[#FFA404] transition">Weather</a>
-                    <a href="{{ route('user.flood_history.index') }}" class="hover:text-[#FFA404] transition">Past Floods</a>
+                <div class="hidden md:flex space-x-6 text-sm font-medium text-white">
+                    {{-- Home Link --}}
+                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-1 hover:text-[#FFA404] transition group">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 group-hover:text-[#FFA404] transition">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125h9.75a1.125 1.125 0 0 0 1.125-1.125V9.75m-6 9.375V11.25a3.75 3 0 0 1 7.5 0v8.875m-12 .75h10.125c.621 0 1.125-.504 1.125-1.125v-9.75C20.25 6.477 17.773 4 14.75 4s-5.5 2.477-5.5 5.5v2.25" />
+                        </svg>
+                        <span>Home</span>
+                    </a>
+
+                    {{-- About Link --}}
+                    <a href="{{ route('about') }}" class="flex items-center space-x-1 hover:text-[#FFA404] transition group">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 group-hover:text-[#FFA404] transition">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 .655.247 1.5 1.5 0 0 0 .918.599 1.5 1.5 0 0 0 1.403-.655.75.75 0 0 1 .247-.655L15.75 9.75m-4.5 1.5H5.25m4.5 0H9m1.5-6.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                        <span>About</span>
+                    </a>
+
+                    {{-- Weather Dropdown --}}
+                    <button id="weatherDropdownButton" data-dropdown-toggle="weatherDropdown" class="flex items-center space-x-1 hover:text-[#FFA404] transition group" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 group-hover:text-[#FFA404] transition">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.364-.386 1.591-1.591M3 12H5.25m-.386-6.364 1.591 1.591M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                        <span>Weather</span>
+                        {{-- Dropdown arrow icon --}}
+                        <svg class="w-2.5 h-2.5 ms-2.5 group-hover:text-[#FFA404] transition" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                    </button>
+                    {{-- Dropdown menu for Weather --}}
+                    <div id="weatherDropdown" class="z-10 hidden rounded-lg shadow w-44 bg-white dark:bg-[#121B22]">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="weatherDropdownButton">
+                            <li>
+                                <a href="{{ route('user.weather.dashboard') }}" class="flex items-center px-4 py-2 hover:bg-[#FFA404] hover:text-black dark:hover:bg-[#FFA404] dark:hover:text-black">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 me-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.364-.386 1.591-1.591M3 12H5.25m-.386-6.364 1.591 1.591M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                    <span>Current Weather</span>
+                                </a>
+                            </li>
+                            {{-- Tambahkan link lain terkait cuaca jika ada, contoh: --}}
+                            {{-- <li>
+                                <a href="{{ route('user.weather.forecast') }}" class="flex items-center px-4 py-2 hover:bg-[#FFA404] hover:text-black dark:hover:bg-[#FFA404] dark:hover:text-black">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 me-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3M10 9a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm0 0L7 6m3 3L13 6m0 0h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2Z" />
+                                    </svg>
+                                    <span>Weather Forecast</span>
+                                </a>
+                            </li> --}}
+                        </ul>
+                    </div>
+
+                    {{-- Flood Data Dropdown --}}
+                    <button id="floodDataDropdownButton" data-dropdown-toggle="floodDataDropdown" class="flex items-center space-x-1 hover:text-[#FFA404] transition group" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 group-hover:text-[#FFA404] transition">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m9 11.25 3-3m0 0 3 3m-3-3v8.25M12 21A9 9 0 1 0 3 12a9 9 0 0 0 18 0Z" />
+                        </svg>
+                        <span>Flood Data</span>
+                        {{-- Dropdown arrow icon --}}
+                        <svg class="w-2.5 h-2.5 ms-2.5 group-hover:text-[#FFA404] transition" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                    </button>
+                    {{-- Dropdown menu for Flood Data --}}
+                    <div id="floodDataDropdown" class="z-10 hidden rounded-lg shadow w-44 bg-white dark:bg-[#121B22]">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="floodDataDropdownButton">
+                            <li>
+                                <a href="{{ route('user.map') }}" class="flex items-center px-4 py-2 hover:bg-[#FFA404] hover:text-black dark:hover:bg-[#FFA404] dark:hover:text-black">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 me-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.5 1.125.04.045m-.674-.252-.04-.045M12 2.25h.004M12 2.25L10.5 4.72M9 10.5V15m0 0H7.5M10.5 6h9V4.5H10.5M9 10.5H7.5M10.5 6.75L12 2.25M15 10.5V15M15 15h2.25V4.5H15Z" />
+                                    </svg>
+                                    <span>Interactive Map</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('user.flood_history.index') }}" class="flex items-center px-4 py-2 hover:bg-[#FFA404] hover:text-black dark:hover:bg-[#FFA404] dark:hover:text-black">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 me-2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m9 11.25 3-3m0 0 3 3m-3-3v8.25M12 21A9 9 0 1 0 3 12a9 9 0 0 0 18 0Z" />
+                                    </svg>
+                                    <span>Past Floods</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="relative">
@@ -90,14 +167,24 @@
                         <x-slot name="content">
                             <div class="bg-[#0F1A21] rounded-md shadow-md py-2">
                                 <x-dropdown-link href="{{ route('profile.edit') }}"
-                                    class="font-poppins text-white hover:bg-[#FFA404]/30 hover:text-white transition px-4 py-2 block">
+                                    class="font-poppins text-white
+                                        hover:bg-[#FFA404]/90     
+                                        hover:text-white
+                                        focus:bg-[#FFA404]/90
+                                        focus:text-white          
+                                        transition px-4 py-2 block">
                                     {{ __('Edit Profile') }}
                                 </x-dropdown-link>
 
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <x-dropdown-link href="{{ route('logout') }}"
-                                        class="font-poppins text-white hover:bg-[#FFA404]/30 hover:text-white transition px-4 py-2 block"
+                                        class="font-poppins text-white
+                                            hover:bg-[#FFA404]/90
+                                            hover:text-white
+                                            focus:bg-[#FFA404]/90
+                                            focus:text-white
+                                            transition px-4 py-2 block"
                                         onclick="event.preventDefault(); this.closest('form').submit();">
                                         {{ __('Log Out') }}
                                     </x-dropdown-link>

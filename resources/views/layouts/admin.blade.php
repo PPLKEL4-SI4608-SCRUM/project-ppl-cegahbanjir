@@ -46,66 +46,102 @@
                 <div class="hidden md:flex space-x-6 text-sm font-medium">
                     <a href="{{ route('admin.dashboard') }}" class="hover:text-[#FFA404] transition">Dashboard</a>
                     
-                    <div class="relative dropdown">
-                        <button class="hover:text-[#FFA404] transition focus:outline-none flex items-center gap-1">
-                            <i class="fas fa-cloud-sun text-sm"></i>
+                    <div class="relative"> {{-- Remove 'dropdown' class from here --}}
+                        {{-- Dropdown: Manajemen Data Cuaca --}}
+                        <button id="cuacaDropdownButton" data-dropdown-toggle="cuacaDropdown" type="button"
+                                class="hover:text-[#FFA404] transition focus:outline-none flex items-center gap-1 text-white group"> {{-- Added id, data-dropdown-toggle, type="button", and group --}}
+                            <i class="fas fa-cloud-sun text-sm group-hover:text-[#FFA404] transition"></i> {{-- Added group-hover --}}
                             Manajemen Data Cuaca
-                            <i class="fas fa-chevron-down text-xs"></i>
+                            <i class="fas fa-chevron-down text-xs ms-1 group-hover:text-[#FFA404] transition"></i> {{-- Added ms-1 and group-hover --}}
                         </button>
-                        <div class="absolute hidden dropdown-menu bg-[#0F1A21] text-white rounded-md mt-2 shadow-lg z-10 border border-gray-600">
-                            <a href="{{ route('admin.weather.stations.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition flex items-center gap-2">
+                        <div id="cuacaDropdown"
+                            class="absolute hidden bg-[#0F1A21] text-white rounded-md mt-2 shadow-lg z-10 border border-gray-600"> {{-- Added id, removed 'dropdown-menu' --}}
+                            <a href="{{ route('admin.weather.stations.index') }}"
+                            class="block px-4 py-2 flex items-center gap-2 transition
+                                    hover:bg-[#FFA404] hover:text-white
+                                    focus:bg-[#FFA404] focus:text-white">
                                 <i class="fas fa-broadcast-tower text-sm"></i>
                                 Stasiun Cuaca
                             </a>
-                            <a href="{{ route('admin.weather.rainfall.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition flex items-center gap-2">
+                            <a href="{{ route('admin.weather.rainfall.index') }}"
+                            class="block px-4 py-2 flex items-center gap-2 transition
+                                    hover:bg-[#FFA404] hover:text-white
+                                    focus:bg-[#FFA404] focus:text-white">
                                 <i class="fas fa-cloud-rain text-sm"></i>
                                 Data Curah Hujan
                             </a>
                         </div>
                     </div>
 
-                    <div class="relative dropdown">
-                        <button class="hover:text-[#FFA404] transition focus:outline-none flex items-center gap-1">
-                            <i class="fas fa-water text-sm"></i>
+                    <div class="relative"> {{-- Remove 'dropdown' class from here --}}
+                        {{-- Dropdown: Manajemen Data Banjir --}}
+                        <button id="banjirDropdownButton" data-dropdown-toggle="banjirDropdown" type="button"
+                                class="hover:text-[#FFA404] transition focus:outline-none flex items-center gap-1 text-white group"> {{-- Added id, data-dropdown-toggle, type="button", and group --}}
+                            <i class="fas fa-water text-sm group-hover:text-[#FFA404] transition"></i> {{-- Added group-hover --}}
                             Manajemen Data Banjir
-                            <i class="fas fa-chevron-down text-xs"></i>
+                            <i class="fas fa-chevron-down text-xs ms-1 group-hover:text-[#FFA404] transition"></i> {{-- Added ms-1 and group-hover --}}
                         </button>
-                        <div class="absolute hidden dropdown-menu bg-[#0F1A21] text-white rounded-md mt-2 shadow-lg z-10 border border-gray-600">
-                            <a href="{{ route('admin.weather.predictions.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition flex items-center gap-2">
+                        <div id="banjirDropdown"
+                            class="absolute hidden bg-[#0F1A21] text-white rounded-md mt-2 shadow-lg z-10 border border-gray-600"> {{-- Added id, removed 'dropdown-menu' --}}
+                            <a href="{{ route('admin.weather.predictions.index') }}"
+                            class="block px-4 py-2 flex items-center gap-2 transition
+                                    hover:bg-[#FFA404]/90 hover:text-white
+                                    focus:bg-[#FFA404]/90 focus:text-white">
                                 <i class="fas fa-chart-line text-sm"></i>
                                 Prediksi Banjir
                             </a>
-                            <a href="{{ route('admin.disaster-reports.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition flex items-center gap-2">
+                            <a href="{{ route('admin.disaster-reports.index') }}"
+                            class="block px-4 py-2 flex items-center gap-2 transition
+                                    hover:bg-[#FFA404]/90 hover:text-white
+                                    focus:bg-[#FFA404]/90 focus:text-white">
                                 <i class="fas fa-exclamation-triangle text-sm"></i>
                                 Laporan Bencana
                             </a>
-                            <a href="{{ route('admin.weather.disaster-statistics') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition flex items-center gap-2">
+                            <a href="{{ route('admin.weather.disaster-statistics') }}"
+                            class="block px-4 py-2 flex items-center gap-2 transition
+                                    hover:bg-[#FFA404]/90 hover:text-white
+                                    focus:bg-[#FFA404]/90 focus:text-white">
                                 <i class="fas fa-chart-bar text-sm"></i>
                                 Statistik Laporan Banjir
                             </a>
-                            <a href="{{ route('admin.weather.notification.create') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition flex items-center gap-2">
+                            <a href="{{ route('admin.weather.notification.create') }}"
+                            class="block px-4 py-2 flex items-center gap-2 transition
+                                    hover:bg-[#FFA404]/90 hover:text-white
+                                    focus:bg-[#FFA404]/90 focus:text-white">
                                 <i class="fas fa-bell text-sm"></i>
                                 Notifikasi
                             </a>
-                            <a href="{{ route('admin.artikels.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition flex items-center gap-2">
+                            <a href="{{ route('admin.artikels.index') }}"
+                            class="block px-4 py-2 flex items-center gap-2 transition
+                                    hover:bg-[#FFA404]/90 hover:text-white
+                                    focus:bg-[#FFA404]/90 focus:text-white">
                                 <i class="fas fa-newspaper text-sm"></i>
                                 Artikel Rekomendasi
                             </a>
                         </div>
                     </div>
 
-                    <div class="relative dropdown">
-                        <button class="hover:text-[#FFA404] transition focus:outline-none flex items-center gap-1">
-                            <i class="fas fa-users text-sm"></i>
+                    <div class="relative"> {{-- Remove 'dropdown' class from here --}}
+                        {{-- Dropdown: Manajemen Data Pengguna --}}
+                        <button id="penggunaDropdownButton" data-dropdown-toggle="penggunaDropdown" type="button"
+                                class="hover:text-[#FFA404]/90 transition focus:outline-none flex items-center gap-1 text-white group"> {{-- Added id, data-dropdown-toggle, type="button", and group --}}
+                            <i class="fas fa-users text-sm group-hover:text-[#FFA404]/90 transition"></i> {{-- Added group-hover --}}
                             Manajemen Data Pengguna
-                            <i class="fas fa-chevron-down text-xs"></i>
+                            <i class="fas fa-chevron-down text-xs ms-1 group-hover:text-[#FFA404]/90 transition"></i> {{-- Added ms-1 and group-hover --}}
                         </button>
-                        <div class="absolute hidden dropdown-menu bg-[#0F1A21] text-white rounded-md mt-2 shadow-lg z-10 border border-gray-600">
-                            <a href="{{ route('admin.pengguna.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition flex items-center gap-2">
+                        <div id="penggunaDropdown"
+                            class="absolute hidden bg-[#0F1A21] text-white rounded-md mt-2 shadow-lg z-10 border border-gray-600"> {{-- Added id, removed 'dropdown-menu' --}}
+                            <a href="{{ route('admin.pengguna.index') }}"
+                            class="block px-4 py-2 flex items-center gap-2 transition
+                                    hover:bg-[#FFA404]/90 hover:text-white
+                                    focus:bg-[#FFA404]/90 focus:text-white">
                                 <i class="fas fa-user text-sm"></i>
                                 Data Pengguna
                             </a>
-                            <a href="{{ route('admin.flood_history.index') }}" class="block px-4 py-2 hover:bg-[#FFA404] hover:text-white transition flex items-center gap-2">
+                            <a href="{{ route('admin.flood_history.index') }}"
+                            class="block px-4 py-2 flex items-center gap-2 transition
+                                    hover:bg-[#FFA404]/90 hover:text-white
+                                    focus:bg-[#FFA404]/90 focus:text-white">
                                 <i class="fas fa-history text-sm"></i>
                                 Riwayat Banjir
                             </a>
@@ -132,7 +168,7 @@
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <x-dropdown-link href="{{ route('logout') }}"
-                                                     class="font-poppins text-white hover:bg-[#FFA404] hover:text-white transition px-4 py-2 block"
+                                                     class="font-poppins text-white hover:bg-[#FFA404]/90 focus:bg-[#FFA404]/90 focus:text-white hover:text-white transition px-4 py-2 block"
                                                      onclick="event.preventDefault(); this.closest('form').submit();">
                                         {{ __('Log Out') }}
                                     </x-dropdown-link>

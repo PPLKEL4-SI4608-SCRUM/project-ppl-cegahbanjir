@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
         #map, .modal-map {
             height: 300px;
@@ -101,18 +100,6 @@
         body.overflow-hidden {
             overflow: hidden !important;
         }
-
-        /* === Tambahan untuk background blur dan transparan pada 3 container utama === */
-        .blur-bg {
-            background-color: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            box-shadow:
-                0 10px 15px -3px rgb(0 0 0 / 0.1),
-                0 4px 6px -4px rgb(0 0 0 / 0.1);
-            border: 1px solid rgba(156, 163, 175, 0.3);
-        }
     </style>
 @endsection
 
@@ -120,20 +107,18 @@
     <div class="max-w-5xl mx-auto p-6">
         <h1 class="text-3xl font-bold mb-6 text-white">Laporan Kejadian Bencana</h1>
 
-        {{-- Notifikasi sukses dengan blur background --}}
         @if (session('success'))
-            <div class="blur-bg p-6 mb-10 md:mb-12">
+            <div class="bg-green-100 text-green-800 p-3 rounded mb-6">
                 {{ session('success') }}
             </div>
         @endif
 
-        {{-- Form tambah laporan dengan blur background --}}
-        <div class="blur-bg p-6 mb-10 md:mb-12">
-           <h2 class="text-xl font-semibold mb-4 text-black-700">Tambah Laporan Baru</h2>
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4 text-black-700">Tambah Laporan Baru</h2>
             <form method="POST" action="{{ route('laporan.store') }}" class="space-y-4" enctype="multipart/form-data">
                 @csrf
                 <div>
-                    <label for="location" class="block text-gray-800 font-medium bg-[#F1F5F9] px-3 py-1 rounded">Lokasi Kejadian</label>
+                    <label for="location" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Lokasi Kejadian</label>
                     <input type="text" id="location" name="location" value="{{ old('location') }}" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">
                     <div id="map" class="w-full mt-4 rounded"></div>
                     @error('location')
@@ -141,14 +126,14 @@
                     @enderror
                 </div>
                 <div>
-                    <label for="description" class="block text-gray-800 font-medium bg-[#F1F5F9] px-3 py-1 rounded">Deskripsi Kejadian</label>
+                    <label for="description" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Deskripsi Kejadian</label>
                     <textarea id="description" name="description" rows="3" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">{{ old('description') }}</textarea>
                     @error('description')
                         <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
                 <div>
-                    <label class="block mb-2 text-gray-800 font-medium bg-[#F1F5F9] px-3 py-1 rounded" for="disaster_image">Foto Lokasi Kejadian</label>
+                    <label class="block mb-2 text-white font-medium bg-[#121B22] px-3 py-1 rounded" for="disaster_image">Foto Lokasi Kejadian</label>
                     <div class="custom-file-input-wrapper">
                         <input class="custom-file-input" id="disaster_image" name="disaster_image" type="file" required>
                         <label for="disaster_image" class="custom-file-label">
@@ -170,8 +155,7 @@
             </form>
         </div>
 
-        {{-- Riwayat laporan juga pakai blur background sekarang --}}
-        <div class="blur-bg p-6 rounded-lg shadow mb-10 md:mb-12">
+        <div class="bg-white rounded-lg shadow p-6">
             <h2 class="text-xl font-semibold mb-4 text-gray-700">Riwayat Laporan</h2>
             @if ($reports->isEmpty())
                 <p class="text-gray-600">Belum ada laporan yang tersedia.</p>
@@ -258,17 +242,24 @@
                             </div>
                             <div>
                                 <label for="status_{{ $report->id }}" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Status</label>
-                                <input type="text" id="status_{{ $report->id }}" name="status" value="{{ ucfirst($report->status) }}" readonly class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400 bg-gray-100 text-gray-700">
+                                <input type="text" id="status_{{ $report->id }}" name="status" value="{{ $report->status }}" readonly class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400 bg-gray-100 text-gray-700">
                                 @error('status')
                                     <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div>
                                 <label class="block mb-2 text-white font-medium bg-[#121B22] px-3 py-1 rounded" for="disaster_image_{{ $report->id }}">Foto Lokasi Kejadian</label>
+                                {{-- Display current image if it exists --}}
+                                @if ($report->disaster_image)
+                                    <div class="mb-3">
+                                        <p class="text-sm text-gray-600 dark:text-black-400">Current Image :</p>
+                                        <img src="{{ asset('disaster_images/' . $report->disaster_image) }}" alt="Current Disaster Image" class="w-32 h-32 object-cover rounded mt-1">
+                                    </div>
+                                @endif
                                 <div class="custom-file-input-wrapper">
                                     <input class="custom-file-input" id="disaster_image_{{ $report->id }}" name="disaster_image" type="file">
                                     <label for="disaster_image_{{ $report->id }}" class="custom-file-label">
-                                        <span id="disaster_image_filename_{{ $report->id }}">Pilih file...</span>
+                                        <span id="disaster_image_filename_{{ $report->id }}">Pilih file baru (opsional)...</span>
                                         <svg class="w-5 h-5 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 8h6m-3 3V5m-3 6H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5l2-3h9a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h6l2-3h7a1 1 0 0 1 1 1v7.5"/>
                                         </svg>
@@ -333,6 +324,7 @@
                     });
             }
 
+            // Initialize the main map
             var map = L.map('map').setView([-6.200000, 106.816666], 10);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
@@ -356,7 +348,6 @@
                 document.getElementById('location').value = e.geocode.name;
             }).addTo(map);
 
-
             map.on('click', function(e) {
                 const lat = e.latlng.lat.toFixed(6);
                 const lon = e.latlng.lng.toFixed(6);
@@ -376,7 +367,7 @@
                 button.addEventListener('click', function() {
                     openModalsCount++;
                     if (mainMapElement) {
-                        mainMapElement.style.display = 'none';
+                        mainMapElement.style.display = 'none'; // Hide main map when a modal opens
                     }
 
                     const modalId = this.dataset.modalTarget;
@@ -389,18 +380,19 @@
                     setTimeout(() => {
                         let modalMapElement = document.getElementById(mapContainerId);
 
+                        // Dispose of previous map instance if it exists
                         if (modalMapElement && modalMapElement._leaflet_id) {
                             modalMapElement._leaflet_map.remove();
                             modalMapElement._leaflet_map = null;
                         }
                         
-                        modalMapElement.style.display = 'block';
-
+                        modalMapElement.style.display = 'block'; // Ensure the modal map is visible
 
                         const initialLocationInput = document.getElementById(locationInputId);
                         let initialLat = -6.200000;
                         let initialLon = 106.816666;
 
+                        // Try to parse LatLng from the location input value
                         const locationValue = initialLocationInput.value;
                         const latLonMatch = locationValue.match(/(-?\d+\.\d+),\s*(-?\d+\.\d+)/);
 
@@ -408,10 +400,11 @@
                             initialLat = parseFloat(latLonMatch[1]);
                             initialLon = parseFloat(latLonMatch[2]);
                         } else {
+                            // If not a lat,lon format, try to geocode the address
                             geocoder.geocode(locationValue, function(results) {
                                 if (results && results.length > 0) {
                                     const firstResult = results[0];
-                                    if (modalMap) {
+                                    if (modalMap) { // Check if modalMap is already initialized
                                         modalMap.setView(firstResult.center, 13);
                                         modalMarker.setLatLng(firstResult.center);
                                     }
@@ -450,44 +443,42 @@
                             updateLocationInput(lat, lon, locationInputId);
                         });
 
+                        // Invalidate size to ensure the map renders correctly within the modal
                         modalMap.invalidateSize();
+                        // Store the map instance on the element for later access (e.g., for disposal)
                         modalMapElement._leaflet_map = modalMap;
-                    }, 100);
+                    }, 100); // Small delay to ensure modal is fully visible
                 });
             });
 
+            // Handle file input label update
             document.querySelectorAll('.custom-file-input').forEach(inputElement => {
                 inputElement.addEventListener('change', function(event) {
                     const filenameDisplay = event.target.nextElementSibling.querySelector('span');
                     if (event.target.files.length > 0) {
                         filenameDisplay.textContent = event.target.files[0].name;
                     } else {
-                        filenameDisplay.textContent = 'Pilih file...';
+                        // Reset to original text if no file is selected (e.g., after canceling file dialog)
+                        if (event.target.id.startsWith('disaster_image_')) {
+                             filenameDisplay.textContent = 'Pilih file baru (opsional)...';
+                        } else {
+                            filenameDisplay.textContent = 'Pilih file...';
+                        }
                     }
                 });
             });
 
-            document.querySelectorAll('[data-modal-toggle^="popup-modal"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const detailModalId = this.dataset.modalTarget.replace('popup-modal', 'default-modal');
-                    const detailModalElement = document.getElementById(detailModalId);
-                    const detailMapElement = detailModalElement.querySelector('.modal-map');
-
-                    if (detailMapElement) {
-                        detailMapElement.style.display = 'none';
-                    }
-                });
-            });
-
+            // Handle modal hide events
             document.querySelectorAll('[data-modal-hide]').forEach(button => {
                 button.addEventListener('click', function() {
                     const modalIdToHide = this.dataset.modalHide;
                     
+                    // Specific logic for popup-modal to potentially re-show detail map
                     if (modalIdToHide.startsWith('popup-modal')) {
                         const reportId = modalIdToHide.replace('popup-modal', '');
                         const detailModalId = `default-modal${reportId}`;
                         const detailModalElement = document.getElementById(detailModalId);
-                        const detailMapElement = detailModalElement.querySelector('.modal-map');
+                        const detailMapElement = detailModalElement ? detailModalElement.querySelector('.modal-map') : null;
                         
                         if (detailModalElement && !detailModalElement.classList.contains('hidden')) {
                             if (detailMapElement) {
@@ -499,13 +490,14 @@
                         }
                     }
 
+                    // Logic for default-modal to manage body overflow and main map visibility
                     if (modalIdToHide.startsWith('default-modal')) {
                         openModalsCount--;
                         if (openModalsCount <= 0) {
                             document.body.classList.remove('overflow-hidden');
                             if (mainMapElement) {
-                                mainMapElement.style.display = 'block';
-                                map.invalidateSize();
+                                mainMapElement.style.display = 'block'; // Show main map when no modals are open
+                                map.invalidateSize(); // Invalidate main map size
                             }
                         }
                     }
