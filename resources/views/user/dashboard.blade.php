@@ -46,6 +46,7 @@
         </div>
     </div>
 
+
     {{-- Rekomendasi Artikel Banjir Section --}}
     <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl shadow-xl mb-10 md:mb-12 ">
         <h2 class="text-3xl font-extrabold text-indigo-800 text-center mb-4">Rekomendasi Tindakan Saat Banjir</h2>

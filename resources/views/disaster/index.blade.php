@@ -242,12 +242,7 @@
                             </div>
                             <div>
                                 <label for="status_{{ $report->id }}" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Status</label>
-                                <select id="status_{{ $report->id }}" name="status" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">
-                                    <option value="">Pilih Status</option>
-                                    <option value="rejected" {{ $report->status == 'rejected' ? 'selected' : '' }}>Merah (Rejected)</option>
-                                    <option value="pending" {{ $report->status == 'pending' ? 'selected' : '' }}>Kuning (Pending)</option>
-                                    <option value="approved" {{ $report->status == 'approved' ? 'selected' : '' }}>Biru (Approved)</option>
-                                </select>
+                                <input type="text" id="status_{{ $report->id }}" name="status" value="{{ ucfirst($report->status) }}" readonly class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400 bg-gray-100 text-gray-700">
                                 @error('status')
                                     <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                                 @enderror
