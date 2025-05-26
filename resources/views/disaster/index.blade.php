@@ -118,7 +118,7 @@
             <form method="POST" action="{{ route('laporan.store') }}" class="space-y-4" enctype="multipart/form-data">
                 @csrf
                 <div>
-                    <label for="location" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Lokasi Kejadian</label>
+                    <label for="location" class="block text-gray-800 font-medium bg-[#F1F5F9] px-3 py-1 rounded">Lokasi Kejadian</label>
                     <input type="text" id="location" name="location" value="{{ old('location') }}" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">
                     <div id="map" class="w-full mt-4 rounded"></div>
                     @error('location')
@@ -126,14 +126,14 @@
                     @enderror
                 </div>
                 <div>
-                    <label for="description" class="block text-white font-medium bg-[#121B22] px-3 py-1 rounded">Deskripsi Kejadian</label>
+                    <label for="description" class="block text-gray-800 font-medium bg-[#F1F5F9] px-3 py-1 rounded">Deskripsi Kejadian</label>
                     <textarea id="description" name="description" rows="3" required class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-400">{{ old('description') }}</textarea>
                     @error('description')
                         <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
                 <div>
-                    <label class="block mb-2 text-white font-medium bg-[#121B22] px-3 py-1 rounded" for="disaster_image">Foto Lokasi Kejadian</label>
+                    <label class="block mb-2 text-gray-800 font-medium bg-[#F1F5F9] px-3 py-1 rounded" for="disaster_image">Foto Lokasi Kejadian</label>
                     <div class="custom-file-input-wrapper">
                         <input class="custom-file-input" id="disaster_image" name="disaster_image" type="file" required>
                         <label for="disaster_image" class="custom-file-label">
