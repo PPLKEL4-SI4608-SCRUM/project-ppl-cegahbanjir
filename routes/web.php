@@ -31,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/cuaca-user', [WeatherDashboardController::class, 'index'])
         ->name('user.weather.dashboard');
 
+    Route::get('/riwayat-banjir', [\App\Http\Controllers\User\FloodHistoryController::class, 'index'])
+    ->name('user.flood_history.index');
+
     Route::get('/map', [MapDashboardController::class, 'index'])
         ->name('user.map');
     Route::get('/api/geojson', [MapDashboardController::class, 'geojson']);

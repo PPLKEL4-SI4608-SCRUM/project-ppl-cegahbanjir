@@ -57,7 +57,7 @@
                     <a href="{{ route('about') }}" class="hover:text-[#FFA404] transition">About</a>
                     <a href="{{ route('user.map') }}" class="hover:text-[#FFA404] transition">Interactive Map</a>
                     <a href="{{ route('user.weather.dashboard') }}" class="hover:text-[#FFA404] transition">Weather</a>
-                    <a href="#" class="hover:text-[#FFA404] transition">Past Floods</a>
+                    <a href="{{ route('user.flood_history.index') }}" class="hover:text-[#FFA404] transition">Past Floods</a>
                 </div>
 
                 <!-- Profile Dropdown -->

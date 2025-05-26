@@ -243,7 +243,11 @@
                     <a href="{{ route('user.map') }}" class="inline-block bg-purple-600 text-white font-bold px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-300">
                         <i class="fas fa-map-marked-alt mr-2"></i> Lihat Semua Titik Pantau
                     </a>
+                    <a href="{{ route('user.flood_history.index') }}" class="inline-block bg-[#FFA404] text-white font-bold px-6 py-3 rounded-lg hover:bg-[#FF8C00] transition duration-300">
+                        <i class="fas fa-book mr-2"></i> Lihat Riwayat Banjir
+                    </a>
                 </div>
+                
             </div>
         </div>
     </div>
