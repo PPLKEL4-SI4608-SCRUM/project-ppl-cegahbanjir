@@ -75,3 +75,12 @@ npm run dev
 
 # 8. Jalankan server lokal
 php artisan serve
+
+# 9. Default Login Credential
+admin : 
+- username : admin@ceban.com
+- password : admin123
+
+user : 
+- username : user@ceban.com
+- password : user123
