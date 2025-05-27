@@ -19,12 +19,12 @@
 
         <div class="mb-6">
             <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Judul Artikel</label>
-            <input type="text" name="title" id="title" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 text-gray-800" required>
+            <input type="text" name="title" id="title" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 text-gray-800" value="{{ old('title') }}" required>
         </div>
 
         <div class="mb-6">
             <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Artikel</label>
-            <textarea name="description" rows="4" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 text-gray-800" required></textarea>
+            <textarea name="description" id="description" rows="4" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 text-gray-800" required>{{ old('description') }}</textarea>
         </div>
 
         {{-- Gambar Utama Artikel --}}
@@ -40,6 +40,9 @@
                 </label>
                 <span id="image-filename" class="ml-3 text-gray-600 text-sm truncate">Tidak ada file dipilih</span>
             </div>
+            <div id="image-preview" class="mt-4 hidden">
+                <img src="#" alt="Image Preview" class="max-w-xs h-auto rounded-lg shadow-md">
+            </div>
         </div>
 
         {{-- Ikon Utama Artikel --}}
@@ -54,6 +57,9 @@
                     <input type="file" name="icon" id="icon" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
                 </label>
                 <span id="icon-filename" class="ml-3 text-gray-600 text-sm truncate">Tidak ada file dipilih</span>
+            </div>
+            <div id="icon-preview" class="mt-4 hidden">
+                <img src="#" alt="Icon Preview" class="max-w-[80px] h-auto rounded-lg shadow-md">
             </div>
         </div>
 
@@ -82,6 +88,9 @@
                         </label>
                         <span class="ml-3 text-gray-600 text-sm truncate solution-icon-filename">Tidak ada file dipilih</span>
                     </div>
+                    <div class="solution-icon-preview mt-4 hidden">
+                        <img src="#" alt="Solution Icon Preview" class="max-w-[80px] h-auto rounded-lg shadow-md">
+                    </div>
                 </div>
             </div>
         </div>
@@ -101,28 +110,61 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Function to update filename display
-        function updateFileName(inputElement, filenameSpan) {
+        // Function to update filename display and image preview
+        function updateFileDisplay(inputElement, filenameSpan, previewContainer) {
             if (inputElement.files.length > 0) {
-                filenameSpan.textContent = inputElement.files[0].name;
+                const file = inputElement.files[0];
+                filenameSpan.textContent = file.name;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = previewContainer.querySelector('img');
+                    img.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
             } else {
                 filenameSpan.textContent = 'Tidak ada file dipilih';
+                previewContainer.classList.add('hidden');
+                previewContainer.querySelector('img').src = '#'; // Clear previous image
             }
         }
 
         // Attach event listener for Gambar Utama Artikel
         const imageInput = document.getElementById('image');
         const imageFilenameSpan = document.getElementById('image-filename');
+        const imagePreviewContainer = document.getElementById('image-preview');
         imageInput.addEventListener('change', function() {
-            updateFileName(this, imageFilenameSpan);
+            updateFileDisplay(this, imageFilenameSpan, imagePreviewContainer);
         });
 
         // Attach event listener for Ikon Utama Artikel
         const iconInput = document.getElementById('icon');
         const iconFilenameSpan = document.getElementById('icon-filename');
+        const iconPreviewContainer = document.getElementById('icon-preview');
         iconInput.addEventListener('change', function() {
-            updateFileName(this, iconFilenameSpan);
+            updateFileDisplay(this, iconFilenameSpan, iconPreviewContainer);
         });
+
+        // Function to initialize event listeners for a single solution block
+        function initializeSolutionEventListeners(solutionDiv) {
+            const solutionIconInput = solutionDiv.querySelector('.solution-icon-input');
+            const solutionIconFilenameSpan = solutionDiv.querySelector('.solution-icon-filename');
+            const solutionIconPreviewContainer = solutionDiv.querySelector('.solution-icon-preview');
+
+            if (solutionIconInput && solutionIconFilenameSpan && solutionIconPreviewContainer) {
+                solutionIconInput.addEventListener('change', function() {
+                    updateFileDisplay(this, solutionIconFilenameSpan, solutionIconPreviewContainer);
+                });
+            }
+        }
+
+        // Initialize event listeners for the initially present solution block
+        const initialSolutionDiv = document.querySelector('#solution-container > div.border.border-gray-300.bg-gray-50.p-4.rounded-lg');
+        if (initialSolutionDiv) {
+            initializeSolutionEventListeners(initialSolutionDiv);
+        }
+
 
         // Add Solution button logic
         document.getElementById('add-solution').addEventListener('click', function () {
@@ -150,16 +192,15 @@
                         </label>
                         <span class="ml-3 text-gray-600 text-sm truncate solution-icon-filename">Tidak ada file dipilih</span>
                     </div>
+                    <div class="solution-icon-preview mt-4 hidden">
+                        <img src="#" alt="Solution Icon Preview" class="max-w-[80px] h-auto rounded-lg shadow-md">
+                    </div>
                 </div>
             `;
             container.appendChild(newSolutionDiv);
 
-            // Attach change listener to the newly added file input
-            const newIconInput = newSolutionDiv.querySelector('.solution-icon-input');
-            const newIconFilenameSpan = newSolutionDiv.querySelector('.solution-icon-filename');
-            newIconInput.addEventListener('change', function() {
-                updateFileName(this, newIconFilenameSpan);
-            });
+            // Initialize event listeners for the newly added solution block
+            initializeSolutionEventListeners(newSolutionDiv);
         });
     });
 </script>
