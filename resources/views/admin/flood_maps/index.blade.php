@@ -3,10 +3,10 @@
 @section('title', 'Manajemen Peta Banjir')
 
 @section('content')
-<div class="bg-white/60 backdrop-blur-md min-h-screen p-6 rounded-2xl shadow-xl">
+<div class="bg-white/70 backdrop-blur-md min-h-screen p-6 rounded-2xl shadow-xl">
 
     <div class="mb-6">
-        <h1 class="text-3xl font-bold text-white">Manajemen Peta Wilayah Banjir</h1>
+        <h1 class="text-3xl font-bold text-black">Manajemen Prediksi Wilayah Banjir</h1>
         <a href="{{ route('admin.flood-maps.create') }}" class="mt-4 inline-flex items-center gap-2 bg-[#FFA404] hover:bg-[#e89402] text-white px-4 py-2 rounded-xl shadow transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />

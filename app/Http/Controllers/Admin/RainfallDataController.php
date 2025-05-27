@@ -130,8 +130,10 @@ class RainfallDataController extends Controller
         
         $stationId = $request->input('station_id');
         $categories = $request->input('categories');
+        $updatedCount = 0;
         
         foreach ($categories as $item) {
+            // Update atau buat data baru untuk SEMUA jenis data source (manual, sensor, api)
             RainfallData::updateOrCreate(
                 [
                     'weather_station_id' => $stationId,
@@ -145,10 +147,11 @@ class RainfallDataController extends Controller
                     'updated_by' => auth()->id(),
                 ]
             );
+            $updatedCount++;
         }
         
         return redirect()->route('admin.weather.rainfall.index', ['station_id' => $stationId])
-            ->with('success', 'Kategori curah hujan berhasil diperbarui');
+            ->with('success', "Berhasil memperbarui klasifikasi {$updatedCount} data curah hujan");
     }
     
     public function create()
