@@ -51,8 +51,8 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek secara lokal:
 
 ```bash
 # 1. Clone project
-git clone https://github.com/namakamu/cegah-banjir.git
-cd cegah-banjir
+git clone https://github.com/PPLKEL4-SI4608-SCRUM/project-ppl-cegahbanjir.git
+cd ppl-cegah-banjir
 
 # 2. Install backend dependencies
 composer install
@@ -66,9 +66,12 @@ php artisan key:generate
 # 5. Jalankan migrasi
 php artisan migrate --seed
 
-# 6. Install frontend dependencies dan jalankan Vite
+# 6. Jalankan storage link local
+php artisan storage:link
+
+# 7. Install frontend dependencies dan jalankan Vite
 npm install
 npm run dev
 
-# 7. Jalankan server lokal
+# 8. Jalankan server lokal
 php artisan serve
