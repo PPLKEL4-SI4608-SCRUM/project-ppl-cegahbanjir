@@ -66,10 +66,10 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
     })->name('dashboard');
 
     Route::prefix('weather')->name('weather.')->group(function () {
-        Route::get('rainfall/api-current', [RainfallApiController::class, 'getCurrentRainfall'])
-            ->name('rainfall.api-current');
         Route::resource('stations', WeatherStationController::class);
         Route::resource('rainfall', RainfallDataController::class);
+        Route::get('rainfall/api-current', [RainfallApiController::class, 'getCurrentRainfall'])
+            ->name('rainfall.api-current');
         Route::post('rainfall/update-category', [RainfallDataController::class, 'updateCategory'])
             ->name('rainfall.update-category');
         Route::resource('predictions', FloodPredictionController::class);
