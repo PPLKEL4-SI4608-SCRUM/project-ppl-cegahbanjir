@@ -217,9 +217,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     const categorySelects = document.querySelectorAll('.category-select');
     const saveButton = document.getElementById('saveButton');
-    
+
     function checkForChanges() {
         let hasChanges = false;
+
+        // Cek perubahan kategori manual
         categorySelects.forEach(select => {
             const original = select.getAttribute('data-original');
             const current = select.value;
@@ -227,23 +229,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 hasChanges = true;
             }
         });
-        saveButton.disabled = !hasChanges;
+
+        // ✅ Tambahan: cek apakah ada data yang belum tersimpan
+        const anyNotSaved = Array.from(document.querySelectorAll('span.bg-gray-500')).length > 0;
+
+        // Jika ada perubahan kategori ATAU ada data otomatis yang belum tersimpan
+        saveButton.disabled = !(hasChanges || anyNotSaved);
     }
-    
-    // Event listener untuk setiap perubahan kategori
+
+    // Listener perubahan dropdown
     categorySelects.forEach(select => {
         select.addEventListener('change', checkForChanges);
     });
-    
-    // Fungsi untuk mereset kategori ke nilai original
+
+    // ✅ Jalankan saat awal load
+    checkForChanges();
+
     window.resetCategories = function () {
         categorySelects.forEach(select => {
             const original = select.getAttribute('data-original');
             select.value = original;
         });
-        saveButton.disabled = true;
+        checkForChanges(); // Panggil ulang pengecekan
     };
-    
+
     // Auto hide alerts
     setTimeout(function() {
         const successAlert = document.getElementById('successAlert');
