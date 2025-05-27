@@ -7,7 +7,6 @@
 
     <h1 class="text-2xl font-bold mb-6 text-center">Tambah Wilayah Rawan Banjir</h1>
 
-    {{-- PILIH STASIUN --}}
     <form method="GET" action="{{ route('admin.flood-maps.create') }}" class="mb-6">
         <label class="block font-semibold mb-1">Pilih Stasiun Cuaca</label>
         <div class="flex gap-2">
@@ -25,7 +24,6 @@
         </div>
     </form>
 
-    {{-- TABEL CURAH HUJAN --}}
     @if($rainfalls->count())
         <div class="mb-6 p-4 bg-white rounded-xl shadow border border-gray-200">
             <h2 class="text-lg font-semibold mb-4">Data Curah Hujan - Hari Ini</h2>
@@ -74,15 +72,17 @@
         </div>
     @endif
 
-    {{-- FORM TAMBAH WILAYAH --}}
     <form method="POST" action="{{ route('admin.flood-maps.store') }}">
         @csrf
         <div class="mb-4">
             <label class="block font-medium mb-1">Nama Wilayah</label>
-            <select name="wilayah" class="w-full p-2 rounded bg-gray-100 border border-gray-300 text-[#0F1A21]" required>
+            <select name="wilayah" id="wilayah_select" class="w-full p-2 rounded bg-gray-100 border border-gray-300 text-[#0F1A21]" required>
                 <option value="">-- Pilih Wilayah --</option>
                 @foreach ($stations as $station)
-                    <option value="{{ $station->location }}" {{ old('wilayah') == $station->location ? 'selected' : '' }}>
+                    <option value="{{ $station->location }}"
+                            data-lat="{{ $station->latitude }}"
+                            data-lng="{{ $station->longitude }}"
+                            {{ old('wilayah') == $station->location ? 'selected' : '' }}>
                         {{ $station->location }}
                     </option>
                 @endforeach
@@ -110,12 +110,10 @@
     </form>
 </div>
 
-{{-- Leaflet & Plugin CSS --}}
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 
-{{-- Leaflet & Plugin JS --}}
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
@@ -124,37 +122,54 @@
     const map = L.map('map').setView([-6.9147, 107.6098], 11);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
+        attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // ✅ Geocoder (Search Wilayah)
+    let currentWilayahMarker = null;
+
     L.Control.geocoder({
         defaultMarkGeocode: false
     })
     .on('markgeocode', function(e) {
+        // Remove any existing marker if geocoder is used
+        if (currentWilayahMarker) {
+            map.removeLayer(currentWilayahMarker);
+            currentWilayahMarker = null;
+        }
+
         const bbox = e.geocode.bbox;
         const bounds = [[bbox.getSouth(), bbox.getWest()], [bbox.getNorth(), bbox.getEast()]];
-        map.fitBounds(bounds);
-        L.marker(e.geocode.center).addTo(map)
+        map.fitBounds(bounds); // This will zoom and center based on the bounding box of the search result
+
+        currentWilayahMarker = L.marker(e.geocode.center).addTo(map)
             .bindPopup(e.geocode.name)
             .openPopup();
     })
     .addTo(map);
 
-    // ✅ Layer untuk menggambar polygon
     const drawnItems = new L.FeatureGroup().addTo(map);
     const polygonData = [];
 
     const colorMap = {
         "rendah": "#FED976",
-        "sedang": "#E31A1C",
-        "tinggi": "#BD0026",
-        "sangat tinggi": "#800026"
+        "sedang": "#FD8D3C",
+        "tinggi": "#E31A1C",
+        "sangat tinggi": "#BD0026"
     };
 
     const drawControl = new L.Control.Draw({
         draw: {
-            polygon: true,
+            polygon: {
+                allowIntersection: false,
+                drawError: {
+                    color: '#e1e100',
+                    message: '<strong>Error:</strong> Polygon cannot intersect itself!'
+                },
+                shapeOptions: {
+                    color: '#2563EB',
+                    fillOpacity: 0.5
+                }
+            },
             marker: false,
             circle: false,
             polyline: false,
@@ -173,7 +188,7 @@
         const coords = layer.getLatLngs()[0].map(latlng => [latlng.lng, latlng.lat]);
         const risiko = document.getElementById('risk_for_polygon').value;
 
-        layer.setStyle({ color: colorMap[risiko] || '#2563EB' });
+        layer.setStyle({ color: colorMap[risiko] || '#2563EB', fillColor: colorMap[risiko] || '#2563EB', fillOpacity: 0.5 });
         layer.feature = { properties: { tingkat_risiko: risiko } };
 
         drawnItems.addLayer(layer);
@@ -197,6 +212,41 @@
     map.on(L.Draw.Event.DELETED, function () {
         polygonData.length = 0;
         document.getElementById('polygons').value = JSON.stringify(polygonData);
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const wilayahSelect = document.getElementById('wilayah_select');
+
+        if (wilayahSelect) {
+            wilayahSelect.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const lat = selectedOption.getAttribute('data-lat');
+                const lng = selectedOption.getAttribute('data-lng');
+
+                // Remove any existing marker if a new option is selected
+                if (currentWilayahMarker) {
+                    map.removeLayer(currentWilayahMarker);
+                    currentWilayahMarker = null;
+                }
+
+                if (lat && lng) {
+                    // Center the map on the selected coordinates with a specific zoom level
+                    map.setView([parseFloat(lat), parseFloat(lng)], 13); // Zoom level 13 is good for locality
+
+                    // Add a new marker at the selected coordinates and open its popup
+                    currentWilayahMarker = L.marker([parseFloat(lat), parseFloat(lng)]).addTo(map)
+                        .bindPopup(selectedOption.value)
+                        .openPopup();
+                }
+            });
+
+            // Handle initial load if a "Nama Wilayah" is pre-selected (e.g., from old('wilayah'))
+            const initialSelectedWilayah = wilayahSelect.querySelector('option[selected]');
+            if (initialSelectedWilayah && initialSelectedWilayah.value !== "") {
+                // Dispatch the change event to reuse the logic defined above
+                wilayahSelect.dispatchEvent(new Event('change'));
+            }
+        }
     });
 </script>
 @endsection

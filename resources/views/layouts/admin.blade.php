@@ -83,7 +83,7 @@
                         </button>
                         <div id="banjirDropdown"
                             class="absolute hidden bg-[#0F1A21] text-white rounded-md mt-2 shadow-lg z-10 border border-gray-600"> {{-- Added id, removed 'dropdown-menu' --}}
-                            <a href="{{ route('admin.weather.predictions.index') }}"
+                            <a href="{{ route('admin.flood-maps.index') }}"
                             class="block px-4 py-2 flex items-center gap-2 transition
                                     hover:bg-[#FFA404]/90 hover:text-white
                                     focus:bg-[#FFA404]/90 focus:text-white">
