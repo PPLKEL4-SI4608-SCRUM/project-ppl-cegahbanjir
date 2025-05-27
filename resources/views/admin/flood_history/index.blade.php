@@ -130,7 +130,7 @@
                 button.addEventListener('click', function () {
                     const floodId = this.dataset.id;
                     // Update the form action dynamically
-                    deleteForm.action = `/admin/flood_history/${floodId}`; // Pastikan rute ini sesuai dengan route Anda
+                    deleteForm.action = `/admin/flood_history/${floodId}`; 
                 });
             });
         });

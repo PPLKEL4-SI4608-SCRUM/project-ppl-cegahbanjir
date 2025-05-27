@@ -12,35 +12,37 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start mb-10">
                 {{-- Gambar --}}
                 <div class="flex flex-col justify-start items-center space-y-6">
-                    @php
-                        $imageMap = [
-                            1 => 'tasdarurat.png',
-                            3 => 'lari.png',
-                            5 => 'listrikbanjir.png',
-                            7 => 'images1.jpg',
-                            9 => 'elektronikbanjir.png',
-                        ];
-                        $imageFile = $imageMap[$rekomendasi->id] ?? 'default.jpg';
-                    @endphp
-
+                    {{-- Pastikan jalur gambar utama sudah benar dari database --}}
                     <img src="{{ url('artikel_images/' . $rekomendasi->image_path) }}" alt="gambar artikel"
-                        class="rounded-lg shadow-md h-full w-full object-cover rounded-md object-contain">
+                        class="rounded-lg shadow-md h-full w-full object-cover object-contain">
 
                     {{-- Share with friends --}}
                     <div class="text-left w-full">
                         <p class="font-semibold text-gray-700 mb-2">Share with friends</p>
                         <div class="flex space-x-4">
-                            <img src="{{ asset('images/facebook.png') }}" alt="Facebook"
-                                class="w-6 h-6 hover:scale-110 transition">
-                            <img src="{{ asset('images/instagram.jpg') }}" alt="Instagram"
-                                class="w-6 h-6 hover:scale-110 transition">
-                            <img src="{{ asset('images/whatsapp.jpg') }}" alt="WhatsApp"
-                                class="w-6 h-6 hover:scale-110 transition">
+                            {{-- Facebook Share Link --}}
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}"
+                                target="_blank" rel="noopener noreferrer" title="Bagikan ke Facebook">
+                                <img src="{{ asset('images/facebook.png') }}" alt="Facebook"
+                                    class="w-6 h-6 hover:scale-110 transition">
+                            </a>
+                            {{-- Instagram Share Link (Catatan: Berbagi langsung ke feed/stories dari web tidak mudah) --}}
+                            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"
+                                title="Buka Instagram (Untuk berbagi, salin URL artikel secara manual)">
+                                <img src="{{ asset('images/instagram.jpg') }}" alt="Instagram"
+                                    class="w-6 h-6 hover:scale-110 transition">
+                            </a>
+                            {{-- WhatsApp Share Link --}}
+                            <a href="https://api.whatsapp.com/send?text={{ urlencode($rekomendasi->title . ' - Halo Semuanya, Baca artikel ini ya!: ' . url()->current()) }}"
+                                target="_blank" rel="noopener noreferrer" title="Bagikan ke WhatsApp">
+                                <img src="{{ asset('images/whatsapp.jpg') }}" alt="WhatsApp"
+                                    class="w-6 h-6 hover:scale-110 transition">
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                {{-- Deskripsi --}}
+                {{-- Deskripsi dan Solusi --}}
                 <div class="space-y-6">
                     <p class="text-gray-700 text-sm leading-relaxed text-justify">
                         {!! nl2br(e($rekomendasi->description)) !!}
@@ -50,23 +52,26 @@
                         @foreach ($rekomendasi->solutions as $item)
                             <div class="flex flex-col items-center p-2">
                                 <div class="text-white rounded-full w-12 h-12 flex items-center justify-center">
-                                    <!-- Replace with your flame icon -->
-                                    <img src="{{ url('solution_icons/' . $item->icon_path) }}" class="w-6 h-6">
+                                    {{-- Menggunakan icon_path dari database --}}
+                                    <img src="{{ url('solution_icons/' . $item->icon_path) }}" class="w-6 h-6" alt="{{ $item->title }} icon">
                                 </div>
-                                <p class="text-center text-sm font-semibold mt-2">Cegah<br>kerusakan alat</p>
+                                {{-- Menggunakan title dari database --}}
+                                <p class="text-center text-sm font-semibold mt-2">{{ $item->title }}</p>
                             </div>
                         @endforeach
                     </div>
 
+                    {{-- Bagian Solusi/Cara dengan detail teks --}}
                     <div class="max-w-xl mx-auto bg-blue-50 p-6 rounded-lg shadow-sm text-gray-800 text-sm leading-relaxed text-justify">
                         @foreach ($rekomendasi->solutions as $item)
-                        <p class="mb-2">
-                            {{$item->description}}
-                        </p>
+                            <p class="mb-2">
+                                {{-- Judul solusi dibold dengan kelas font-bold --}}
+                                <strong class="font-bold text-gray-900">{{ $item->title }}:</strong> {{ $item->description }}
+                            </p>
                         @endforeach
-                      </div>
-                      
+                    </div>
 
+                    {{-- Conditional sections based on $rekomendasi->id --}}
                     {{-- ID 1: Siapkan Tas Darurat --}}
                     @if ($rekomendasi->id == 1)
                         <div class="pt-10">
@@ -246,14 +251,14 @@
                                 <div
                                     class="w-full max-w-xs bg-blue-100 p-4 rounded-lg shadow-md text-center flex flex-col items-center">
                                     <img src="{{ asset('images/arus.png') }}" class="w-10 h-10 mb-2" alt="Hindari Arus">
-                                    <p class="font-semibold text-gray-800 text-sm mb-1">Hindari Arus</p>
+                                    <p class="font-semibold text-sm text-gray-800 mb-1">Hindari Arus</p>
                                     <p class="text-xs text-gray-600">Arus air deras berbahaya, cari jalur aman.</p>
                                 </div>
                                 <div
                                     class="w-full max-w-xs bg-blue-100 p-4 rounded-lg shadow-md text-center flex flex-col items-center">
                                     <img src="{{ asset('images/listrik.png') }}" class="w-10 h-10 mb-2"
                                         alt="Matikan Listrik">
-                                    <p class="font-semibold text-gray-800 text-sm mb-1">Matikan Listrik</p>
+                                    <p class="font-semibold text-sm text-gray-800 mb-1">Matikan Listrik</p>
                                     <p class="text-xs text-gray-600">Pastikan semua aliran listrik rumah sudah mati.</p>
                                 </div>
                             </div>
