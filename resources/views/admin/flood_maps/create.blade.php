@@ -79,8 +79,16 @@
         @csrf
         <div class="mb-4">
             <label class="block font-medium mb-1">Nama Wilayah</label>
-            <input type="text" name="wilayah" class="w-full p-2 rounded bg-gray-100 border border-gray-300 text-[#0F1A21]" required>
+            <select name="wilayah" class="w-full p-2 rounded bg-gray-100 border border-gray-300 text-[#0F1A21]" required>
+                <option value="">-- Pilih Wilayah --</option>
+                @foreach ($stations as $station)
+                    <option value="{{ $station->location }}" {{ old('wilayah') == $station->location ? 'selected' : '' }}>
+                        {{ $station->location }}
+                    </option>
+                @endforeach
+            </select>
         </div>
+
 
         <div class="mb-4">
             <label class="block font-medium mb-1">Tingkat Risiko Wilayah Banjir (Untuk Polygon Baru)</label>
