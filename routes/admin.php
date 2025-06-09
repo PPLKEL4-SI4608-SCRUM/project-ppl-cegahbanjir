@@ -67,11 +67,15 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->prefix('admin')->name(
 
     Route::prefix('weather')->name('weather.')->group(function () {
         Route::resource('stations', WeatherStationController::class);
-        Route::resource('rainfall', RainfallDataController::class);
+        
+        // PERBAIKAN: Taruh route khusus SEBELUM resource routes untuk menghindari konflik
         Route::get('rainfall/api-current', [RainfallApiController::class, 'getCurrentRainfall'])
             ->name('rainfall.api-current');
         Route::post('rainfall/update-category', [RainfallDataController::class, 'updateCategory'])
             ->name('rainfall.update-category');
+        
+        // Resource routes untuk rainfall
+        Route::resource('rainfall', RainfallDataController::class);
         Route::resource('predictions', FloodPredictionController::class);
         Route::resource('parameters', FloodWarningParameterController::class)->except(['destroy']);
         Route::get('disaster-statistics', [DisasterReportStatisticsController::class, 'index'])->name('disaster-statistics');
