@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                 const deleteForm = document.getElementById('deleteForm');
-                deleteForm.action = `{{ route('admin.weather.rainfall.index') }}/${id}`;
+                deleteForm.action = `{{ url('admin/weather/rainfall') }}/${id}`;
                 deleteForm.submit();
             }
         });

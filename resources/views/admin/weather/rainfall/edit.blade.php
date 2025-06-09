@@ -5,7 +5,7 @@
 <div class="bg-white shadow rounded-lg p-6 mb-10">
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold text-gray-800">Edit Data Curah Hujan</h1>
-        <a href="{{ route('admin.weather.rainfall.index', ['station_id' => $rainfallData->weather_station_id]) }}" 
+        <a href="{{ route('admin.weather.rainfall.index', ['station_id' => $rainfall->weather_station_id]) }}" 
            class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded hover:bg-gray-300">
             <i class="fas fa-arrow-left mr-2"></i> Kembali
         </a>
@@ -16,29 +16,29 @@
         <h3 class="font-semibold text-blue-800 mb-2">Data yang akan diedit</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-blue-700">
             <div>
-                <strong>Stasiun:</strong> {{ $rainfallData->weatherStation->name }}
+                <strong>Stasiun:</strong> {{ $rainfall->weatherStation->name }}
             </div>
             <div>
-                <strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($rainfallData->date)->format('d M Y') }}
+                <strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($rainfall->date)->format('d M Y') }}
             </div>
             <div>
                 <strong>Sumber Data:</strong> 
                 <span class="inline-block px-2 py-1 text-xs font-semibold rounded
-                    @if($rainfallData->data_source == 'manual') 
+                    @if($rainfall->data_source == 'manual') 
                         text-blue-800 bg-blue-200
-                    @elseif($rainfallData->data_source == 'sensor') 
+                    @elseif($rainfall->data_source == 'sensor') 
                         text-purple-800 bg-purple-200
                     @else 
                         text-gray-800 bg-gray-200
                     @endif">
-                    {{ ucfirst($rainfallData->data_source) }}
+                    {{ ucfirst($rainfall->data_source) }}
                 </span>
             </div>
         </div>
     </div>
 
     <div class="bg-white shadow rounded-lg p-6">
-        <form action="{{ route('admin.weather.rainfall.update', $rainfallData) }}" method="POST">
+        <form action="{{ route('admin.weather.rainfall.update', $rainfall) }}" method="POST">
             @csrf
             @method('PUT')
             
@@ -48,7 +48,7 @@
                     class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('weather_station_id') border-red-500 @enderror">
                     <option value="">Pilih Stasiun Cuaca</option>
                     @foreach($stations as $station)
-                        <option value="{{ $station->id }}" {{ old('weather_station_id', $rainfallData->weather_station_id) == $station->id ? 'selected' : '' }}>
+                        <option value="{{ $station->id }}" {{ old('weather_station_id', $rainfall->weather_station_id) == $station->id ? 'selected' : '' }}>
                             {{ $station->name }} ({{ $station->location }})
                         </option>
                     @endforeach
@@ -62,7 +62,7 @@
                 <div>
                     <label for="recorded_at" class="block text-sm font-medium text-gray-700">Tanggal <span class="text-red-500">*</span></label>
                     <input type="date" id="recorded_at" name="recorded_at" required
-                        value="{{ old('recorded_at', $rainfallData->date) }}"
+                        value="{{ old('recorded_at', $rainfall->date) }}"
                         class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('recorded_at') border-red-500 @enderror">
                     @error('recorded_at')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -73,8 +73,8 @@
                     <label for="data_source" class="block text-sm font-medium text-gray-700">Sumber Data <span class="text-red-500">*</span></label>
                     <select id="data_source" name="data_source" required
                         class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('data_source') border-red-500 @enderror">
-                        <option value="manual" {{ old('data_source', $rainfallData->data_source) == 'manual' ? 'selected' : '' }}>Manual</option>
-                        <option value="sensor" {{ old('data_source', $rainfallData->data_source) == 'sensor' ? 'selected' : '' }}>Sensor</option>
+                        <option value="manual" {{ old('data_source', $rainfall->data_source) == 'manual' ? 'selected' : '' }}>Manual</option>
+                        <option value="sensor" {{ old('data_source', $rainfall->data_source) == 'sensor' ? 'selected' : '' }}>Sensor</option>
                     </select>
                     @error('data_source')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -87,7 +87,7 @@
                 <div>
                     <label for="rainfall_amount" class="block text-sm font-medium text-gray-700">Curah Hujan (mm) <span class="text-red-500">*</span></label>
                     <input type="number" step="0.1" min="0" id="rainfall_amount" name="rainfall_amount" required
-                        value="{{ old('rainfall_amount', $rainfallData->rainfall_amount) }}"
+                        value="{{ old('rainfall_amount', $rainfall->rainfall_amount) }}"
                         class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('rainfall_amount') border-red-500 @enderror"
                         onchange="calculateCategory()">
                     @error('rainfall_amount')
@@ -97,7 +97,7 @@
                 <div>
                     <label for="intensity" class="block text-sm font-medium text-gray-700">Intensitas (mm/jam)</label>
                     <input type="number" step="0.01" min="0" id="intensity" name="intensity"
-                        value="{{ old('intensity', $rainfallData->intensity) }}"
+                        value="{{ old('intensity', $rainfall->intensity) }}"
                         class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('intensity') border-red-500 @enderror">
                     @error('intensity')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -110,10 +110,10 @@
                 <label for="category" class="block text-sm font-medium text-gray-700">Klasifikasi</label>
                 <select id="category" name="category"
                     class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-900 @error('category') border-red-500 @enderror">
-                    <option value="rendah" {{ old('category', $rainfallData->category) == 'rendah' ? 'selected' : '' }}>Rendah (0-5mm)</option>
-                    <option value="sedang" {{ old('category', $rainfallData->category) == 'sedang' ? 'selected' : '' }}>Sedang (5-20mm)</option>
-                    <option value="tinggi" {{ old('category', $rainfallData->category) == 'tinggi' ? 'selected' : '' }}>Tinggi (20-50mm)</option>
-                    <option value="sangat_tinggi" {{ old('category', $rainfallData->category) == 'sangat_tinggi' ? 'selected' : '' }}>Sangat Tinggi (>50mm)</option>
+                    <option value="rendah" {{ old('category', $rainfall->category) == 'rendah' ? 'selected' : '' }}>Rendah (0-5mm)</option>
+                    <option value="sedang" {{ old('category', $rainfall->category) == 'sedang' ? 'selected' : '' }}>Sedang (5-20mm)</option>
+                    <option value="tinggi" {{ old('category', $rainfall->category) == 'tinggi' ? 'selected' : '' }}>Tinggi (20-50mm)</option>
+                    <option value="sangat_tinggi" {{ old('category', $rainfall->category) == 'sangat_tinggi' ? 'selected' : '' }}>Sangat Tinggi (>50mm)</option>
                 </select>
                 @error('category')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -127,25 +127,25 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 text-sm">
                     <div class="flex items-center">
                         <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
-                        <span><strong>Rendah:</strong> 0-5mm</span>
+                        <span class="text-gray-500"><strong>Rendah:</strong> 0-5mm</span>
                     </div>
                     <div class="flex items-center">
                         <span class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
-                        <span><strong>Sedang:</strong> 5-20mm</span>
+                        <span class="text-gray-500"><strong>Sedang:</strong> 5-20mm</span>
                     </div>
                     <div class="flex items-center">
                         <span class="w-3 h-3 bg-orange-500 rounded-full mr-2"></span>
-                        <span><strong>Tinggi:</strong> 20-50mm</span>
+                        <span class="text-gray-500"><strong>Tinggi:</strong> 20-50mm</span>
                     </div>
                     <div class="flex items-center">
                         <span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
-                        <span><strong>Sangat Tinggi:</strong> >50mm</span>
+                        <span class="text-gray-500"><strong>Sangat Tinggi:</strong> >50mm</span>
                     </div>
                 </div>
             </div>
 
             <div class="flex justify-end gap-3">
-                <a href="{{ route('admin.weather.rainfall.index', ['station_id' => $rainfallData->weather_station_id]) }}" 
+                <a href="{{ route('admin.weather.rainfall.index', ['station_id' => $rainfall->weather_station_id]) }}" 
                    class="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200">
                     Batal
                 </a>
