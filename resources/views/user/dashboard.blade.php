@@ -204,9 +204,11 @@
 
                 <div class="mt-6 text-center">
                     <a href="{{ $twitterShareUrl }}" target="_blank"
-                        class="inline-block px-6 py-3 text-white bg-[#FF8C00] rounded-lg text-center font-bold hover:bg-[#855821] transition duration-300">
-                        <i class="fab fa-twitter mr-2"></i> Bagikan Info Peringatan ke X
-                    </a>
+   dusk="share-twitter"
+   class="inline-block px-6 py-3 text-white bg-[#FF8C00] rounded-lg text-center font-bold hover:bg-[#855821] transition duration-300">
+   <i class="fab fa-twitter mr-2"></i> Bagikan Info Peringatan ke X
+</a>
+
                 </div>
             </div>
 

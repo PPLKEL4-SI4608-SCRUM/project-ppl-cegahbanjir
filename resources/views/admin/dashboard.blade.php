@@ -92,9 +92,11 @@
                     </div>
                     <h4 class="font-semibold text-lg mb-1">Notifikasi</h4>
                     <p class="text-sm text-gray-600 mb-3">Berikan notifikasi banjir kepada pengguna</p>
-                    <a href="{{ route('admin.weather.notification.create') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
-                        <i class="fas fa-bell mr-2"></i> Akses
-                    </a>
+                    <a href="{{ route('admin.weather.notification.create') }}"
+   dusk="akses-notifikasi"
+   class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
+   <i class="fas fa-bell mr-2"></i> Akses
+</a>
                 </div>
                 <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-cyan-500">
                     <div class="flex justify-center mb-3">

@@ -31,8 +31,8 @@
         </div>
 
         <div class="flex justify-end gap-2">
-                <button type="submit" class="inline-flex items-center px-4 py-2 text-xs text-white bg-yellow-600 rounded hover:bg-yellow-700">
-                    Kirim Notifikasi
+                <button type="submit" dusk="kirim-notifikasi" class="inline-flex items-center px-4 py-2 text-xs text-white bg-yellow-600 rounded hover:bg-yellow-700">
+                 Kirim Notifikasi
                 </button>
             </div>
     </form>
