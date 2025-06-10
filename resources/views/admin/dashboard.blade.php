@@ -68,7 +68,7 @@
                     </div>
                     <h4 class="font-semibold text-lg mb-1">Laporan Bencana</h4>
                     <p class="text-sm text-gray-600 mb-3">Terima atau tolak laporan dari user</p>
-                    <a href="{{ route('admin.disaster-reports.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
+                    <a dusk="akses-laporan-bencana" href="{{ route('admin.disaster-reports.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
                         <i class="fas fa-exclamation-triangle mr-2"></i> Akses
                     </a>
                 </div>
