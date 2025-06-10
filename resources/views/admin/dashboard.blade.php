@@ -21,7 +21,7 @@
                     </div>
                     <h4 class="font-semibold text-lg mb-1">Stasiun Cuaca</h4>
                     <p class="text-sm text-gray-600 mb-3">Kelola stasiun cuaca</p>
-                    <a href="{{ route('admin.weather.stations.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
+                    <a dusk="akses-stasiun-cuaca" href="{{ route('admin.weather.stations.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
                         <i class="fas fa-broadcast-tower mr-2"></i> Akses
                     </a>
                 </div>
@@ -33,7 +33,7 @@
                     </div>
                     <h4 class="font-semibold text-lg mb-1">Data Curah Hujan</h4>
                     <p class="text-sm text-gray-600 mb-3">Input dan edit data curah hujan</p>
-                    <a href="{{ route('admin.weather.rainfall.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
+                    <a dusk="akses-data-rainfall" href="{{ route('admin.weather.rainfall.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
                         <i class="fas fa-cloud-rain mr-2"></i> Akses
                     </a>
                 </div>
