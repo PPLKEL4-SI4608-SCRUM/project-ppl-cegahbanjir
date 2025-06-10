@@ -7,7 +7,7 @@
 
     <div class="mb-6">
         <h1 class="text-3xl font-bold text-black">Manajemen Prediksi Wilayah Banjir</h1>
-        <a href="{{ route('admin.flood-maps.create') }}" class="mt-4 inline-flex items-center gap-2 bg-[#FFA404] hover:bg-[#e89402] text-white px-4 py-2 rounded-xl shadow transition">
+       <a href="{{ route('admin.flood-maps.create') }}" dusk="btn-tambah-wilayah" class="mt-4 inline-flex items-center gap-2 bg-[#FFA404] hover:bg-[#e89402] text-white px-4 py-2 rounded-xl shadow transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
@@ -48,13 +48,11 @@
                         {{ $risikos ?: '-' }}
                     </td>
                     <td class="p-4 text-center space-x-2">
-                        <a href="{{ route('admin.flood-maps.edit', $map) }}" class="bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-1 rounded-xl transition">Edit</a>
+                        <a href="{{ route('admin.flood-maps.edit', $map) }}" class="bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-1 rounded-xl transition" dusk="btn-edit-wilayah-{{ $map->id }}">Edit</a>
                         <form action="{{ route('admin.flood-maps.destroy', $map) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('Hapus data ini?')" class="bg-red-500 hover:bg-red-400 text-white px-4 py-1 rounded-xl transition">
-                                Hapus
-                            </button>
+                            <button dusk="btn-delete-wilayah-{{ $map->id }}" type="submit" onclick="return confirm('Hapus data ini?')" class="bg-red-500 hover:bg-red-400 text-white px-4 py-1 rounded-xl transition">Hapus</button>
                         </form>
                     </td>
                 </tr>

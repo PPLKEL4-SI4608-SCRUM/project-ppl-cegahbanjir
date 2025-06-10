@@ -56,7 +56,7 @@
                     </div>
                     <h4 class="font-semibold text-lg mb-1">Prediksi Banjir</h4>
                     <p class="text-sm text-gray-600 mb-3">Kelola prediksi potensi banjir</p>
-                    <a href="{{ route('admin.flood-maps.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
+                    <a id="akses-prediksi-banjir" href="{{ route('admin.flood-maps.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
                         <i class="fas fa-chart-line mr-2"></i> Akses
                     </a>
                 </div>
