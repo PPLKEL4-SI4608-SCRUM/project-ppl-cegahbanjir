@@ -34,9 +34,12 @@
                                     <form action="{{ route('admin.pengguna.destroy', $user) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus prediksi ini?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="inline-flex items-center px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700">
-                                            <i class="fas fa-trash mr-1"></i> Hapus
-                                        </button>
+                                        <button type="submit"
+    dusk="hapus-user"
+    class="inline-flex items-center px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700">
+    <i class="fas fa-trash mr-1"></i> Hapus
+</button>
+
                                     </form>
                                 </td>
                             </tr>
