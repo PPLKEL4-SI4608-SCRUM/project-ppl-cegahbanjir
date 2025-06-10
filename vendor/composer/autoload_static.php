@@ -210,9 +210,9 @@ class ComposerStaticInit1f25c3d9c9122f185e580c732a0d3bab
         ),
         'phpDocumentor\\Reflection\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
+            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
         ),
         'Whoops\\' => 
         array (
@@ -616,6 +616,7 @@ class ComposerStaticInit1f25c3d9c9122f185e580c732a0d3bab
         'App\\Http\\Controllers\\Admin\\NotificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/NotificationController.php',
         'App\\Http\\Controllers\\Admin\\RainfallDataController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/RainfallDataController.php',
         'App\\Http\\Controllers\\Admin\\WeatherStationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/WeatherStationController.php',
+        'App\\Http\\Controllers\\Api\\RainfallApiController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/RainfallApiController.php',
         'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
         'App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/EmailVerificationNotificationController.php',

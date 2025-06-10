@@ -18,6 +18,7 @@ return array(
     'App\\Http\\Controllers\\Admin\\NotificationController' => $baseDir . '/app/Http/Controllers/Admin/NotificationController.php',
     'App\\Http\\Controllers\\Admin\\RainfallDataController' => $baseDir . '/app/Http/Controllers/Admin/RainfallDataController.php',
     'App\\Http\\Controllers\\Admin\\WeatherStationController' => $baseDir . '/app/Http/Controllers/Admin/WeatherStationController.php',
+    'App\\Http\\Controllers\\Api\\RainfallApiController' => $baseDir . '/app/Http/Controllers/Api/RainfallApiController.php',
     'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => $baseDir . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
     'App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController' => $baseDir . '/app/Http/Controllers/Auth/EmailVerificationNotificationController.php',

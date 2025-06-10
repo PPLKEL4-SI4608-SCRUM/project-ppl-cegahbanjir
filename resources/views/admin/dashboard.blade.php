@@ -4,7 +4,8 @@
     <div class="bg-white bg-opacity-80 backdrop-blur-md rounded-2xl shadow-lg p-6 text-gray-800">
         <h2 class="text-2xl font-semibold mb-4">Selamat datang, {{ Auth::user()->name }}!</h2>
         <p class="mb-8">Ini adalah panel admin <strong>CeBan (Cegah Banjir)</strong>.</p>
-        
+
+        {{-- Manajemen Data Cuaca --}}
         <div class="mb-10">
             <div class="flex items-center gap-3 mb-6">
                 <div class="bg-blue-500 p-2 rounded-lg">
@@ -40,6 +41,7 @@
             </div>
         </div>
 
+        {{-- Manajemen Data Banjir --}}
         <div class="mb-10">
             <div class="flex items-center gap-3 mb-6">
                 <div class="bg-cyan-500 p-2 rounded-lg">
@@ -104,11 +106,10 @@
                     </div>
                     <h4 class="font-semibold text-lg mb-1">Artikel Rekomendasi</h4>
                     <p class="text-sm text-gray-600 mb-3">Kelola artikel dan solusi banjir</p>
-                    <a href="{{ route('admin.artikels.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
+                    <a dusk="akses-artikel-rekomendasi" href="{{ route('admin.artikels.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
                         <i class="fas fa-newspaper mr-2"></i> Akses
                     </a>
                 </div>
-                {{-- CORRECTED NEW CARD: Riwayat Banjir --}}
                 <div class="bg-[#F8F9FA] rounded-xl shadow p-4 text-center hover:shadow-md transition border-l-4 border-purple-500">
                     <div class="flex justify-center mb-3">
                         <div class="bg-purple-100 p-3 rounded-full">
@@ -117,13 +118,14 @@
                     </div>
                     <h4 class="font-semibold text-lg mb-1">Riwayat Banjir</h4>
                     <p class="text-sm text-gray-600 mb-3">Lihat data riwayat kejadian banjir</p>
-                    {{-- THIS IS THE CORRECTION --}}
                     <a href="{{ route('admin.flood_history.index') }}" class="bg-[#FFA404] hover:bg-[#0F1A21] text-white font-semibold py-2 px-4 rounded flex items-center justify-center transition">
                         <i class="fas fa-history mr-2"></i> Akses
                     </a>
                 </div>
             </div>
         </div>
+
+        {{-- Manajemen Data Pengguna --}}
         <div class="mb-6 mt-10">
             <div class="flex items-center gap-3 mb-6">
                 <div class="bg-green-500 p-2 rounded-lg">
